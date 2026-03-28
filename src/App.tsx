@@ -1,6 +1,6 @@
-import { Eye, Code, Database, ChevronsUpDown, UsersRound } from 'lucide-react';
+import { Eye, Code, Database, ChevronsUpDown, UsersRound, History, Folders, PencilLine, Copy, Download, Trash } from 'lucide-react';
 import './App.css'
-import { useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 /**
  * Mock Data
@@ -90,17 +90,53 @@ type ButtonProps = {
 
 const Button = (props: ButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const styles = `cursor-pointer relative flex items-center gap-3 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors ${props.className} ${isOpen ? 'bg-gray-100' : 'bg-transparent'}`;
+
+  // Close dropdown when clicking away
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const root = linkRef.current ?? buttonRef.current;
+
+      if (root && !root.contains(event.target as Node)) {
+        setIsOpen(false);
+        linkRef.current?.focus();
+        buttonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [isOpen])
+
+  // Close dropdown with `esc` key
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        linkRef.current?.focus();
+        buttonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen])
 
   if (props.as === "link") {
     return (
-      <a className={styles} href={props.href}>
+      <a ref={linkRef} className={styles} href={props.href}>
         {props.children}
       </a>
     );
   } else {
     return (
-      <button className={styles} onClick={() => setIsOpen(!isOpen)}>
+      <button ref={buttonRef} className={styles} onClick={() => setIsOpen(!isOpen)}>
         {props.children}
 
         {isOpen && props.openChildren}
@@ -108,6 +144,36 @@ const Button = (props: ButtonProps) => {
     );
   }
 }
+
+/**
+ * Dropdown
+ */
+type DropdownProps = {
+  children: string | ReactNode;
+}
+
+const Dropdown = (props: DropdownProps) => (
+  <div className="bg-gray-50 border border-gray-200 rounded-lg absolute top-10 left-0 w-60 text-left">
+    {props.children}
+  </div>
+);
+
+/**
+ * Dropdown Item
+ */
+type DropdownItemProps = {
+  title: string;
+  icon?: ReactNode;
+  key?: number;
+  className?: string;
+}
+
+const DropdownItem = (props: DropdownItemProps) => (
+  <li key={props.key} className={`cursor-pointer flex items-center gap-2.5 mx-1.5 my-1.5 px-1.5 py-1.5 rounded-md hover:bg-gray-100 transition-colors ${props.className ? props.className : ''}`} tabIndex={0}>
+    {props.icon && props.icon}
+    {props.title}
+  </li>
+);
 
 /**
  * Separator
@@ -128,7 +194,7 @@ type UserTeamProps = {
 
 const UserTeam = (props: UserTeamProps) => {
   return (
-    <li key={props.team.id} className="cursor-pointer flex items-center gap-2.5 mx-1.5 my-1.5 px-1.5 py-1.5 border border-transparent rounded-md hover:bg-gray-100 hover:border-gray-200 transition-colors" tabIndex={0}>
+    <li key={props.team.id} className="cursor-pointer flex items-center gap-2.5 mx-1.5 my-1.5 px-1.5 py-1.5 rounded-md hover:bg-gray-100 transition-colors" tabIndex={0}>
       {!props.create ?
         props.team.icon && <img src={props.team.icon} alt={props.team.title} className="w-8 h-8 rounded-full border border-gray-300" />
         : <UsersRound className="w-8 h-8 p-1 bg-gray-200 rounded-full" strokeWidth={1.5} />
@@ -148,8 +214,8 @@ type UserTeamsProps = {
 
 const UserTeams = (props: UserTeamsProps) => {
   return (
-    <div className="bg-gray-50 border border-gray-200 rounded-lg absolute top-10 left-0 w-60">
-      <ul className="text-left">
+    <Dropdown>
+      <ul>
         {props.data.map((item: Team) => (
           <UserTeam key={item.id} team={item} />
         ))}
@@ -158,9 +224,27 @@ const UserTeams = (props: UserTeamsProps) => {
 
         <UserTeam team={{ id: 0, title: 'Create a team'}} create={true} />
       </ul>
-    </div>
+    </Dropdown>
   )
 };
+
+/**
+ * User Projects
+ */
+
+const UserProjectsDropdown = () => (
+  <Dropdown>
+    <ul>
+      <DropdownItem className="text-sm" title="Open recent project" icon={<Folders size={16} strokeWidth={1} />} />
+      <DropdownItem className="text-sm" title="Version history" icon={<History size={16} strokeWidth={1} />} />
+      <DropdownItem className="text-sm" title="Rename..." icon={<PencilLine size={16} strokeWidth={1} />} />
+      <DropdownItem className="text-sm" title="Duplicate" icon={<Copy size={16} strokeWidth={1} />} />
+      <DropdownItem className="text-sm" title="Export" icon={<Download size={16} strokeWidth={1} />} />
+      <DropdownItem className="text-sm" title="Visibility" icon={<Eye size={16} strokeWidth={1} />} />
+      <DropdownItem className="text-sm" title="Delete" icon={<Trash size={16} strokeWidth={1} />} />
+    </ul>
+  </Dropdown>
+);
 
 /**
  * App
@@ -184,7 +268,7 @@ function App() {
 
           <Separator />
 
-          <Button>
+          <Button openChildren={<UserProjectsDropdown />}>
             Project Name
           </Button>
         </div>
@@ -207,10 +291,10 @@ function App() {
       </header>
 
       {/* Application Body */}
-      <main className="grid grid-cols-12 gap-5 h-dvh">
+      <main className="h-full grid grid-cols-12 gap-5">
         {/* Application Sidebar */}
-        <div className="col-span-4 h-full p-3">
-          <h2 className="text-xl">Conversations</h2>
+        <div className="col-span-4 h-full px-5 py-3">
+          <h2 className="text-xl">Chat</h2>
 
           {conversations.map((conversation) => (
             <div key={conversation.id}>
@@ -220,8 +304,8 @@ function App() {
         </div>
 
         {/* Application Output */}
-        <div className="col-span-8 py-3">
-          Chat
+        <div className="col-span-8 py-3 rounded-lg border border-gray-100">
+          Output
         </div>
       </main>
     </>
