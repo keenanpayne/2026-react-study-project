@@ -22,10 +22,10 @@ export default function Button(props: ButtonProps) {
   const isOpenClass = isOpen ? 'bg-gray-100 dark:bg-zinc-800' : 'bg-transparent';
   const styles = `cursor-pointer text-left relative flex items-center transition-colors ${sizeClass} ${props.className ? props.className : ''} ${isOpenClass}`;
 
-  // Close dropdown when clicking away
   useEffect(() => {
     if (!isOpen) return;
 
+    // Close dropdown when clicking away
     const handlePointerDown = (event: PointerEvent) => {
       const root = linkRef.current ?? buttonRef.current;
 
@@ -36,14 +36,7 @@ export default function Button(props: ButtonProps) {
       }
     };
 
-    document.addEventListener("pointerdown", handlePointerDown);
-    return () => document.removeEventListener("pointerdown", handlePointerDown);
-  }, [isOpen])
-
-  // Close dropdown with `esc` key
-  useEffect(() => {
-    if (!isOpen) return;
-
+    // Close dropdown with `esc` key
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsOpen(false);
@@ -52,8 +45,13 @@ export default function Button(props: ButtonProps) {
       }
     };
 
+    document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [isOpen])
 
   if (props.as === "link") {
