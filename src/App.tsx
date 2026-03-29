@@ -1,4 +1,4 @@
-import { Eye, Code, Database, ChevronsUpDown, UsersRound, History, Folders, PencilLine, Copy, Download, Trash, Lock, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan, type LucideIcon, Ellipsis, CircleEllipsis, SquareTerminal, ChevronRight, ChevronDown } from 'lucide-react';
+import { Eye, Code, Database, ChevronsUpDown, UsersRound, History, Folders, PencilLine, Copy, Download, Trash, Lock, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan, type LucideIcon, Ellipsis, CircleEllipsis, SquareTerminal, ChevronRight, ChevronDown, CirclePlus, Plus, MousePointerClick, Lightbulb, ArrowUp } from 'lucide-react';
 import './App.css'
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
@@ -257,10 +257,10 @@ function App() {
       {/* Application */}
       <main className="h-full md:grid md:grid-cols-12 lg:grid-cols-[450px_1fr]">
         {/* Sidebar */}
-        <section className="relative md:col-span-5 lg:col-auto h-[50%] md:h-full overflow-scroll">
+        <section className="relative md:col-span-6 lg:col-auto h-full overflow-scroll">
           <header className="px-1.5 py-1.5 sticky top-0 left-0 bg-white dark:bg-zinc-900 z-10">
             {/* Sidebar Header */}
-            <nav className="flex items-center gap-1">
+            <nav className="flex items-center gap-0.5 sm:gap-1">
               <Button as="link" href="https://bolt.new" className="shrink-0 h-10">
                 <img src="/bolt-logo-wordmark.png" alt="Bolt.new" className="h-6 dark:invert-100" />
               </Button>
@@ -275,7 +275,7 @@ function App() {
               <Separator />
 
               <Button className="h-9" openChildren={<UserProjectsDropdown />}>
-                <span className="text-sm font-medium">{currentProject.title}</span>
+                <span className="text-xs md:text-sm font-medium">{currentProject.title}</span>
                 {currentProject.private && <Lock strokeWidth={1.5} size={14} />}
               </Button>
             </nav>
@@ -471,14 +471,60 @@ function App() {
 
             <h2 className="text-lg font-semibold">Summary</h2>
 
-              <p>This plan creates a comprehensive social media scheduling application that allows users to compose content once and publish it across five major platforms. The architecture leverages Bolt Database for authentication, database storage, and media hosting, ensuring scalability and security. The interface will be intuitive with a calendar-based scheduling system, real-time previews, and platform-specific optimizations. Users can manage multiple social accounts, schedule posts in advance, and track their content pipeline from a unified dashboard.</p>
+            <p>This plan creates a comprehensive social media scheduling application that allows users to compose content once and publish it across five major platforms. The architecture leverages Bolt Database for authentication, database storage, and media hosting, ensuring scalability and security. The interface will be intuitive with a calendar-based scheduling system, real-time previews, and platform-specific optimizations. Users can manage multiple social accounts, schedule posts in advance, and track their content pipeline from a unified dashboard.</p>
 
-              <p>Please answer the three questions above so I can refine the plan to match your exact requirements. Once you're ready to proceed, click the "Implement this plan" button to switch to build mode.</p>
+            <p>Please answer the three questions above so I can refine the plan to match your exact requirements. Once you're ready to proceed, click the "Implement this plan" button to switch to build mode.</p>
           </article>
+
+          <form className="sticky bottom-0 bg-white px-5 pb-5">
+            <aside className="mx-1.75 px-2 py-1 flex justify-between text-xs bg-white border-t border-l border-r border-gray-200 rounded-t-lg">
+              <span>300k daily tokens remaining.</span>
+
+              <button className="cursor-pointer text-blue-500 hover:underline">
+                Switch to Pro for 33x more usage
+              </button>
+            </aside>
+
+            <div className="w-full px-3 pt-3 rounded-lg bg-gray-50 border border-gray-300">
+              <label htmlFor="command" className="sr-only">Command</label>
+              <textarea id="command" placeholder="How can Bolt help you today? (or /command)" className="w-full px-1.5 py-2 h-20 text-sm resize-none" />
+
+              <nav className="flex items-center justify-between gap-3 py-1.5">
+                <div className="flex items-center gap-1.5">
+                  <button className="group/button cursor-pointer shrink-0">
+                    <span className="sr-only">Upload</span>
+                    <Plus size={30} className="bg-gray-200 group-hover/button:bg-gray-300 rounded-full p-1.25 transition-colors" />
+                  </button>
+
+                  <Button className="shrink-0">
+                    <span className="text-gray-700 text-xs">Sonnet 4.5</span>
+                    <ChevronsUpDown size={14} strokeWidth={1} className="stroke-gray-600" />
+                  </Button>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <Button className="shrink-0">
+                    <MousePointerClick size={18} strokeWidth={1} className="stroke-gray-600" />
+                    <span className="text-gray-700 text-xs">Select</span>
+                  </Button>
+
+                  <Button className="shrink-0">
+                    <Lightbulb size={18} strokeWidth={1} className="stroke-gray-600" />
+                    <span className="text-gray-700 text-xs">Plan</span>
+                  </Button>
+
+                  <button className="group/button cursor-pointer shrink-0">
+                    <span className="sr-only">Send Message</span>
+                    <ArrowUp size={30} className="bg-blue-300 group-hover/button:bg-blue-500 stroke-white rounded-full p-1.25 transition-colors" />
+                  </button>
+                </div>
+              </nav>
+            </div>
+          </form>
         </section>
 
         {/* Application Output */}
-        <div className="md:col-span-7 lg:col-auto h-full overflow-scroll">
+        <div className="md:col-span-6 lg:col-auto h-full overflow-scroll">
           <header className="py-1.5">
             {/* Application Header — Right Side */}
             <div className="flex flex-wrap items-center gap-3">
@@ -501,7 +547,8 @@ function App() {
               </button>
 
               <div className="flex flex-1 items-center rounded-full px-3 border border-gray-300 dark:border-neutral-900 bg-gray-50 dark:bg-zinc-800 h-8">
-                <input type="text" value="/" className="flex-1 text-sm text-gray-800 dark:text-gray-300 mx-1 px-1" onChange={() => null} />
+                <label htmlFor="url" className="sr-only">Page URL</label>
+                <input id="url" type="text" value="/" className="flex-1 text-sm text-gray-800 dark:text-gray-300 mx-1 px-1" onChange={() => null} />
 
                 <div className="justify-end flex items-center">
                   <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
