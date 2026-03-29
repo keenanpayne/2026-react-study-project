@@ -1,6 +1,7 @@
 import { ChevronDown, CircleEllipsis, Eye, SquareTerminal } from "lucide-react";
 import CodeString from "../base/CodeString";
 import ChatAction from "./ChatAction";
+import ChatPlan from "./ChatPlan";
 
 type ChatResponseProps = {
   actionsExpanded: boolean;
@@ -182,6 +183,8 @@ export default function ChatResponse(props: ChatResponseProps) {
       <p>This plan creates a comprehensive social media scheduling application that allows users to compose content once and publish it across five major platforms. The architecture leverages Bolt Database for authentication, database storage, and media hosting, ensuring scalability and security. The interface will be intuitive with a calendar-based scheduling system, real-time previews, and platform-specific optimizations. Users can manage multiple social accounts, schedule posts in advance, and track their content pipeline from a unified dashboard.</p>
 
       <p>Please answer the three questions above so I can refine the plan to match your exact requirements. Once you're ready to proceed, click the "Implement this plan" button to switch to build mode.</p>
+
+      <ChatPlan />
     </>
   );
 }
