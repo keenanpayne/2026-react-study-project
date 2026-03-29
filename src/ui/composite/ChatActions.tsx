@@ -9,6 +9,10 @@ type ChatActionsProps = {
 }
 
 export default function ChatActions(props: ChatActionsProps) {
+  const iconSize = 18;
+  const iconStrokeWidth = 1;
+  const iconClass = "stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors";
+  
   return (
     <details className="group/details space-y-5 py-3" open={props.actionsExpanded}>
       <summary className="cursor-pointer flex items-center gap-2 mb-0">
@@ -20,14 +24,14 @@ export default function ChatActions(props: ChatActionsProps) {
       </summary>
       
       <ul className="space-y-5 pt-5">
-        <ChatAction key={1} title="Get current working directory" icon={<SquareTerminal size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
-        <ChatAction key={2} title="Listed files in project root" icon={<SquareTerminal size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
-        <ChatAction key={3} title="Read" icon={<Eye size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
-        <ChatAction key={4} title={<>Read <CodeString text="package.json" /></>} icon={<Eye size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
-        <ChatAction key={5} title="Listed source directory contents" icon={<SquareTerminal size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
-        <ChatAction key={6} title={<>Read <CodeString text="src/App.tsx" /></>} icon={<Eye size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
-        <ChatAction key={7} title={<>Read <CodeString text="src/main.tsx" /></>} icon={<Eye size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
-        <ChatAction key={8} title={<>Read <CodeString text="src/index.css" /></>} icon={<Eye size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        <ChatAction key={1} title="Get current working directory" icon={<SquareTerminal size={iconSize} strokeWidth={iconStrokeWidth} className={iconClass} />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        <ChatAction key={2} title="Listed files in project root" icon={<SquareTerminal size={iconSize} strokeWidth={iconStrokeWidth} className={iconClass} />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        <ChatAction key={3} title="Read" icon={<Eye size={iconSize} strokeWidth={iconStrokeWidth} className={iconClass} />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        <ChatAction key={4} title={<>Read <CodeString text="package.json" /></>} icon={<Eye size={iconSize} strokeWidth={iconStrokeWidth} className={iconClass} />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        <ChatAction key={5} title="Listed source directory contents" icon={<SquareTerminal size={iconSize} strokeWidth={iconStrokeWidth} className={iconClass} />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        <ChatAction key={6} title={<>Read <CodeString text="src/App.tsx" /></>} icon={<Eye size={iconSize} strokeWidth={iconStrokeWidth} className={iconClass} />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        <ChatAction key={7} title={<>Read <CodeString text="src/main.tsx" /></>} icon={<Eye size={iconSize} strokeWidth={iconStrokeWidth} className={iconClass} />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        <ChatAction key={8} title={<>Read <CodeString text="src/index.css" /></>} icon={<Eye size={iconSize} strokeWidth={iconStrokeWidth} className={iconClass} />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
       </ul>
     </details>   
   )
