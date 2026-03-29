@@ -1,4 +1,4 @@
-import { Eye, Code, Database, ChevronsUpDown, UsersRound, History, Folders, PencilLine, Copy, Download, Trash, Lock, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan } from 'lucide-react';
+import { Eye, Code, Database, ChevronsUpDown, UsersRound, History, Folders, PencilLine, Copy, Download, Trash, Lock, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan, type LucideIcon } from 'lucide-react';
 import './App.css'
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
@@ -94,7 +94,7 @@ const Button = (props: ButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const linkRef = useRef<HTMLAnchorElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const styles = `cursor-pointer relative flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors ${props.className} ${isOpen ? 'bg-gray-100' : 'bg-transparent'}`;
+  const styles = `cursor-pointer relative flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors ${props.className} ${isOpen ? 'bg-gray-100 dark:bg-zinc-800' : 'bg-transparent'}`;
 
   // Close dropdown when clicking away
   useEffect(() => {
@@ -155,7 +155,7 @@ type DropdownProps = {
 }
 
 const Dropdown = (props: DropdownProps) => (
-  <div className="bg-gray-50 border border-gray-200 rounded-lg absolute top-10 left-0 w-60 text-left">
+  <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg absolute top-10 left-0 w-55 text-left">
     {props.children}
   </div>
 );
@@ -171,7 +171,7 @@ type DropdownItemProps = {
 }
 
 const DropdownItem = (props: DropdownItemProps) => (
-  <li key={props.key} className={`cursor-pointer flex items-center gap-2.5 mx-1.5 my-1.5 px-1.5 py-1.5 rounded-md hover:bg-gray-100 transition-colors ${props.className ? props.className : ''}`} tabIndex={0}>
+  <li key={props.key} className={`cursor-pointer flex items-center gap-2.5 mx-1.5 my-1.5 px-1.5 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors ${props.className ? props.className : ''}`} tabIndex={0}>
     {props.icon && props.icon}
     {props.title}
   </li>
@@ -182,7 +182,7 @@ const DropdownItem = (props: DropdownItemProps) => (
  */
 const Separator = () => {
   return (
-    <span className="h-4 w-[1.5px] bg-gray-200 block -skew-13" />
+    <span className="h-4 w-[1.5px] bg-gray-200 dark:bg-zinc-700 block -skew-13" />
   );
 }
 
@@ -196,15 +196,15 @@ type UserTeamProps = {
 
 const UserTeam = (props: UserTeamProps) => {
   return (
-    <li key={props.team.id} className="cursor-pointer flex items-center gap-2.5 mx-1.5 my-1.5 px-1.5 py-1.5 rounded-md hover:bg-gray-100 transition-colors" tabIndex={0}>
+    <li key={props.team.id} className="cursor-pointer flex items-center gap-2.5 mx-1.5 my-1.5 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors" tabIndex={0}>
       {!props.create ?
-        props.team.icon && <img src={props.team.icon} alt={props.team.title} className="w-8 h-8 rounded-full border border-gray-300" />
-        : <UsersRound className="w-8 h-8 p-1 bg-gray-200 rounded-full" strokeWidth={1.5} />
+        props.team.icon && <img src={props.team.icon} alt={props.team.title} className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700" />
+        : <UsersRound className="w-8 h-8 p-1 bg-gray-200 dark:bg-zinc-900 rounded-full" strokeWidth={1.5} />
       }
 
       <p className="flex flex-col gap-1.5">
         <span className="text-sm font-semibold leading-2">{props.team.title}</span>
-        {props.team.type && <span className="text-xs text-gray-500">{props.team.type}</span>}
+        {props.team.type && <span className="text-xs text-gray-500 dark:text-gray-400">{props.team.type}</span>}
       </p>
     </li>
   );
@@ -257,16 +257,16 @@ function App() {
       {/* Application Header */}
       <header className="grid grid-cols-12 px-2 py-1.5">
         {/* Application Header — Left Side */}
-        <div className="col-span-4 flex items-center gap-1.5">
+        <div className="col-span-4 flex items-center gap-1">
           <Button as="link" href="https://bolt.new" className="shrink-0 h-9">
-            <img src="/bolt-logo-wordmark.jpg" alt="Bolt.new" className="h-6" />
+            <img src="/bolt-logo-wordmark.png" alt="Bolt.new" className="h-6 dark:invert-100" />
           </Button>
 
           <Separator />
 
           <Button className="shrink-0 h-9" openChildren={<UserTeams data={teams} />}>
             <img src="/me.jpg" className="w-6 h-6 rounded-full" />
-            <ChevronsUpDown size={16} strokeWidth={1} className="stroke-gray-600" />
+            <ChevronsUpDown size={16} strokeWidth={1} className="stroke-gray-600 dark:stroke-zinc-400" />
           </Button>
 
           <Separator />
@@ -279,37 +279,48 @@ function App() {
 
         {/* Application Header — Right Side */}
         <div className="col-span-8 flex items-center gap-3">
-          <div className="flex items-center space-between gap-2 border border-gray-200 rounded-lg w-auto px-1 py-1.5 h-8">
-            <button className="px-1.5 py-1 rounded-lg bg-blue-100">
-              <Eye size={16} className="stroke-blue-500 hover:stroke-gray-800 transition-colors" />
+          <div className="flex items-center space-between gap-0.5 border border-gray-200 dark:border-gray-800 rounded-lg w-auto px-0.5 py-1.5 h-8">
+            <button className="group/button cursor-pointer p-1.5 bg-blue-100 dark:bg-zinc-700 hover:bg-gray-800 dark:hover:bg-zinc-700 rounded-md transition-colors">
+              <Eye size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-100 group-hover:stroke-gray-900 dark:group-hover:stroke-zinc-800 transition-colors" />
             </button>
 
-            <button className="px-1.5 py-1">
-              <Code size={16} className="stroke-gray-400 hover:stroke-gray-800 transition-colors" />
+            <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+              <Code size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
             </button>
 
-            <button className="px-1.5 py-1">
-              <Database size={16} className="stroke-gray-400 hover:stroke-gray-800 transition-colors" />
+            <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+              <Database size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
             </button>
           </div>
 
-          <button>
-            <Settings size={16} strokeWidth={1.5} className="stroke-gray-400 fill-gray-200 hover:fill-gray-300 hover:stroke-gray-800 transition-colors" />
+          <button className="group/button px-1 py-1 cursor-pointer">
+            <Settings size={16} strokeWidth={1.5} className="stroke-gray-400 fill-gray-200 dark:fill-transparent hover:fill-gray-300 dark:hover:fill-gray-900 hover:stroke-gray-800 dark:hover:stroke-gray-300 transition-colors" />
           </button>
 
-          <div className="flex flex-1 items-center rounded-full px-3 border border-gray-300 bg-gray-50 h-8">
-            <input type="text" value="/" className="flex-1 text-sm text-gray-800 mx-1 px-1" />
+          <div className="flex flex-1 items-center rounded-full px-3 border border-gray-300 dark:border-neutral-900 bg-gray-50 dark:bg-zinc-800 h-8">
+            <input type="text" value="/" className=" flex-1 text-sm text-gray-800 mx-1 px-1" />
 
-            <div className="justify-end flex items-center gap-3">
-              <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 hover:stroke-gray-900 transition-colors" />
-              <ExternalLink size={14} strokeWidth={1.5} className="stroke-gray-600 hover:stroke-gray-900 transition-colors" />
-              <MonitorSmartphone size={14} strokeWidth={1.5} className="stroke-gray-600 hover:stroke-gray-900 transition-colors" />
-              <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 hover:stroke-gray-900 transition-colors" />
+            <div className="justify-end flex items-center">
+              <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+              </button>
+
+              <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                <ExternalLink size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+              </button>
+
+              <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                <MonitorSmartphone size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+              </button>
+
+              <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+              </button>
             </div>
           </div>
 
           <Button>
-            <img src="/github.svg" className="h-5 w-5" />
+            <img src="/github.svg" className="h-5 w-5 dark:invert-100" />
           </Button>
 
           <Button>
@@ -340,7 +351,7 @@ function App() {
         </div>
 
         {/* Application Output */}
-        <div className="col-span-8 py-3 rounded-lg border border-gray-100">
+        <div className="col-span-8 py-3 rounded-lg border border-gray-100 dark:border-zinc-700 mr-3 mb-3">
           Output
         </div>
       </main>
