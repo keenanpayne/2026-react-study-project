@@ -1,4 +1,4 @@
-import { Eye, Code, Database, ChevronsUpDown, UsersRound, History, Folders, PencilLine, Copy, Download, Trash } from 'lucide-react';
+import { Eye, Code, Database, ChevronsUpDown, UsersRound, History, Folders, PencilLine, Copy, Download, Trash, Lock, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan } from 'lucide-react';
 import './App.css'
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
@@ -48,6 +48,8 @@ const projects: Project[] = [
   }
 ]
 
+const currentProject = projects[0];
+
 // Teams
 type Team = {
   id: number;
@@ -92,7 +94,7 @@ const Button = (props: ButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const linkRef = useRef<HTMLAnchorElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const styles = `cursor-pointer relative flex items-center gap-3 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors ${props.className} ${isOpen ? 'bg-gray-100' : 'bg-transparent'}`;
+  const styles = `cursor-pointer relative flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors ${props.className} ${isOpen ? 'bg-gray-100' : 'bg-transparent'}`;
 
   // Close dropdown when clicking away
   useEffect(() => {
@@ -180,7 +182,7 @@ const DropdownItem = (props: DropdownItemProps) => (
  */
 const Separator = () => {
   return (
-    <span className="h-4 w-px bg-gray-300 block -skew-11" />
+    <span className="h-4 w-[1.5px] bg-gray-200 block -skew-13" />
   );
 }
 
@@ -253,40 +255,74 @@ function App() {
   return (
     <>
       {/* Application Header */}
-      <header className="grid grid-cols-12 px-3 py-1.5">
+      <header className="grid grid-cols-12 px-2 py-1.5">
+        {/* Application Header — Left Side */}
         <div className="col-span-4 flex items-center gap-1.5">
-          <Button as="link" href="https://bolt.new">
-            <img src="/bolt-logo-wordmark.jpg" alt="Bolt.new" className="h-5" />
+          <Button as="link" href="https://bolt.new" className="shrink-0 h-9">
+            <img src="/bolt-logo-wordmark.jpg" alt="Bolt.new" className="h-6" />
           </Button>
 
           <Separator />
 
-          <Button openChildren={<UserTeams data={teams} />}>
+          <Button className="shrink-0 h-9" openChildren={<UserTeams data={teams} />}>
             <img src="/me.jpg" className="w-6 h-6 rounded-full" />
-            <ChevronsUpDown size={16} strokeWidth={1} />
+            <ChevronsUpDown size={16} strokeWidth={1} className="stroke-gray-600" />
           </Button>
 
           <Separator />
 
-          <Button openChildren={<UserProjectsDropdown />}>
-            Project Name
+          <Button className="h-9" openChildren={<UserProjectsDropdown />}>
+            <span className="text-sm font-medium">{currentProject.title}</span>
+            {currentProject.private && <Lock strokeWidth={1.5} size={14} />}
           </Button>
         </div>
 
-        <div className="col-span-8">
-          <div className="flex items-center space-between gap-1.5">
-            <button>
-              <Eye size="18" />
+        {/* Application Header — Right Side */}
+        <div className="col-span-8 flex items-center gap-3">
+          <div className="flex items-center space-between gap-2 border border-gray-200 rounded-lg w-auto px-1 py-1.5 h-8">
+            <button className="px-1.5 py-1 rounded-lg bg-blue-100">
+              <Eye size={16} className="stroke-blue-500 hover:stroke-gray-800 transition-colors" />
             </button>
 
-            <button>
-              <Code size="18" />
+            <button className="px-1.5 py-1">
+              <Code size={16} className="stroke-gray-400 hover:stroke-gray-800 transition-colors" />
             </button>
 
-            <button>
-              <Database size="18" />
+            <button className="px-1.5 py-1">
+              <Database size={16} className="stroke-gray-400 hover:stroke-gray-800 transition-colors" />
             </button>
           </div>
+
+          <button>
+            <Settings size={16} strokeWidth={1.5} className="stroke-gray-400 fill-gray-200 hover:fill-gray-300 hover:stroke-gray-800 transition-colors" />
+          </button>
+
+          <div className="flex flex-1 items-center rounded-full px-3 border border-gray-300 bg-gray-50 h-8">
+            <input type="text" value="/" className="flex-1 text-sm text-gray-800 mx-1 px-1" />
+
+            <div className="justify-end flex items-center gap-3">
+              <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 hover:stroke-gray-900 transition-colors" />
+              <ExternalLink size={14} strokeWidth={1.5} className="stroke-gray-600 hover:stroke-gray-900 transition-colors" />
+              <MonitorSmartphone size={14} strokeWidth={1.5} className="stroke-gray-600 hover:stroke-gray-900 transition-colors" />
+              <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 hover:stroke-gray-900 transition-colors" />
+            </div>
+          </div>
+
+          <Button>
+            <img src="/github.svg" className="h-5 w-5" />
+          </Button>
+
+          <Button>
+            Share
+          </Button>
+
+          <Button>
+            Publish
+          </Button>
+
+          <Button>
+            <img src="/me.jpg" className="w-6 h-6 rounded-full" />
+          </Button>
         </div>
       </header>
 
