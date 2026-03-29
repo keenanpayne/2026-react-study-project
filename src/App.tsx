@@ -1,6 +1,8 @@
-import { Eye, Code, Database, ChevronsUpDown, UsersRound, History, Folders, PencilLine, Copy, Download, Trash, Lock, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan, Ellipsis, CircleEllipsis, SquareTerminal, ChevronRight, ChevronDown, Plus, MousePointerClick, Lightbulb, ArrowUp, TriangleAlert } from 'lucide-react';
+import { Eye, Code, Database, ChevronsUpDown, UsersRound, History, Folders, PencilLine, Copy, Download, Trash, Lock, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan, Ellipsis, CircleEllipsis, SquareTerminal, ChevronRight, ChevronDown, Plus, MousePointerClick, Lightbulb, ArrowUp, TriangleAlert, X } from 'lucide-react';
 import './App.css'
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Dialog as BaseDialog } from '@base-ui/react/dialog';
+
 
 /**
  * Mock Data
@@ -89,6 +91,7 @@ type ButtonProps = {
   size?: "flat" | "sm" | "md" | "lg";
   children: string | ReactNode;
   openChildren?: string | ReactNode;
+  onClick?: () => void;
 }
 
 const Button = (props: ButtonProps) => {
@@ -139,13 +142,13 @@ const Button = (props: ButtonProps) => {
 
   if (props.as === "link") {
     return (
-      <a ref={linkRef} className={styles} href={props.href}>
+      <a ref={linkRef} className={styles} href={props.href} onClick={() => { props.onClick?.(); }}>
         {props.children}
       </a>
     );
   } else {
     return (
-      <button ref={buttonRef} className={styles} onClick={() => setIsOpen(!isOpen)}>
+      <button ref={buttonRef} className={styles} onClick={() => { setIsOpen(!isOpen); props.onClick?.(); }}>
         {props.children}
 
         {isOpen && props.openChildren}
@@ -281,16 +284,310 @@ const BoltChatDropdown = () => (
 );
 
 /**
+ * Dialog
+ */
+
+type DialogProps = {
+  title: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  width: "sm" | "md" | "lg" | "xl" | "2xl";
+  children?: string | ReactNode;
+}
+
+const Dialog = (props: DialogProps) => {
+  const widthClass = 
+    props.width === 'sm' ? 'min-w-sm' : 
+    props.width === 'md' ? 'min-w-md' : 
+    props.width === 'lg' ? 'min-w-lg' : 
+    props.width === 'xl' ? 'min-w-xl' : 
+    props.width === '2xl' ? 'min-w-2xl' : '';
+
+  return (
+    <BaseDialog.Root open={props.open} onOpenChange={props.onOpenChange}>
+      <BaseDialog.Portal>
+        <BaseDialog.Backdrop className="fixed inset-0 min-h-dvh bg-black/35 transition-all duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 dark:opacity-70 supports-[-webkit-touch-callout:none]:absolute" />
+
+        <BaseDialog.Popup className={`flex flex-col fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-gray-50 transition-all duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0 max-h-[80dvh] overflow-hidden ${widthClass}`}>
+          <BaseDialog.Title className="mb-1 text-xl font-semibold flex items-center justify-between px-6 py-4 border-b border-gray-300 dark:border-zinc-700">
+            {props.title}
+            <BaseDialog.Close className="cursor-pointer">
+              <span className="sr-only">Close dialog</span>
+              <X size={20} strokeWidth={1} />
+            </BaseDialog.Close>
+          </BaseDialog.Title>
+
+          <div className="flex-1 flex flex-col gap-3 px-6 py-4 overflow-y-auto">
+            {props.children}
+          </div>
+        </BaseDialog.Popup>
+      </BaseDialog.Portal>
+    </BaseDialog.Root>
+  );
+}
+
+/**
+ * Bolt Chat Action
+ */
+type ChatActionProps = {
+  key: number;
+  title: string | ReactNode;
+  icon: ReactNode;
+  actionOnClick: () => void;
+  actionsExpanded: boolean;
+}
+
+const ChatAction = (props: ChatActionProps) => (
+  <li key={props.key}>
+    <Button size="flat" className="group/button cursor-pointer flex items-center justify-between gap-2 w-full" onClick={props.actionOnClick}>
+      <span className="flex-1 flex items-center gap-2 text-gray-700 group-hover/button:text-gray-900 transition-colors">
+        {props.icon}
+        {props.title}
+      </span>
+
+      <span className={`flex items-center gap-1 text-blue-400 opacity-0 transition-opacity text-xs ${props.actionsExpanded ? '' : 'group-hover/button:opacity-100'}`}>
+        Open
+        <ChevronRight size={14} strokeWidth={1.5} />
+      </span>
+    </Button>
+  </li>
+);
+
+/**
+ * Code Text
+ */
+
+type ChatCodeStringProps = {
+  text: string;
+}
+
+const ChatCodeString = (props: ChatCodeStringProps) => (
+  <code className="bg-gray-100 border border-gray-300 rounded-sm px-1 py-0.75 text-xs font-mono">{props.text}</code>
+);
+
+/**
+ * Bolt Chat Response
+ */
+type ChatResponseProps = {
+  actionsExpanded: boolean;
+  actionOnClick: () => void;
+}
+
+const ChatResponse = (props: ChatResponseProps) => (
+  <>
+    <p>I'll analyze the current codebase and create a comprehensive plan for building a social media scheduling application. Let me start by exploring the project structure.</p>
+
+    <details className="group/details space-y-5 py-3" open={props.actionsExpanded}>
+      <summary className="cursor-pointer flex items-center gap-2 mb-0">
+        <span className="flex items-center flex-1 gap-2">
+          <CircleEllipsis size={16} strokeWidth={1.5} /> 9 actions taken
+        </span>
+
+        <ChevronDown size={20} strokeWidth={1.5} className="group-open/details:rotate-180 transition-transform duration-300" />
+      </summary>
+      
+      <ul className="space-y-5 pt-5">
+        <li>
+          <ChatAction key={1} title="Get current working directory" icon={<SquareTerminal size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        </li>
+
+        <li>
+          <ChatAction key={1} title="Listed files in project root" icon={<SquareTerminal size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        </li>
+
+        <li>
+          <ChatAction key={1} title="Read" icon={<Eye size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        </li>
+
+        <li>
+          <ChatAction key={1} title={<>Read <ChatCodeString text="package.json" /></>} icon={<Eye size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        </li>
+
+        <li>
+          <ChatAction key={1} title="Listed source directory contents" icon={<SquareTerminal size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        </li>
+
+        <li>
+          <ChatAction key={1} title={<>Read <ChatCodeString text="src/App.tsx" /></>} icon={<Eye size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        </li>
+
+        <li>
+          <ChatAction key={1} title={<>Read <ChatCodeString text="src/main.tsx" /></>} icon={<Eye size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        </li>
+
+        <li>
+          <ChatAction key={1} title={<>Read <ChatCodeString text="src/index.css" /></>} icon={<Eye size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
+        </li>
+      </ul>
+    </details>
+
+    <p>Perfect! I now have a clear understanding of the project structure. Let me create a comprehensive plan for building a social media scheduling application.</p>
+
+    <p>Before I present the plan, I have a few clarifying questions:</p>
+
+    <ol className="list-decimal list-outside pl-6 space-y-3">
+      <li><strong>Authentication & User Management:</strong> Should users be able to sign up/login to manage their own accounts, or is this a single-user application?</li>
+      <li><strong>OAuth Integration:</strong> Do you want users to connect their actual social media accounts (requiring OAuth flows for Twitter/X, LinkedIn, etc.), or should this be a "compose and copy" tool where users manually post the content?</li>
+      <li><strong>Post Features:</strong> What level of post complexity should be supported - text only, or also images, videos, polls, threads, and other platform-specific features?</li>
+    </ol>
+
+    <hr className="border-2 border-gray-200 my-3" />
+
+    <h2 className="text-lg font-semibold">Plan: Social Media Scheduling Application</h2>
+    
+    <ol className="space-y-5">
+      <li>
+        <h3 className="text-md font-semibold">1. Database Schema and Bolt Database Setup</h3>
+
+        <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
+          <li>Create users table for authentication and user profiles</li>
+          <li>Create social_accounts table to store connected platform credentials (encrypted tokens)</li>
+          <li>Create posts table with fields for content, scheduled time, status, platform targets, and metadata</li>
+          <li>Create media table for storing uploaded images/videos with Bolt Database storage references</li>
+          <li>Set up Row Level Security policies to ensure users only access their own data</li>
+          <li>Create database functions for post scheduling and status management</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3 className="text-md font-semibold">2. Authentication and User Management</h3>
+
+        <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
+          <li>Build login and signup pages with email/password authentication</li>
+          <li>Implement Bolt Database Auth integration for secure session management</li>
+          <li>Create protected route wrapper to guard authenticated pages</li>
+          <li>Build user profile page for managing account settings</li>
+          <li>Add password reset and email verification flows</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3 className="text-md font-semibold">3. Social Platform Connection Management</h3>
+
+        <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
+          <li>Create a connections dashboard page showing all five platforms with connection status</li>
+          <li>Build individual connection flows for each platform (Twitter, Bluesky, Mastodon, Threads, LinkedIn)</li>
+          <li>Design platform cards with connect/disconnect buttons and account information display</li>
+          <li>Implement secure token storage for OAuth credentials in Bolt Database</li>
+          <li>Add reconnection handling for expired tokens</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3 className="text-md font-semibold">4. Content Creation Interface</h3>
+
+        <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
+          <li>Build a unified post composer with rich text editor</li>
+          <li>Create character counter that adapts to each platform's limits (280 for Twitter, etc.)</li>
+          <li>Add platform selector with multi-select checkboxes for cross-posting</li>
+          <li>Implement media upload functionality with preview (images and videos)</li>
+          <li>Add emoji picker integration</li>
+          <li>Create URL shortener integration display</li>
+          <li>Build post preview component showing how content appears on each selected platform</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3 className="text-md font-semibold">5. Scheduling System</h3>
+
+        <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
+          <li>Create date/time picker component for scheduling posts</li>
+          <li>Build "Post Now" and "Schedule for Later" action buttons</li>
+          <li>Implement timezone selection and display</li>
+          <li>Create recurring post functionality (daily, weekly, monthly patterns)</li>
+          <li>Add draft saving capability with auto-save</li>
+          <li>Build schedule conflict detection and warnings</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3 className="text-md font-semibold">6. Content Calendar and Dashboard</h3>
+
+        <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
+          <li>Design main dashboard with overview statistics (posts scheduled, published, failed)</li>
+          <li>Build calendar view showing all scheduled posts across platforms</li>
+          <li>Create list view with filtering by platform, status, and date range</li>
+          <li>Implement drag-and-drop rescheduling in calendar view</li>
+          <li>Add quick actions for editing, duplicating, and deleting posts</li>
+          <li>Build search functionality for finding past and scheduled content</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3 className="text-md font-semibold">7. Post Management and Queue</h3>
+
+        <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
+          <li>Create post queue page showing upcoming scheduled posts in chronological order</li>
+          <li>Build individual post detail pages with edit capabilities</li>
+          <li>Implement post status tracking (draft, scheduled, publishing, published, failed)</li>
+          <li>Add bulk actions for managing multiple posts (delete, reschedule, duplicate)</li>
+          <li>Create post history view for published content with engagement metrics placeholders</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3 className="text-md font-semibold">8. Platform-Specific Features</h3>
+
+        <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
+          <li>Add thread composer for Twitter/X and Bluesky with multiple connected posts</li>
+          <li>Implement hashtag suggestions and trending topics display</li>
+          <li>Create platform-specific content warnings and visibility settings</li>
+          <li>Add alt text editor for accessibility compliance across platforms</li>
+          <li>Build LinkedIn article format support for longer content</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3 className="text-md font-semibold">9. Notifications and Error Handling</h3>
+
+        <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
+          <li>Create notification system for post publishing confirmations</li>
+          <li>Build error handling and retry logic for failed posts</li>
+          <li>Add user notifications for connection expiration warnings</li>
+          <li>Implement toast notifications for user actions (save, delete, publish)</li>
+          <li>Create activity log showing all post-related events</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3 className="text-md font-semibold">10. UI Polish and Responsive Design</h3>
+
+        <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
+          <li>Design beautiful navigation with sidebar and header</li>
+          <li>Create mobile-responsive layouts for all pages</li>
+          <li>Build loading states and skeleton screens</li>
+          <li>Add smooth transitions and animations</li>
+          <li>Implement dark mode toggle (optional enhancement)</li>
+          <li>Create empty states with helpful onboarding messages</li>
+        </ul>
+      </li>
+    </ol>
+
+    <hr className="border-2 border-gray-200 my-3" />
+
+    <h2 className="text-lg font-semibold">Summary</h2>
+
+    <p>This plan creates a comprehensive social media scheduling application that allows users to compose content once and publish it across five major platforms. The architecture leverages Bolt Database for authentication, database storage, and media hosting, ensuring scalability and security. The interface will be intuitive with a calendar-based scheduling system, real-time previews, and platform-specific optimizations. Users can manage multiple social accounts, schedule posts in advance, and track their content pipeline from a unified dashboard.</p>
+
+    <p>Please answer the three questions above so I can refine the plan to match your exact requirements. Once you're ready to proceed, click the "Implement this plan" button to switch to build mode.</p>
+  </>
+)
+
+/**
  * App
  */
 function App() {
+  const [isActionDialogOpen, setIsActionDialogOpen] = useState(false);
+
   return (
     <>
+      <Dialog title="Action Details" children={<ChatResponse actionsExpanded={true} actionOnClick={() => false} />} open={isActionDialogOpen} onOpenChange={setIsActionDialogOpen} width="xl" />
+
       {/* Application */}
       <main className="h-full md:grid md:grid-cols-12 lg:grid-cols-[450px_1fr]">
         {/* Sidebar */}
         <section className="relative md:col-span-6 lg:col-auto h-full overflow-scroll">
-          <header className="px-1.5 py-1.5 sticky top-0 left-0 bg-white dark:bg-zinc-900 z-10">
+          <header className="px-1.5 py-1.5 sticky top-0 left-0 bg-white dark:bg-zinc-900">
             {/* Sidebar Header */}
             <nav className="flex items-center gap-0.5 sm:gap-1">
               <Button size="md" as="link" href="https://bolt.new" className="shrink-0 h-10">
@@ -328,184 +625,7 @@ function App() {
               </Button>
             </nav>
 
-            <p>I'll analyze the current codebase and create a comprehensive plan for building a social media scheduling application. Let me start by exploring the project structure.</p>
-
-            <details className="group/details space-y-5 py-3">
-              <summary className="cursor-pointer flex items-center gap-2 mb-0">
-                <span className="flex items-center flex-1 gap-2">
-                  <CircleEllipsis size={16} strokeWidth={1.5} /> 9 actions taken
-                </span>
-
-                <ChevronDown size={20} strokeWidth={1.5} className="group-open/details:rotate-180 transition-transform duration-300" />
-              </summary>
-              
-              <ul className="space-y-5 pt-3">
-                <li>
-                  <Button size="flat" className="group/button cursor-pointer flex items-center justify-between gap-2 w-full">
-                    <span className="flex-1 flex items-center gap-2 text-gray-700 group-hover/button:text-gray-900 transition-colors">
-                      <SquareTerminal size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />
-                      Get current working directory
-                    </span>
-
-                    <span className="flex items-center gap-1 text-blue-400 opacity-0 group-hover/button:opacity-100 transition-opacity text-xs">
-                      Open
-                      <ChevronRight size={14} strokeWidth={1.5} />
-                    </span>
-                  </Button>
-                </li>
-              </ul>
-            </details>
-
-            <p>Perfect! I now have a clear understanding of the project structure. Let me create a comprehensive plan for building a social media scheduling application.</p>
-
-            <p>Before I present the plan, I have a few clarifying questions:</p>
-
-            <ol className="list-decimal list-outside pl-6 space-y-3">
-              <li><strong>Authentication & User Management:</strong> Should users be able to sign up/login to manage their own accounts, or is this a single-user application?</li>
-              <li><strong>OAuth Integration:</strong> Do you want users to connect their actual social media accounts (requiring OAuth flows for Twitter/X, LinkedIn, etc.), or should this be a "compose and copy" tool where users manually post the content?</li>
-              <li><strong>Post Features:</strong> What level of post complexity should be supported - text only, or also images, videos, polls, threads, and other platform-specific features?</li>
-            </ol>
-
-            <hr className="border-2 border-gray-200 my-3" />
-
-            <h2 className="text-lg font-semibold">Plan: Social Media Scheduling Application</h2>
-            
-            <ol className="space-y-5">
-              <li>
-                <h3 className="text-md font-semibold">1. Database Schema and Bolt Database Setup</h3>
-
-                <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
-                  <li>Create users table for authentication and user profiles</li>
-                  <li>Create social_accounts table to store connected platform credentials (encrypted tokens)</li>
-                  <li>Create posts table with fields for content, scheduled time, status, platform targets, and metadata</li>
-                  <li>Create media table for storing uploaded images/videos with Bolt Database storage references</li>
-                  <li>Set up Row Level Security policies to ensure users only access their own data</li>
-                  <li>Create database functions for post scheduling and status management</li>
-                </ul>
-              </li>
-
-              <li>
-                <h3 className="text-md font-semibold">2. Authentication and User Management</h3>
-
-                <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
-                  <li>Build login and signup pages with email/password authentication</li>
-                  <li>Implement Bolt Database Auth integration for secure session management</li>
-                  <li>Create protected route wrapper to guard authenticated pages</li>
-                  <li>Build user profile page for managing account settings</li>
-                  <li>Add password reset and email verification flows</li>
-                </ul>
-              </li>
-
-              <li>
-                <h3 className="text-md font-semibold">3. Social Platform Connection Management</h3>
-
-                <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
-                  <li>Create a connections dashboard page showing all five platforms with connection status</li>
-                  <li>Build individual connection flows for each platform (Twitter, Bluesky, Mastodon, Threads, LinkedIn)</li>
-                  <li>Design platform cards with connect/disconnect buttons and account information display</li>
-                  <li>Implement secure token storage for OAuth credentials in Bolt Database</li>
-                  <li>Add reconnection handling for expired tokens</li>
-                </ul>
-              </li>
-
-              <li>
-                <h3 className="text-md font-semibold">4. Content Creation Interface</h3>
-
-                <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
-                  <li>Build a unified post composer with rich text editor</li>
-                  <li>Create character counter that adapts to each platform's limits (280 for Twitter, etc.)</li>
-                  <li>Add platform selector with multi-select checkboxes for cross-posting</li>
-                  <li>Implement media upload functionality with preview (images and videos)</li>
-                  <li>Add emoji picker integration</li>
-                  <li>Create URL shortener integration display</li>
-                  <li>Build post preview component showing how content appears on each selected platform</li>
-                </ul>
-              </li>
-
-              
-              <li>
-                <h3 className="text-md font-semibold">5. Scheduling System</h3>
-
-                <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
-                  <li>Create date/time picker component for scheduling posts</li>
-                  <li>Build "Post Now" and "Schedule for Later" action buttons</li>
-                  <li>Implement timezone selection and display</li>
-                  <li>Create recurring post functionality (daily, weekly, monthly patterns)</li>
-                  <li>Add draft saving capability with auto-save</li>
-                  <li>Build schedule conflict detection and warnings</li>
-                </ul>
-              </li>
-
-              <li>
-                <h3 className="text-md font-semibold">6. Content Calendar and Dashboard</h3>
-
-                <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
-                  <li>Design main dashboard with overview statistics (posts scheduled, published, failed)</li>
-                  <li>Build calendar view showing all scheduled posts across platforms</li>
-                  <li>Create list view with filtering by platform, status, and date range</li>
-                  <li>Implement drag-and-drop rescheduling in calendar view</li>
-                  <li>Add quick actions for editing, duplicating, and deleting posts</li>
-                  <li>Build search functionality for finding past and scheduled content</li>
-                </ul>
-              </li>
-
-              <li>
-                <h3 className="text-md font-semibold">7. Post Management and Queue</h3>
-
-                <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
-                  <li>Create post queue page showing upcoming scheduled posts in chronological order</li>
-                  <li>Build individual post detail pages with edit capabilities</li>
-                  <li>Implement post status tracking (draft, scheduled, publishing, published, failed)</li>
-                  <li>Add bulk actions for managing multiple posts (delete, reschedule, duplicate)</li>
-                  <li>Create post history view for published content with engagement metrics placeholders</li>
-                </ul>
-              </li>
-
-              <li>
-                <h3 className="text-md font-semibold">8. Platform-Specific Features</h3>
-
-                <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
-                  <li>Add thread composer for Twitter/X and Bluesky with multiple connected posts</li>
-                  <li>Implement hashtag suggestions and trending topics display</li>
-                  <li>Create platform-specific content warnings and visibility settings</li>
-                  <li>Add alt text editor for accessibility compliance across platforms</li>
-                  <li>Build LinkedIn article format support for longer content</li>
-                </ul>
-              </li>
-
-              <li>
-                <h3 className="text-md font-semibold">9. Notifications and Error Handling</h3>
-
-                <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
-                  <li>Create notification system for post publishing confirmations</li>
-                  <li>Build error handling and retry logic for failed posts</li>
-                  <li>Add user notifications for connection expiration warnings</li>
-                  <li>Implement toast notifications for user actions (save, delete, publish)</li>
-                  <li>Create activity log showing all post-related events</li>
-                </ul>
-              </li>
-
-              <li>
-                <h3 className="text-md font-semibold">10. UI Polish and Responsive Design</h3>
-
-                <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
-                  <li>Design beautiful navigation with sidebar and header</li>
-                  <li>Create mobile-responsive layouts for all pages</li>
-                  <li>Build loading states and skeleton screens</li>
-                  <li>Add smooth transitions and animations</li>
-                  <li>Implement dark mode toggle (optional enhancement)</li>
-                  <li>Create empty states with helpful onboarding messages</li>
-                </ul>
-              </li>
-            </ol>
-
-            <hr className="border-2 border-gray-200 my-3" />
-
-            <h2 className="text-lg font-semibold">Summary</h2>
-
-            <p>This plan creates a comprehensive social media scheduling application that allows users to compose content once and publish it across five major platforms. The architecture leverages Bolt Database for authentication, database storage, and media hosting, ensuring scalability and security. The interface will be intuitive with a calendar-based scheduling system, real-time previews, and platform-specific optimizations. Users can manage multiple social accounts, schedule posts in advance, and track their content pipeline from a unified dashboard.</p>
-
-            <p>Please answer the three questions above so I can refine the plan to match your exact requirements. Once you're ready to proceed, click the "Implement this plan" button to switch to build mode.</p>
+            <ChatResponse actionsExpanded={false} actionOnClick={() => setIsActionDialogOpen(!isActionDialogOpen)} />
           </article>
 
           <form className="sticky bottom-0 bg-white px-5 pb-5">
