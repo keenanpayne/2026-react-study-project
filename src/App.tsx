@@ -1,4 +1,4 @@
-import { Eye, Code, Database, ChevronsUpDown, UsersRound, History, Folders, PencilLine, Copy, Download, Trash, Lock, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan, type LucideIcon, Ellipsis, CircleEllipsis, SquareTerminal, ChevronRight, ChevronDown, CirclePlus, Plus, MousePointerClick, Lightbulb, ArrowUp } from 'lucide-react';
+import { Eye, Code, Database, ChevronsUpDown, UsersRound, History, Folders, PencilLine, Copy, Download, Trash, Lock, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan, Ellipsis, CircleEllipsis, SquareTerminal, ChevronRight, ChevronDown, Plus, MousePointerClick, Lightbulb, ArrowUp, TriangleAlert } from 'lucide-react';
 import './App.css'
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
@@ -86,6 +86,7 @@ type ButtonProps = {
   as?: 'link' | 'button';
   href?: string;
   className?: string;
+  size?: "flat" | "sm" | "md" | "lg";
   children: string | ReactNode;
   openChildren?: string | ReactNode;
 }
@@ -94,7 +95,13 @@ const Button = (props: ButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const linkRef = useRef<HTMLAnchorElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const styles = `cursor-pointer text-left relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors ${props.className} ${isOpen ? 'bg-gray-100 dark:bg-zinc-800' : 'bg-transparent'}`;
+  const sizeClass = 
+    props.size === 'flat' ? '' : 
+    props.size === 'sm' ? 'text-xs p-1 gap-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-800' : 
+    props.size === 'md' ? 'text-sm px-2.5 py-1.5 py-1 gap-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800' : 
+    props.size === 'lg' ? 'text-base px-3 py-2 gap-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-zinc-800' : '';
+  const isOpenClass = isOpen ? 'bg-gray-100 dark:bg-zinc-800' : 'bg-transparent';
+  const styles = `cursor-pointer text-left relative flex items-center transition-colors ${sizeClass} ${props.className ? props.className : ''} ${isOpenClass}`;
 
   // Close dropdown when clicking away
   useEffect(() => {
@@ -151,31 +158,45 @@ const Button = (props: ButtonProps) => {
  * Dropdown
  */
 type DropdownProps = {
+  align: 'left' | 'right';
   children: string | ReactNode;
+  className?: string;
 }
 
-const Dropdown = (props: DropdownProps) => (
-  <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg absolute top-10 left-0 w-55 text-left shadow-xs">
-    {props.children}
-  </div>
-);
+const Dropdown = (props: DropdownProps) => {
+  const align = props.align === 'left' ? 'left-0' : 'right-0';
+
+  return (
+    <div className={`bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg absolute top-10 ${align} text-left shadow-xs ${props.className ? props.className : ''}`}>
+      {props.children}
+    </div>
+  )
+}
 
 /**
  * Dropdown Item
  */
 type DropdownItemProps = {
   title: string;
+  size: "sm" | "md" | "lg";
   icon?: ReactNode;
   key?: number;
   className?: string;
 }
 
-const DropdownItem = (props: DropdownItemProps) => (
-  <li key={props.key} className={`cursor-pointer flex items-center gap-2.5 mx-1.5 my-1.5 px-1.5 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors ${props.className ? props.className : ''}`} tabIndex={0}>
-    {props.icon && props.icon}
-    {props.title}
-  </li>
-);
+const DropdownItem = (props: DropdownItemProps) => {
+  const size = 
+    props.size === 'sm' ? 'text-xs p-1 m-1' : 
+    props.size === 'md' ? 'text-sm px-1.5 py-1 mx-1.5 my-1' : 
+    props.size === 'lg' ? 'text-base px-2 py-1.5 mx-2 my-1.5' : '';
+
+  return (
+    <li key={props.key} className={`cursor-pointer flex items-center gap-2.5 rounded-md hover:bg-gray-300/30 dark:hover:bg-zinc-700 transition-colors ${size} ${props.className ? props.className : ''}`} tabIndex={0}>
+      {props.icon && props.icon}
+      {props.title}
+    </li>
+  )
+}
 
 /**
  * Separator
@@ -216,7 +237,7 @@ type UserTeamsProps = {
 
 const UserTeams = (props: UserTeamsProps) => {
   return (
-    <Dropdown>
+    <Dropdown align="left" className="w-55">
       <ul>
         {props.data.map((item: Team) => (
           <UserTeam key={item.id} team={item} />
@@ -231,19 +252,29 @@ const UserTeams = (props: UserTeamsProps) => {
 };
 
 /**
- * User Projects
+ * User Projects Dropdown
  */
-
 const UserProjectsDropdown = () => (
-  <Dropdown>
+  <Dropdown align="left" className="w-55">
+    <ul> 
+      <DropdownItem size="md" className="text-sm" title="Open recent project" icon={<Folders size={16} strokeWidth={1} />} />
+      <DropdownItem size="md" className="text-sm" title="Version history" icon={<History size={16} strokeWidth={1} />} />
+      <DropdownItem size="md" className="text-sm" title="Rename..." icon={<PencilLine size={16} strokeWidth={1} />} />
+      <DropdownItem size="md" className="text-sm" title="Duplicate" icon={<Copy size={16} strokeWidth={1} />} />
+      <DropdownItem size="md" className="text-sm" title="Export" icon={<Download size={16} strokeWidth={1} />} />
+      <DropdownItem size="md" className="text-sm" title="Visibility" icon={<Eye size={16} strokeWidth={1} />} />
+      <DropdownItem size="md" className="text-sm" title="Delete" icon={<Trash size={16} strokeWidth={1} />} />
+    </ul>
+  </Dropdown>
+);
+
+/**
+ * Bolt Chat Dropdown
+ */
+const BoltChatDropdown = () => (
+  <Dropdown align="right" className="w-35">
     <ul>
-      <DropdownItem className="text-sm" title="Open recent project" icon={<Folders size={16} strokeWidth={1} />} />
-      <DropdownItem className="text-sm" title="Version history" icon={<History size={16} strokeWidth={1} />} />
-      <DropdownItem className="text-sm" title="Rename..." icon={<PencilLine size={16} strokeWidth={1} />} />
-      <DropdownItem className="text-sm" title="Duplicate" icon={<Copy size={16} strokeWidth={1} />} />
-      <DropdownItem className="text-sm" title="Export" icon={<Download size={16} strokeWidth={1} />} />
-      <DropdownItem className="text-sm" title="Visibility" icon={<Eye size={16} strokeWidth={1} />} />
-      <DropdownItem className="text-sm" title="Delete" icon={<Trash size={16} strokeWidth={1} />} />
+      <DropdownItem size="sm" title="Report issue" icon={<TriangleAlert size={16} strokeWidth={1} />} />
     </ul>
   </Dropdown>
 );
@@ -261,20 +292,20 @@ function App() {
           <header className="px-1.5 py-1.5 sticky top-0 left-0 bg-white dark:bg-zinc-900 z-10">
             {/* Sidebar Header */}
             <nav className="flex items-center gap-0.5 sm:gap-1">
-              <Button as="link" href="https://bolt.new" className="shrink-0 h-10">
+              <Button size="md" as="link" href="https://bolt.new" className="shrink-0 h-10">
                 <img src="/bolt-logo-wordmark.png" alt="Bolt.new" className="h-6 dark:invert-100" />
               </Button>
 
               <Separator />
 
-              <Button className="shrink-0 h-9" openChildren={<UserTeams data={teams} />}>
+              <Button size="md" className="shrink-0 h-9" openChildren={<UserTeams data={teams} />}>
                 <img src="/me.jpg" className="w-6 h-6 rounded-full border border-gray-300 dark:border-zinc-700" />
                 <ChevronsUpDown size={16} strokeWidth={2} className="stroke-gray-400 dark:stroke-zinc-400" />
               </Button>
 
               <Separator />
 
-              <Button className="h-9" openChildren={<UserProjectsDropdown />}>
+              <Button size="md" className="h-9" openChildren={<UserProjectsDropdown />}>
                 <span className="text-xs md:text-sm font-medium">{currentProject.title}</span>
                 {currentProject.private && <Lock strokeWidth={1.5} size={14} />}
               </Button>
@@ -291,7 +322,7 @@ function App() {
             <nav className="flex justify-between items-center">
               <img src="/bolt-logo.png" alt="Bolt" className="h-3.5" />
 
-              <Button>
+              <Button size="sm" openChildren={<BoltChatDropdown />}>
                 <Ellipsis />
               </Button>
             </nav>
@@ -309,7 +340,7 @@ function App() {
               
               <ul className="space-y-5 pt-3">
                 <li>
-                  <button className="group/button cursor-pointer flex items-center justify-between gap-2 w-full">
+                  <Button size="flat" className="group/button cursor-pointer flex items-center justify-between gap-2 w-full">
                     <span className="flex-1 flex items-center gap-2 text-gray-700 group-hover/button:text-gray-900 transition-colors">
                       <SquareTerminal size={18} strokeWidth={1} className="stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors" />
                       Get current working directory
@@ -319,7 +350,7 @@ function App() {
                       Open
                       <ChevronRight size={14} strokeWidth={1.5} />
                     </span>
-                  </button>
+                  </Button>
                 </li>
               </ul>
             </details>
@@ -480,9 +511,9 @@ function App() {
             <aside className="mx-1.75 px-2 py-1 flex justify-between text-xs bg-white border-t border-l border-r border-gray-200 rounded-t-lg">
               <span>300k daily tokens remaining.</span>
 
-              <button className="cursor-pointer text-blue-500 hover:underline">
+              <Button size="flat" className="cursor-pointer text-blue-500 hover:underline">
                 Switch to Pro for 33x more usage
-              </button>
+              </Button>
             </aside>
 
             <div className="w-full px-3 pt-3 rounded-lg bg-gray-50 border border-gray-300">
@@ -490,33 +521,33 @@ function App() {
               <textarea id="command" placeholder="How can Bolt help you today? (or /command)" className="w-full px-1.5 py-2 h-20 text-sm resize-none" />
 
               <nav className="flex items-center justify-between gap-3 py-1.5">
-                <div className="flex items-center gap-1.5">
-                  <button className="group/button cursor-pointer shrink-0">
+                <div className="flex items-center gap-3">
+                  <Button size="flat" className="group/button cursor-pointer shrink-0">
                     <span className="sr-only">Upload</span>
-                    <Plus size={30} className="bg-gray-200 group-hover/button:bg-gray-300 rounded-full p-1.25 transition-colors" />
-                  </button>
+                    <Plus size={28} className="bg-gray-200 group-hover/button:bg-gray-300 rounded-full p-1.25 transition-colors" />
+                  </Button>
 
-                  <Button className="shrink-0">
+                  <Button size="sm" className="shrink-0">
                     <span className="text-gray-700 text-xs">Sonnet 4.5</span>
                     <ChevronsUpDown size={14} strokeWidth={1} className="stroke-gray-600" />
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-1.5">
-                  <Button className="shrink-0">
+                <div className="flex items-center gap-3">
+                  <Button size="sm" className="shrink-0">
                     <MousePointerClick size={18} strokeWidth={1} className="stroke-gray-600" />
                     <span className="text-gray-700 text-xs">Select</span>
                   </Button>
 
-                  <Button className="shrink-0">
+                  <Button size="sm" className="shrink-0">
                     <Lightbulb size={18} strokeWidth={1} className="stroke-gray-600" />
                     <span className="text-gray-700 text-xs">Plan</span>
                   </Button>
 
-                  <button className="group/button cursor-pointer shrink-0">
+                  <Button size="flat" className="group/button cursor-pointer shrink-0">
                     <span className="sr-only">Send Message</span>
-                    <ArrowUp size={30} className="bg-blue-300 group-hover/button:bg-blue-500 stroke-white rounded-full p-1.25 transition-colors" />
-                  </button>
+                    <ArrowUp size={28} className="bg-blue-300 group-hover/button:bg-blue-500 stroke-white rounded-full p-1.25 transition-colors" />
+                  </Button>
                 </div>
               </nav>
             </div>
@@ -524,66 +555,68 @@ function App() {
         </section>
 
         {/* Application Output */}
-        <div className="md:col-span-6 lg:col-auto h-full overflow-scroll">
+        <div className="md:col-span-6 lg:col-auto h-full overflow-scroll mr-3">
           <header className="py-1.5">
             {/* Application Header — Right Side */}
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-1.5">
               <div className="flex shrink-0 items-center space-between gap-0.5 border border-gray-200 dark:border-gray-800 rounded-lg w-auto px-0.5 py-1.5 h-8">
-                <button className="group/button cursor-pointer p-1.5 bg-blue-100 dark:bg-zinc-700 hover:bg-gray-800 dark:hover:bg-zinc-700 rounded-md transition-colors">
+                <Button size="sm" className="group/button cursor-pointer p-1.5 bg-blue-100">
                   <Eye size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-100 group-hover:stroke-gray-900 dark:group-hover:stroke-zinc-800 transition-colors" />
-                </button>
+                </Button>
 
-                <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                <Button size="sm" className="group/button cursor-pointer p-1.5">
                   <Code size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-                </button>
+                </Button>
 
-                <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                <Button size="sm" className="group/button cursor-pointer p-1.5">
                   <Database size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-                </button>
+                </Button>
               </div>
 
-              <button className="group/button px-1 py-1 cursor-pointer">
+              <Button size="sm" className="group/button px-1 py-1 cursor-pointer">
                 <Settings size={16} strokeWidth={1.5} className="stroke-gray-400 fill-gray-200 dark:fill-transparent hover:fill-gray-300 dark:hover:fill-gray-900 hover:stroke-gray-800 dark:hover:stroke-gray-300 transition-colors" />
-              </button>
+              </Button>
 
-              <div className="flex flex-1 items-center rounded-full px-3 border border-gray-300 dark:border-neutral-900 bg-gray-50 dark:bg-zinc-800 h-8">
+              <div className="flex flex-1 items-center rounded-full px-3 border border-gray-300 dark:border-neutral-900 bg-gray-50 dark:bg-zinc-800 h-8 max-w-2xl">
                 <label htmlFor="url" className="sr-only">Page URL</label>
                 <input id="url" type="text" value="/" className="flex-1 text-sm text-gray-800 dark:text-gray-300 mx-1 px-1" onChange={() => null} />
 
                 <div className="justify-end flex items-center">
-                  <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                  <Button size="sm" className="group/button cursor-pointer p-1.5">
                     <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-                  </button>
+                  </Button>
 
-                  <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                  <Button size="sm" className="group/button cursor-pointer p-1.5">
                     <ExternalLink size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-                  </button>
+                  </Button>
 
-                  <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                  <Button size="sm" className="group/button cursor-pointer p-1.5">
                     <MonitorSmartphone size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-                  </button>
+                  </Button>
 
-                  <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                  <Button size="sm" className="group/button cursor-pointer p-1.5">
                     <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-                  </button>
+                  </Button>
                 </div>
               </div>
 
-              <Button className="shrink-0">
-                <img src="/github.svg" className="h-5 w-5 dark:invert-100" />
-              </Button>
+              <div className="shrink-0 flex items-center gap-1.5 ml-auto">
+                <Button size="md" className="shrink-0">
+                  <img src="/github.svg" className="h-5 w-5 dark:invert-100" />
+                </Button>
 
-              <Button className="shrink-0">
-                Share
-              </Button>
+                <Button size="md" className="shrink-0">
+                  Share
+                </Button>
 
-              <Button className="shrink-0">
-                Publish
-              </Button>
+                <Button size="md" className="shrink-0">
+                  Publish
+                </Button>
 
-              <Button className="shrink-0">
-                <img src="/me.jpg" className="w-6 h-6 rounded-full" />
-              </Button>
+                <Button size="md" className="shrink-0">
+                  <img src="/me.jpg" className="w-6 h-6 rounded-full" />
+                </Button>
+              </div>
             </div>
           </header>
           
