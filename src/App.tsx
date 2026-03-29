@@ -94,7 +94,7 @@ const Button = (props: ButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const linkRef = useRef<HTMLAnchorElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const styles = `cursor-pointer relative flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors ${props.className} ${isOpen ? 'bg-gray-100 dark:bg-zinc-800' : 'bg-transparent'}`;
+  const styles = `cursor-pointer text-left relative flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors ${props.className} ${isOpen ? 'bg-gray-100 dark:bg-zinc-800' : 'bg-transparent'}`;
 
   // Close dropdown when clicking away
   useEffect(() => {
@@ -254,93 +254,33 @@ const UserProjectsDropdown = () => (
 function App() {
   return (
     <>
-      {/* Application Header */}
-      <header className="grid grid-cols-12 px-2 py-1.5">
-        {/* Application Header — Left Side */}
-        <div className="col-span-4 flex items-center gap-1">
-          <Button as="link" href="https://bolt.new" className="shrink-0 h-9">
-            <img src="/bolt-logo-wordmark.png" alt="Bolt.new" className="h-6 dark:invert-100" />
-          </Button>
+      {/* Application */}
+      <main className="h-full md:grid md:grid-cols-12 lg:grid-cols-[420px_1fr] gap-3">
+        {/* Sidebar */}
+        <div className="md:col-span-5 lg:col-auto h-[50%] md:h-full overflow-scroll">
+          <header className="px-2 py-1.5">
+            {/* Sidebar Header */}
+            <div className="flex items-center gap-1">
+              <Button as="link" href="https://bolt.new" className="shrink-0 h-9">
+                <img src="/bolt-logo-wordmark.png" alt="Bolt.new" className="h-6 dark:invert-100" />
+              </Button>
 
-          <Separator />
+              <Separator />
 
-          <Button className="shrink-0 h-9" openChildren={<UserTeams data={teams} />}>
-            <img src="/me.jpg" className="w-6 h-6 rounded-full" />
-            <ChevronsUpDown size={16} strokeWidth={1} className="stroke-gray-600 dark:stroke-zinc-400" />
-          </Button>
+              <Button className="shrink-0 h-9" openChildren={<UserTeams data={teams} />}>
+                <img src="/me.jpg" className="w-6 h-6 rounded-full" />
+                <ChevronsUpDown size={16} strokeWidth={1} className="stroke-gray-600 dark:stroke-zinc-400" />
+              </Button>
 
-          <Separator />
+              <Separator />
 
-          <Button className="h-9" openChildren={<UserProjectsDropdown />}>
-            <span className="text-sm font-medium">{currentProject.title}</span>
-            {currentProject.private && <Lock strokeWidth={1.5} size={14} />}
-          </Button>
-        </div>
-
-        {/* Application Header — Right Side */}
-        <div className="col-span-8 flex items-center gap-3">
-          <div className="flex items-center space-between gap-0.5 border border-gray-200 dark:border-gray-800 rounded-lg w-auto px-0.5 py-1.5 h-8">
-            <button className="group/button cursor-pointer p-1.5 bg-blue-100 dark:bg-zinc-700 hover:bg-gray-800 dark:hover:bg-zinc-700 rounded-md transition-colors">
-              <Eye size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-100 group-hover:stroke-gray-900 dark:group-hover:stroke-zinc-800 transition-colors" />
-            </button>
-
-            <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
-              <Code size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-            </button>
-
-            <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
-              <Database size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-            </button>
-          </div>
-
-          <button className="group/button px-1 py-1 cursor-pointer">
-            <Settings size={16} strokeWidth={1.5} className="stroke-gray-400 fill-gray-200 dark:fill-transparent hover:fill-gray-300 dark:hover:fill-gray-900 hover:stroke-gray-800 dark:hover:stroke-gray-300 transition-colors" />
-          </button>
-
-          <div className="flex flex-1 items-center rounded-full px-3 border border-gray-300 dark:border-neutral-900 bg-gray-50 dark:bg-zinc-800 h-8">
-            <input type="text" value="/" className=" flex-1 text-sm text-gray-800 dark:text-gray-300 mx-1 px-1" onChange={() => null} />
-
-            <div className="justify-end flex items-center">
-              <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
-                <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-              </button>
-
-              <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
-                <ExternalLink size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-              </button>
-
-              <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
-                <MonitorSmartphone size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-              </button>
-
-              <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
-                <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
-              </button>
+              <Button className="h-9" openChildren={<UserProjectsDropdown />}>
+                <span className="text-sm font-medium">{currentProject.title}</span>
+                {currentProject.private && <Lock strokeWidth={1.5} size={14} />}
+              </Button>
             </div>
-          </div>
+          </header>
 
-          <Button>
-            <img src="/github.svg" className="h-5 w-5 dark:invert-100" />
-          </Button>
-
-          <Button>
-            Share
-          </Button>
-
-          <Button>
-            Publish
-          </Button>
-
-          <Button>
-            <img src="/me.jpg" className="w-6 h-6 rounded-full" />
-          </Button>
-        </div>
-      </header>
-
-      {/* Application Body */}
-      <main className="h-full grid grid-cols-12 gap-5">
-        {/* Application Sidebar */}
-        <div className="col-span-4 h-full px-5 py-3">
           <h2 className="text-xl">Chat</h2>
 
           {conversations.map((conversation) => (
@@ -351,8 +291,71 @@ function App() {
         </div>
 
         {/* Application Output */}
-        <div className="col-span-8 py-3 rounded-lg border border-gray-100 dark:border-zinc-700 mr-3 mb-3">
-          Output
+        <div className="md:col-span-7 lg:col-auto h-full overflow-scroll">
+          <header className="py-1.5">
+            {/* Application Header — Right Side */}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex shrink-0 items-center space-between gap-0.5 border border-gray-200 dark:border-gray-800 rounded-lg w-auto px-0.5 py-1.5 h-8">
+                <button className="group/button cursor-pointer p-1.5 bg-blue-100 dark:bg-zinc-700 hover:bg-gray-800 dark:hover:bg-zinc-700 rounded-md transition-colors">
+                  <Eye size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-100 group-hover:stroke-gray-900 dark:group-hover:stroke-zinc-800 transition-colors" />
+                </button>
+
+                <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                  <Code size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+                </button>
+
+                <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                  <Database size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+                </button>
+              </div>
+
+              <button className="group/button px-1 py-1 cursor-pointer">
+                <Settings size={16} strokeWidth={1.5} className="stroke-gray-400 fill-gray-200 dark:fill-transparent hover:fill-gray-300 dark:hover:fill-gray-900 hover:stroke-gray-800 dark:hover:stroke-gray-300 transition-colors" />
+              </button>
+
+              <div className="flex flex-1 items-center rounded-full px-3 border border-gray-300 dark:border-neutral-900 bg-gray-50 dark:bg-zinc-800 h-8">
+                <input type="text" value="/" className="flex-1 text-sm text-gray-800 dark:text-gray-300 mx-1 px-1" onChange={() => null} />
+
+                <div className="justify-end flex items-center">
+                  <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                    <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+                  </button>
+
+                  <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                    <ExternalLink size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+                  </button>
+
+                  <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                    <MonitorSmartphone size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+                  </button>
+
+                  <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
+                    <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+                  </button>
+                </div>
+              </div>
+
+              <Button className="shrink-0">
+                <img src="/github.svg" className="h-5 w-5 dark:invert-100" />
+              </Button>
+
+              <Button className="shrink-0">
+                Share
+              </Button>
+
+              <Button className="shrink-0">
+                Publish
+              </Button>
+
+              <Button className="shrink-0">
+                <img src="/me.jpg" className="w-6 h-6 rounded-full" />
+              </Button>
+            </div>
+          </header>
+          
+          <div className="rounded-lg border border-gray-200 dark:border-zinc-700 h-full w-full">
+            Output
+          </div>
         </div>
       </main>
     </>
