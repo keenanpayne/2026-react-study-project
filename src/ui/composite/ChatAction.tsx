@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import Button from "../base/Button";
 
 type ChatActionProps = {
-  title: string | ReactNode;
+  title: ReactNode;
   icon: ReactNode;
   actionOnClick: () => void;
   actionsExpanded: boolean;

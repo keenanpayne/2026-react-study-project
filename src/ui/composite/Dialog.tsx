@@ -7,7 +7,7 @@ type DialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   width: "sm" | "md" | "lg" | "xl" | "2xl";
-  children?: string | ReactNode;
+  children?: ReactNode;
 }
 
 export default function Dialog(props: DialogProps) {

@@ -5,8 +5,8 @@ type ButtonProps = {
   href?: string;
   className?: string;
   size?: "flat" | "sm" | "md" | "lg";
-  children: string | ReactNode;
-  openChildren?: string | ReactNode;
+  children: ReactNode;
+  openChildren?: ReactNode;
   onClick?: () => void;
 }
 
