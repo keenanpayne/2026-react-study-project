@@ -6,6 +6,13 @@ type ChatResponseProps = {
   actionOnClick: () => void;
 }
 
+/**
+ * TODO: 
+ *  - Extract hard-coded content
+ *  - Add a loading state while response is being generated
+ *  - Add a error state if response generation fails
+ */
+
 export default function ChatResponse(props: ChatResponseProps) {
   return (
     <>
@@ -29,7 +36,7 @@ export default function ChatResponse(props: ChatResponseProps) {
       
       <ol className="space-y-5">
         <li>
-          <h3 className="text-md font-semibold">1. Database Schema and Bolt Database Setup</h3>
+          <h3 className="font-semibold">1. Database Schema and Bolt Database Setup</h3>
 
           <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
             <li>Create users table for authentication and user profiles</li>
@@ -42,7 +49,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         </li>
 
         <li>
-          <h3 className="text-md font-semibold">2. Authentication and User Management</h3>
+          <h3 className="font-semibold">2. Authentication and User Management</h3>
 
           <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
             <li>Build login and signup pages with email/password authentication</li>
@@ -54,7 +61,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         </li>
 
         <li>
-          <h3 className="text-md font-semibold">3. Social Platform Connection Management</h3>
+          <h3 className="font-semibold">3. Social Platform Connection Management</h3>
 
           <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
             <li>Create a connections dashboard page showing all five platforms with connection status</li>
@@ -66,7 +73,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         </li>
 
         <li>
-          <h3 className="text-md font-semibold">4. Content Creation Interface</h3>
+          <h3 className="font-semibold">4. Content Creation Interface</h3>
 
           <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
             <li>Build a unified post composer with rich text editor</li>
@@ -80,7 +87,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         </li>
 
         <li>
-          <h3 className="text-md font-semibold">5. Scheduling System</h3>
+          <h3 className="font-semibold">5. Scheduling System</h3>
 
           <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
             <li>Create date/time picker component for scheduling posts</li>
@@ -93,7 +100,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         </li>
 
         <li>
-          <h3 className="text-md font-semibold">6. Content Calendar and Dashboard</h3>
+          <h3 className="font-semibold">6. Content Calendar and Dashboard</h3>
 
           <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
             <li>Design main dashboard with overview statistics (posts scheduled, published, failed)</li>
@@ -106,7 +113,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         </li>
 
         <li>
-          <h3 className="text-md font-semibold">7. Post Management and Queue</h3>
+          <h3 className="font-semibold">7. Post Management and Queue</h3>
 
           <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
             <li>Create post queue page showing upcoming scheduled posts in chronological order</li>
@@ -118,7 +125,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         </li>
 
         <li>
-          <h3 className="text-md font-semibold">8. Platform-Specific Features</h3>
+          <h3 className="font-semibold">8. Platform-Specific Features</h3>
 
           <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
             <li>Add thread composer for Twitter/X and Bluesky with multiple connected posts</li>
@@ -130,7 +137,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         </li>
 
         <li>
-          <h3 className="text-md font-semibold">9. Notifications and Error Handling</h3>
+          <h3 className="font-semibold">9. Notifications and Error Handling</h3>
 
           <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
             <li>Create notification system for post publishing confirmations</li>
@@ -142,7 +149,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         </li>
 
         <li>
-          <h3 className="text-md font-semibold">10. UI Polish and Responsive Design</h3>
+          <h3 className="font-semibold">10. UI Polish and Responsive Design</h3>
 
           <ul className="list-disc list-outside space-y-3 pl-6 mt-3"> 
             <li>Design beautiful navigation with sidebar and header</li>
