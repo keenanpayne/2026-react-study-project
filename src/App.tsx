@@ -164,10 +164,11 @@ type DropdownProps = {
 }
 
 const Dropdown = (props: DropdownProps) => {
-  const align = props.align === 'left' ? 'left-0' : 'right-0';
+  const alignClass = props.align === 'left' ? 'left-0' : 'right-0';
+  const className = props.className ? props.className : '';
 
   return (
-    <div className={`bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg absolute top-10 ${align} text-left shadow-xs ${props.className ? props.className : ''}`}>
+    <div className={`bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg absolute top-10 text-left shadow-xs ${alignClass} ${className}`}>
       {props.children}
     </div>
   )
@@ -191,7 +192,7 @@ const DropdownItem = (props: DropdownItemProps) => {
     props.size === 'lg' ? 'text-base px-2 py-1.5 mx-2 my-1.5' : '';
 
   return (
-    <li key={props.key} className={`cursor-pointer flex items-center gap-2.5 rounded-md hover:bg-gray-300/30 dark:hover:bg-zinc-700 transition-colors ${size} ${props.className ? props.className : ''}`} tabIndex={0}>
+    <li key={props.key} className={`cursor-pointer flex items-center gap-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors ${size} ${props.className ? props.className : ''}`} tabIndex={0}>
       {props.icon && props.icon}
       {props.title}
     </li>
@@ -307,7 +308,7 @@ function App() {
 
               <Button size="md" className="h-9" openChildren={<UserProjectsDropdown />}>
                 <span className="text-xs md:text-sm font-medium">{currentProject.title}</span>
-                {currentProject.private && <Lock strokeWidth={1.5} size={14} />}
+                {currentProject.private && <Lock strokeWidth={1} size={14} />}
               </Button>
             </nav>
           </header>
@@ -332,7 +333,7 @@ function App() {
             <details className="group/details space-y-5 py-3">
               <summary className="cursor-pointer flex items-center gap-2 mb-0">
                 <span className="flex items-center flex-1 gap-2">
-                  <CircleEllipsis size={18} strokeWidth={1.5} /> 9 actions taken
+                  <CircleEllipsis size={16} strokeWidth={1.5} /> 9 actions taken
                 </span>
 
                 <ChevronDown size={20} strokeWidth={1.5} className="group-open/details:rotate-180 transition-transform duration-300" />
@@ -359,7 +360,7 @@ function App() {
 
             <p>Before I present the plan, I have a few clarifying questions:</p>
 
-            <ol className="list-decimal list-outside pl-5 space-y-3">
+            <ol className="list-decimal list-outside pl-6 space-y-3">
               <li><strong>Authentication & User Management:</strong> Should users be able to sign up/login to manage their own accounts, or is this a single-user application?</li>
               <li><strong>OAuth Integration:</strong> Do you want users to connect their actual social media accounts (requiring OAuth flows for Twitter/X, LinkedIn, etc.), or should this be a "compose and copy" tool where users manually post the content?</li>
               <li><strong>Post Features:</strong> What level of post complexity should be supported - text only, or also images, videos, polls, threads, and other platform-specific features?</li>
