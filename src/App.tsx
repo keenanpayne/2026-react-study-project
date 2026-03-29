@@ -298,7 +298,7 @@ function App() {
           </button>
 
           <div className="flex flex-1 items-center rounded-full px-3 border border-gray-300 dark:border-neutral-900 bg-gray-50 dark:bg-zinc-800 h-8">
-            <input type="text" value="/" className=" flex-1 text-sm text-gray-800 mx-1 px-1" />
+            <input type="text" value="/" className=" flex-1 text-sm text-gray-800 dark:text-gray-300 mx-1 px-1" onChange={() => null} />
 
             <div className="justify-end flex items-center">
               <button className="group/button cursor-pointer p-1.5 hover:bg-gray-800 dark:hover:bg-zinc-800 rounded-md transition-colors">
