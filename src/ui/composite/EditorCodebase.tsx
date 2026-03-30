@@ -1,9 +1,52 @@
-import { ChevronRight, File, FolderTree, Search } from "lucide-react";
+import { ChevronRight, File as FileIcon, FolderTree, Search } from "lucide-react";
 import Button from "../base/Button";
 import type { ReactNode } from "react";
+import {
+  type FileContents,
+  File,
+} from '@pierre/diffs/react';
 
-const code = `
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+type FileItemProps = {
+  name: string;
+  isDirectory?: boolean;
+  children?: ReactNode;
+  nested?: boolean;
+  open?: boolean;
+  selected?: boolean;
+}
+
+function FileItem(props: FileItemProps) {
+  return (
+    <li>
+      <p className={`flex items-center gap-1.5 cursor-pointer py-1 text-sm transition-colors ${props.nested ? 'px-4' : 'px-1.5'} ${props.selected ? 'bg-sky-100 dark:bg-sky-900/20' : 'text-gray-500 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-700'}`}>
+        {props.isDirectory ? <ChevronRight size={14} strokeWidth={1} className={`shrink-0 ${props.open ? 'rotate-90' : ''}`} /> : <FileIcon size={12} strokeWidth={1.5} className="shrink-0" />}
+        {props.name}
+      </p>
+
+      {props.children && (
+        <>
+          {props.children}
+        </>
+      )}
+    </li>
+  )
+}
+
+type FileItemListProps = {
+  children: ReactNode;
+}
+
+function FileItemList(props: FileItemListProps) {
+  return (
+    <ul className="text-left h-full">
+      {props.children}
+    </ul>
+  )
+}
+
+const file: FileContents = {
+  name: 'src/App.tsx',
+  contents: `import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Layout } from './components/Layout';
@@ -85,46 +128,8 @@ function App() {
   );
 }
 
-export default App;
-`;
-
-type FileItemProps = {
-  name: string;
-  isDirectory?: boolean;
-  children?: ReactNode;
-  nested?: boolean;
-  open?: boolean;
-  selected?: boolean;
-}
-
-function FileItem(props: FileItemProps) {
-  return (
-    <li>
-      <p className={`flex items-center gap-1.5 cursor-pointer py-1 text-sm transition-colors ${props.nested ? 'px-4' : 'px-1.5'} ${props.selected ? 'bg-sky-100 dark:bg-sky-900/20' : 'text-gray-500 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-700'}`}>
-        {props.isDirectory ? <ChevronRight size={14} strokeWidth={1} className={`shrink-0 ${props.open ? 'rotate-90' : ''}`} /> : <File size={12} strokeWidth={1.5} className="shrink-0" />}
-        {props.name}
-      </p>
-
-      {props.children && (
-        <>
-          {props.children}
-        </>
-      )}
-    </li>
-  )
-}
-
-type FileItemListProps = {
-  children: ReactNode;
-}
-
-function FileItemList(props: FileItemListProps) {
-  return (
-    <ul className="text-left h-full">
-      {props.children}
-    </ul>
-  )
-}
+export default App;`,
+};
 
 type EditorCodebaseProps = {
   isVisible: boolean;
@@ -188,18 +193,13 @@ export default function EditorCodebase(props: EditorCodebaseProps) {
           </FileItemList>
         </aside>
 
-        <article className="col-span-9 overflow-scroll">
-          <header className="p-1.5 border-b border-gray-200 dark:border-zinc-700">
-            <nav className="flex items-center gap-1.5">
-              src / App.tsx
-            </nav>
-          </header>
-
-          <pre className="text-gray-500">
-            <code>
-              {code}
-            </code>
-          </pre>
+        <article className="col-span-9 overflow-scroll rounded-tr-xl">
+          <File
+            file={file}
+            options={{
+              theme: { dark: 'pierre-dark', light: 'pierre-light' },
+            }}
+          />
         </article>
 
         <div className="col-span-12 border-t border-gray-200 dark:border-zinc-700">
