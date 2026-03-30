@@ -2,6 +2,7 @@ import ChatResponse from "./ChatResponse";
 import DropdownChat from "./DropdownChat";
 import DropdownTrigger from "./DropdownTrigger";
 import { Ellipsis } from "lucide-react";
+import { MockChatUserMessage } from "../../data/MockChat";
 
 type ChatMessageProps = {
   setIsActionDialogOpen: (open: boolean) => void;
@@ -13,7 +14,9 @@ export default function ChatMessage(props: ChatMessageProps) {
     <>
       {/* User Message */}
       <article className="p-5">
-        <p className="p-3 bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-sm leading-relaxed">Let's build a social media scheduling application that will handle content creation/editing/scheduling for Twitter, Bluesky, Mastodon, Threads, and LinkedIn.</p>
+        <p className="p-3 bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-sm leading-relaxed">
+          {MockChatUserMessage}
+        </p>
       </article>
 
       {/* Bolt Message */}
