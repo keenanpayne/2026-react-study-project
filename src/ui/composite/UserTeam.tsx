@@ -1,8 +1,8 @@
 import { UsersRound } from "lucide-react";
-import type { Team } from "../../data/mock";
+import type { MockUserTeam } from "../../data/MockUser";
 
 type UserTeamProps = {
-  team: Team,
+  team: MockUserTeam,
   create?: boolean,
 }
 

@@ -1,12 +1,27 @@
 import { Bookmark, Eye, Undo2 } from "lucide-react";
 import Button from "../base/Button";
 
-export default function ChatPlan() {
+type ChatPlanProps = {
+  title: string;
+  version: string;
+  createdAt: Date;
+}
+
+export default function ChatPlan(props: ChatPlanProps) {
   return (
     <aside className="flex justify-between border border-gray-300 dark:border-zinc-600 rounded-lg px-3 py-2.5 md:max-w-[80%] my-3">
-      <header className="flex flex-col gap-0.5">
-        <h3 className="font-semibold">Create Social Scheduler Plan</h3>
-        <p className="text-xs text-gray-500 dark:text-zinc-400">Version 1 at <time dateTime="2026-03-29T13:36:00">Mar 29 1:36 PM</time></p>
+      <header className="flex flex-col">
+        <p className="text-xs text-gray-500 dark:text-zinc-400">
+          {props.version}
+        </p>
+
+        <h3 className="font-semibold">{props.title}</h3>
+
+        <p className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">
+          <time dateTime={props.createdAt.toISOString()}>
+            {props.createdAt.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+          </time>
+        </p>
       </header>
 
       <nav className="flex items-center gap-0.5">

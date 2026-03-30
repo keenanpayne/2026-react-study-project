@@ -170,7 +170,7 @@ export default function ChatResponse(props: ChatResponseProps) {
 
       <p>Please answer the three questions above so I can refine the plan to match your exact requirements. Once you're ready to proceed, click the "Implement this plan" button to switch to build mode.</p>
 
-      <ChatPlan />
+      <ChatPlan title="Create Social Scheduler Plan" version="Version 1" createdAt={new Date("2026-03-29T13:36:00")} />
     </>
   );
 }

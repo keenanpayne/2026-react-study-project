@@ -1,5 +1,5 @@
 import { ChevronsUpDown, Lock } from "lucide-react";
-import { teams, currentProject } from "../../data/mock";
+import type { MockUserProject, MockUserTeam } from "../../data/MockUser";
 import DropdownProjects from "./DropdownProjects";
 import UserTeams from "./UserTeams";
 import Button from "../base/Button";
@@ -11,7 +11,13 @@ function Separator() {
   );
 }
 
-export default function ChatHeader() {
+type ChatHeaderProps = {
+  teams: MockUserTeam[];
+  projects: MockUserProject[];
+  currentProject: MockUserProject;
+}
+  
+export default function ChatHeader(props: ChatHeaderProps) {
   return (
     <header className="px-2.5 py-1.5 sticky top-0 left-0 bg-white dark:bg-zinc-900 z-10">
       <nav className="flex items-center gap-0.5 sm:gap-1 md:gap-1.5">
@@ -26,7 +32,7 @@ export default function ChatHeader() {
           radius="md"
           className="h-9"
           wrapperClassName="shrink-0"
-          dropdown={<UserTeams data={teams} />}
+          dropdown={<UserTeams data={props.teams} />}
         >
           <img src="/me.jpg" className="w-6 h-6 rounded-full border border-gray-300 dark:border-zinc-700" />
           <ChevronsUpDown size={16} strokeWidth={2} className="stroke-gray-400 dark:stroke-zinc-400" />
@@ -34,9 +40,9 @@ export default function ChatHeader() {
 
         <Separator />
 
-        <DropdownTrigger size="md" radius="md" className="h-9" dropdown={<DropdownProjects />}>
-          <span className="text-xs md:text-sm font-medium">{currentProject.title}</span>
-          {currentProject.private && <Lock strokeWidth={1.5} size={14} />}
+        <DropdownTrigger size="md" radius="md" className="h-9" dropdown={<DropdownProjects projects={props.projects} currentProject={props.currentProject} />}>
+          <span className="text-xs md:text-sm font-medium">{props.currentProject.title}</span>
+          {props.currentProject.private && <Lock strokeWidth={1.5} size={14} />}
         </DropdownTrigger>
       </nav>
     </header>

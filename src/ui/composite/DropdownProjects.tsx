@@ -1,9 +1,55 @@
+import { Fragment } from "react";
 import { Copy, Download, Earth, Eye, EyeOff, FileArchive, Folders, History, PencilLine, Trash, Zap, Lock, Search } from "lucide-react";
+import type { MockUserProject } from "../../data/MockUser";
 import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "../base/Dropdown";
 import DropdownItem from "../base/DropdownItem";
 import DropdownLabel from "../base/DropdownLabel";
 
-function DropdownRecentProjects() {
+/**
+ * @function getSectionLabel
+ * @description Get the section label for a project based on the updated date
+ * @param {Date} date - The updated date of the project
+ * @returns {string} The section label
+ */
+function getSectionLabel(date: Date): string {
+  const ms30Days = 30 * 24 * 60 * 60 * 1000;
+
+  if (Date.now() - date.getTime() <= ms30Days) return "Last 30 Days";
+
+  return date.toLocaleString("default", { month: "long", year: "numeric" });
+}
+
+/**
+ * @function groupProjectsBySection
+ * @description Group projects by section based on the updated date
+ * @param {Project[]} items - The projects to group
+ * @returns {Array<{ label: string; projects: Project[] }>} The grouped projects
+ */
+function groupProjectsBySection(items: MockUserProject[]) {
+  const groups: { label: string; projects: MockUserProject[] }[] = [];
+
+  for (const project of items) {
+    const label = getSectionLabel(project.updated_at);
+    const last = groups[groups.length - 1];
+
+    if (!last || last.label !== label) {
+      groups.push({ label, projects: [project] });
+    } else {
+      last.projects.push(project);
+    }
+  }
+  
+  return groups;
+}
+
+type DropdownRecentProjectsProps = {
+  projects: MockUserProject[];
+  currentProject: MockUserProject;
+}
+
+function DropdownRecentProjects(props: DropdownRecentProjectsProps) {
+  const sections = groupProjectsBySection(props.projects);
+
   return (
     <Dropdown className="w-65" nested>
       <div className="flex items-center gap-2 px-3">
@@ -11,12 +57,24 @@ function DropdownRecentProjects() {
         <input type="search" placeholder="Search projects" className="bg-transparent border-0 w-full py-2" />
       </div>
 
-      <DropdownLabel label="Last 30 Days" />
-      <DropdownItem size="md" prepend="Active Project" title="Multi-Platform Social Scheduler" className="bg-sky-100 dark:bg-sky-800/50" />
-      <DropdownLabel label="May 2025" />
-      <DropdownItem size="md" title="Learning Management Platform" />
-      <DropdownLabel label="April 2025" />
-      <DropdownItem size="md" title="Inspiration Gallery" />
+      {sections.map(({ label, projects: sectionProjects }) => (
+        <Fragment key={label}>
+          <DropdownLabel label={label} />
+          {sectionProjects.map((project) => {
+            const isActive = project.id === props.currentProject.id;
+
+            return (
+              <DropdownItem
+                key={project.id}
+                size="md"
+                title={project.title}
+                prepend={isActive ? "Active Project" : undefined}
+                className={isActive ? "bg-sky-100 dark:bg-sky-800/50" : undefined}
+              />
+            );
+          })}
+        </Fragment>
+      ))}
     </Dropdown>
   )
 }
@@ -40,10 +98,15 @@ function DownloadVisibility() {
   )
 }
 
-export default function DropdownProjects() {
+type DropdownProjectsProps = {
+  projects: MockUserProject[];
+  currentProject: MockUserProject;
+}
+
+export default function DropdownProjects(props: DropdownProjectsProps) {
   return (
     <Dropdown align="left" className="w-60">
-      <DropdownItem size="md" title="Open recent project" icon={<Folders size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} dropdown={<DropdownRecentProjects />} />
+      <DropdownItem size="md" title="Open recent project" icon={<Folders size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} dropdown={<DropdownRecentProjects projects={props.projects} currentProject={props.currentProject} />} />
       <DropdownItem size="md" title="Version history" icon={<History size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
       <DropdownItem size="md" title="Rename..." icon={<PencilLine size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
       <DropdownItem size="md" title="Duplicate" icon={<Copy size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
