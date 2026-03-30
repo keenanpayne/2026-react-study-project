@@ -7,7 +7,6 @@ type DropdownItemProps = {
   append?: string;
   size: "sm" | "md" | "lg";
   icon?: ReactNode;
-  key?: number;
   className?: string;
   dropdown?: ReactNode;
 }
@@ -23,10 +22,10 @@ export default function DropdownItem(props: DropdownItemProps) {
   const prependAppendClass = 'text-xs text-gray-500 dark:text-zinc-300 block w-full';
 
   return (
-    <li key={props.key} className={classNames} tabIndex={0}>
+    <li className={classNames} tabIndex={0}>
 
       <p className="flex-1 flex items-center gap-2.5">
-        {props.icon && props.icon}
+        {props.icon}
 
         <span>
           {props.prepend && <span className={prependAppendClass}>{props.prepend}</span>}

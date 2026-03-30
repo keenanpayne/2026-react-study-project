@@ -1,5 +1,6 @@
 import type { Team } from "../../data/mock";
 import Dropdown from "../base/Dropdown";
+import DropdownSeparator from "../base/DropdownSeparator";
 import UserTeam from "./UserTeam";
 
 type UserTeamsProps = {
@@ -14,7 +15,7 @@ export default function UserTeams(props: UserTeamsProps) {
           <UserTeam key={item.id} team={item} />
         ))}
 
-        <hr className="mx-1 border-gray-200" />
+        <DropdownSeparator />
 
         <UserTeam team={{ id: 0, title: 'Create a team'}} create={true} />
       </ul>

@@ -178,12 +178,12 @@ export default function EditorCodebase(props: EditorCodebaseProps) {
         <aside className="col-span-3 border-r border-gray-200 dark:border-zinc-700 overflow-scroll">
           <header className="p-1.5 border-b border-gray-200 dark:border-zinc-700">
             <nav className="flex items-center gap-1.5">
-              <Button size="sm" rounded="md">
+              <Button size="sm" radius="md">
                 <FolderTree size={16} strokeWidth={1.5} />
                 Files
               </Button>
 
-              <Button size="sm" rounded="md">
+              <Button size="sm" radius="md">
                 <Search size={16} strokeWidth={1.5} />
                 Search
               </Button>
@@ -239,9 +239,9 @@ export default function EditorCodebase(props: EditorCodebaseProps) {
         <section className="col-span-12 border-t border-gray-200 dark:border-zinc-700">
           <header className="p-1.5 border-b border-gray-200 dark:border-zinc-700">
             <nav className="flex items-center gap-1.5">
-              <Button size="md" rounded="md">Bolt</Button>
-              <Button size="md" rounded="md">Publish Output</Button>
-              <Button size="md" rounded="md">Terminal</Button>
+              <Button size="md" radius="md">Bolt</Button>
+              <Button size="md" radius="md">Publish Output</Button>
+              <Button size="md" radius="md">Terminal</Button>
             </nav>
           </header>
 

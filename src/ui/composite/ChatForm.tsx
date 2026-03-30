@@ -23,19 +23,19 @@ export default function ChatForm() {
               <Plus size={28} className="bg-gray-200 dark:bg-zinc-700 group-hover/button:bg-gray-300 dark:group-hover/button:bg-zinc-600 rounded-full p-1.25 transition-colors" />
             </Button>
 
-            <Button size="sm" rounded="xl" className="shrink-0">
+            <Button size="sm" radius="xl" className="shrink-0">
               <span className="text-gray-700 dark:text-zinc-200 text-xs">Sonnet 4.5</span>
               <ChevronsUpDown size={14} strokeWidth={1} className="stroke-gray-600 dark:stroke-zinc-400" />
             </Button>
           </div>
 
           <div className="flex items-center gap-3">
-            <Button size="sm" rounded="xl" className="shrink-0">
+            <Button size="sm" radius="xl" className="shrink-0">
               <MousePointerClick size={18} strokeWidth={1} className="stroke-gray-600 dark:stroke-zinc-400" />
               <span className="text-gray-700 dark:text-zinc-200 text-xs">Select</span>
             </Button>
 
-            <Button size="sm" rounded="xl" className="shrink-0">
+            <Button size="sm" radius="xl" className="shrink-0">
               <Lightbulb size={18} strokeWidth={1} className="stroke-gray-600 dark:stroke-zinc-400" />
               <span className="text-gray-700 dark:text-zinc-200 text-xs">Plan</span>
             </Button>

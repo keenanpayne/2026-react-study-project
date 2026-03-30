@@ -1,6 +1,6 @@
-import Button from "../base/Button";
 import ChatResponse from "./ChatResponse";
 import DropdownChat from "./DropdownChat";
+import DropdownTrigger from "./DropdownTrigger";
 import { Ellipsis } from "lucide-react";
 
 type ChatMessageProps = {
@@ -21,9 +21,9 @@ export default function ChatMessage(props: ChatMessageProps) {
         <nav className="flex justify-between items-center">
           <img src="/bolt-logo.png" alt="Bolt" className="h-3.5 dark:invert-100" />
 
-          <Button size="sm" rounded="md" openChildren={<DropdownChat />}>
+          <DropdownTrigger size="sm" radius="md" dropdown={<DropdownChat />}>
             <Ellipsis />
-          </Button>
+          </DropdownTrigger>
         </nav>
 
         <ChatResponse actionsExpanded={false} actionOnClick={() => props.setIsActionDialogOpen(!props.isActionDialogOpen)} />

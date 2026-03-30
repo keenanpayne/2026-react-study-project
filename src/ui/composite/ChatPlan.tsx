@@ -10,15 +10,15 @@ export default function ChatPlan() {
       </header>
 
       <nav className="flex items-center gap-0.5">
-        <Button size="sm" rounded="sm">
+        <Button size="sm" radius="sm" iconOnly>
           <Bookmark size={20} strokeWidth={1.5} className="stroke-blue-400 fill-blue-400" />
         </Button>
         
-        <Button size="sm" rounded="sm">
+        <Button size="sm" radius="sm" iconOnly>
           <Eye size={20} strokeWidth={1.5} />
         </Button>
 
-        <Button size="sm" rounded="sm">
+        <Button size="sm" radius="sm" iconOnly>
           <Undo2 size={20} strokeWidth={1.5} />
         </Button>
       </nav>

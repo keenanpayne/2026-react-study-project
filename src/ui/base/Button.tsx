@@ -1,78 +1,71 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
+import {
+  getButtonClassName,
+  type ButtonRadius,
+  type ButtonSize,
+  type ButtonVariant,
+} from "./buttonStyles";
 
-type ButtonProps = {
-  as?: 'link' | 'button';
-  href?: string;
-  className?: string;
-  size?: "flat" | "sm" | "md" | "lg";
-  rounded?: "sm" | "md" | "lg" | "xl";
+type SharedButtonProps = {
+  as?: "a" | "button";
   children: ReactNode;
-  openChildren?: ReactNode;
-  onClick?: () => void;
-}
+  className?: string;
+  size?: ButtonSize;
+  radius?: ButtonRadius;
+  variant?: ButtonVariant;
+  iconOnly?: boolean;
+};
 
-export default function Button(props: ButtonProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const linkRef = useRef<HTMLAnchorElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const sizeClass = 
-    props.size === 'flat' ? '' : 
-    props.size === 'sm' ? 'text-xs p-1 gap-1.5 hover:bg-gray-100 dark:hover:bg-zinc-700' : 
-    props.size === 'md' ? 'text-sm px-2 py-1.5 gap-2 hover:bg-gray-100 dark:hover:bg-zinc-700' : 
-    props.size === 'lg' ? 'text-base px-3 py-2 gap-2.5 hover:bg-gray-100 dark:hover:bg-zinc-700' : '';
-  const roundedClass = 
-    props.rounded === 'sm' ? 'rounded-sm' : 
-    props.rounded === 'md' ? 'rounded-md' : 
-    props.rounded === 'lg' ? 'rounded-lg' : 
-    props.rounded === 'xl' ? 'rounded-xl' : '';
-  const isOpenClass = isOpen ? 'bg-gray-100 dark:bg-zinc-700' : '';
-  const styles = `cursor-pointer text-left relative flex items-center transition-colors ${sizeClass} ${roundedClass} ${props.className ? props.className : ''} ${isOpenClass}`;
+type ButtonAsButtonProps = SharedButtonProps &
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof SharedButtonProps | "href"> & {
+    as?: "button";
+    href?: never;
+  };
 
-  useEffect(() => {
-    if (!isOpen) return;
+type ButtonAsAnchorProps = SharedButtonProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof SharedButtonProps> & {
+    as: "a";
+    href: string;
+  };
 
-    // Close dropdown when clicking away
-    const handlePointerDown = (event: PointerEvent) => {
-      const root = linkRef.current ?? buttonRef.current;
+export type ButtonProps = ButtonAsButtonProps | ButtonAsAnchorProps;
 
-      if (root && !root.contains(event.target as Node)) {
-        setIsOpen(false);
-        linkRef.current?.focus();
-        buttonRef.current?.focus();
-      }
-    };
+export default function Button({
+  as = "button",
+  children,
+  className,
+  size,
+  radius,
+  variant,
+  iconOnly,
+  ...rest
+}: ButtonProps) {
+  const buttonClassName = getButtonClassName({
+    size,
+    radius,
+    variant,
+    iconOnly,
+    className,
+  });
 
-    // Close dropdown with `esc` key
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setIsOpen(false);
-        linkRef.current?.focus();
-        buttonRef.current?.focus();
-      }
-    };
+  if (as === "a") {
+    const anchorProps = rest as Omit<ButtonAsAnchorProps, keyof SharedButtonProps>;
 
-    document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen])
-
-  if (props.as === "link") {
     return (
-      <a ref={linkRef} className={styles} href={props.href} onClick={() => { props.onClick?.(); }}>
-        {props.children}
+      <a className={buttonClassName} {...anchorProps}>
+        {children}
       </a>
     );
-  } else {
-    return (
-      <button ref={buttonRef} className={styles} onClick={() => { setIsOpen(!isOpen); props.onClick?.(); }}>
-        {props.children}
-
-        {isOpen && props.openChildren}
-      </button>
-    );
   }
+
+  const { type = "button", ...buttonProps } = rest as Omit<
+    ButtonAsButtonProps,
+    keyof SharedButtonProps
+  >;
+
+  return (
+    <button type={type} className={buttonClassName} {...buttonProps}>
+      {children}
+    </button>
+  );
 }
