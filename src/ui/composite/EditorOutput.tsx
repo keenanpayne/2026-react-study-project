@@ -8,7 +8,7 @@
 export default function EditorOutput() {
   return (
     <div className="flex-1 relative mb-3 bg-gray-900 rounded-xl border border-gray-200 dark:border-zinc-700 min-h-0 h-full w-full">
-      <main className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg md:min-w-md">
+      <main className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg min-w-xs lg:min-w-md">
         <header className="text-center space-y-1.5">
           <h1 className="text-3xl font-bold text-gray-900">
             PostFlow

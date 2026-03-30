@@ -12,7 +12,7 @@ export default function App() {
 
   return (
     <>
-      <Dialog title="Action Details" children={<ChatResponse actionsExpanded={true} actionOnClick={() => false} />} open={isActionDialogOpen} onOpenChange={setIsActionDialogOpen} width="xl" />
+      <Dialog title="Action Details" children={<ChatResponse actionsExpanded={true} actionOnClick={() => false} />} open={isActionDialogOpen} onOpenChange={setIsActionDialogOpen} />
 
       <main className="h-full md:grid md:grid-cols-12 lg:grid-cols-[450px_1fr]">
         <section className="relative md:col-span-6 lg:col-auto min-h-0 h-full overflow-scroll">

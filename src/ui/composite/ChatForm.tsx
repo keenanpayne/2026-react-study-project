@@ -4,7 +4,7 @@ import Button from "../base/Button";
 export default function ChatForm() {
   return (
     <form className="sticky bottom-0 bg-white dark:bg-zinc-900 px-5 pb-3">
-      <aside className="mx-1.75 px-2 py-1 flex justify-between text-xs bg-white dark:bg-zinc-800 border-t border-l border-r border-gray-200 dark:border-zinc-600 rounded-t-lg">
+      <aside className="mx-1.75 px-2 py-1.5 flex flex-col sm:flex-row gap-1 sm:gap-0 justify-between text-xs bg-white dark:bg-zinc-800 border-t border-l border-r border-gray-200 dark:border-zinc-600 rounded-t-lg">
         <span>300k daily tokens remaining.</span>
 
         <Button size="flat" className="cursor-pointer text-blue-500 dark:text-blue-400 hover:underline">

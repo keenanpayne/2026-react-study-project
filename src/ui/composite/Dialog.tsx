@@ -6,24 +6,16 @@ type DialogProps = {
   title: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  width: "sm" | "md" | "lg" | "xl" | "2xl";
   children?: ReactNode;
 }
 
 export default function Dialog(props: DialogProps) {
-  const widthClass = 
-    props.width === 'sm' ? 'min-w-sm' : 
-    props.width === 'md' ? 'min-w-md' : 
-    props.width === 'lg' ? 'min-w-lg' : 
-    props.width === 'xl' ? 'min-w-xl' : 
-    props.width === '2xl' ? 'min-w-2xl' : '';
-
   return (
     <BaseDialog.Root open={props.open} onOpenChange={props.onOpenChange}>
       <BaseDialog.Portal>
         <BaseDialog.Backdrop className="fixed inset-0 min-h-dvh bg-black/35 dark:bg-black/50 transition-all duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 dark:opacity-70 supports-[-webkit-touch-callout:none]:absolute" />
 
-        <BaseDialog.Popup className={`flex flex-col fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-gray-50 dark:bg-zinc-800 transition-all duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0 max-h-[80dvh] overflow-hidden ${widthClass}`}>
+        <BaseDialog.Popup className={`flex flex-col fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-gray-50 dark:bg-zinc-800 transition-all duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0 max-h-[80dvh] overflow-hidden w-full md:max-w-xl`}>
           <BaseDialog.Title className="mb-1 text-xl font-semibold flex items-center justify-between px-6 py-4 border-b border-gray-300 dark:border-zinc-600">
             {props.title}
             <BaseDialog.Close className="cursor-pointer">

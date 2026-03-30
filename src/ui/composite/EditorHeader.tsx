@@ -4,8 +4,8 @@ import Button from "../base/Button";
 export default function EditorHeader() {
   return (
     <header className="py-1.5">
-      <div className="flex flex-wrap items-center gap-1.5">
-        <nav className="flex shrink-0 items-center space-between gap-0.5 border border-gray-200 dark:border-gray-800 rounded-lg w-auto px-0.5 py-1.5 h-8">
+      <div className="flex flex-wrap items-center gap-3">
+        <nav className="flex shrink-0 items-center space-between gap-1.5 border border-gray-200 dark:border-gray-800 rounded-md w-auto px-0.5 py-1.5 h-8">
           <Button size="sm" className="group/button cursor-pointer p-1.5 bg-blue-100 dark:bg-blue-900">
             <Eye size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-100 group-hover:stroke-gray-900 dark:group-hover:stroke-zinc-800 transition-colors" />
           </Button>
@@ -23,7 +23,7 @@ export default function EditorHeader() {
           <Settings size={16} strokeWidth={1.5} className="stroke-gray-400 fill-gray-200 dark:fill-transparent hover:fill-gray-300 dark:hover:fill-gray-900 hover:stroke-gray-800 dark:hover:stroke-gray-300 transition-colors" />
         </Button>
 
-        <div className="flex flex-1 items-center rounded-full px-3 border border-gray-300 dark:border-neutral-900 bg-gray-50 dark:bg-zinc-800 h-8 max-w-2xl">
+        <div className="flex flex-1 items-center rounded-full px-3 border border-gray-300 dark:border-neutral-900 bg-gray-100 dark:bg-zinc-800 h-8 md:max-w-md ml-auto mr-auto">
           <label htmlFor="url" className="sr-only">Page URL</label>
           <input id="url" type="text" value="/" className="flex-1 text-sm text-gray-800 dark:text-gray-300 mx-1 px-1" onChange={() => null} />
 
