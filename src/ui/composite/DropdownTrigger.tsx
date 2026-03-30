@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Button, { type ButtonProps } from "../base/Button";
 import { cx } from "../../utils/cx";
 
-type DropdownTriggerProps = ButtonProps & {
+type DropdownTriggerProps = Extract<ButtonProps, { as?: "button" }> & {
   dropdown: ReactNode;
   wrapperClassName?: string;
 };
