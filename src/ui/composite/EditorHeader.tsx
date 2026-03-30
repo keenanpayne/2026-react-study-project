@@ -5,7 +5,7 @@ export default function EditorHeader() {
   return (
     <header className="py-1.5">
       <div className="flex flex-wrap items-center gap-1.5">
-        <div className="flex shrink-0 items-center space-between gap-0.5 border border-gray-200 dark:border-gray-800 rounded-lg w-auto px-0.5 py-1.5 h-8">
+        <nav className="flex shrink-0 items-center space-between gap-0.5 border border-gray-200 dark:border-gray-800 rounded-lg w-auto px-0.5 py-1.5 h-8">
           <Button size="sm" className="group/button cursor-pointer p-1.5 bg-blue-100">
             <Eye size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-100 group-hover:stroke-gray-900 dark:group-hover:stroke-zinc-800 transition-colors" />
           </Button>
@@ -17,7 +17,7 @@ export default function EditorHeader() {
           <Button size="sm" className="group/button cursor-pointer p-1.5">
             <Database size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
           </Button>
-        </div>
+        </nav>
 
         <Button size="sm" className="group/button px-1 py-1 cursor-pointer">
           <Settings size={16} strokeWidth={1.5} className="stroke-gray-400 fill-gray-200 dark:fill-transparent hover:fill-gray-300 dark:hover:fill-gray-900 hover:stroke-gray-800 dark:hover:stroke-gray-300 transition-colors" />
@@ -27,7 +27,7 @@ export default function EditorHeader() {
           <label htmlFor="url" className="sr-only">Page URL</label>
           <input id="url" type="text" value="/" className="flex-1 text-sm text-gray-800 dark:text-gray-300 mx-1 px-1" onChange={() => null} />
 
-          <div className="justify-end flex items-center">
+          <nav className="justify-end flex items-center">
             <Button size="sm" className="group/button cursor-pointer p-1.5">
               <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
             </Button>
@@ -43,7 +43,7 @@ export default function EditorHeader() {
             <Button size="sm" className="group/button cursor-pointer p-1.5">
               <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
             </Button>
-          </div>
+          </nav>
         </div>
 
         <div className="shrink-0 flex items-center gap-1.5 ml-auto">
