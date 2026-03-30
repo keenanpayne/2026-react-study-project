@@ -1,3 +1,4 @@
+import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 
 type DropdownItemProps = {
@@ -6,6 +7,7 @@ type DropdownItemProps = {
   icon?: ReactNode;
   key?: number;
   className?: string;
+  dropdown?: ReactNode;
 }
 
 export default function DropdownItem(props: DropdownItemProps) {
@@ -15,9 +17,21 @@ export default function DropdownItem(props: DropdownItemProps) {
     props.size === 'lg' ? 'text-base px-2 py-1.5 mx-2 my-1.5' : '';
 
   return (
-    <li key={props.key} className={`cursor-pointer flex items-center gap-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors ${size} ${props.className ? props.className : ''}`} tabIndex={0}>
-      {props.icon && props.icon}
-      {props.title}
+    <li key={props.key} className={`group/dropdown-item cursor-pointer flex items-center justify-between gap-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors ${size} ${props.className ? props.className : ''}`} tabIndex={0}>
+      <span className="flex-1 flex items-center gap-2.5">
+        {props.icon && props.icon}
+        {props.title}
+      </span>
+
+      {props.dropdown && (
+        <>
+          <ChevronRight size={16} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-400 group-hover/dropdown-item:stroke-gray-900 dark:group-hover/dropdown-item:stroke-zinc-300 transition-colors" />
+
+          <div className="opacity-0 group-hover/dropdown-item:opacity-100 transition-opacity">
+            {props.dropdown}
+          </div>
+        </>
+      )}
     </li>
   )
 }
