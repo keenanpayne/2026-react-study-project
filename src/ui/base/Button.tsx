@@ -17,9 +17,9 @@ export default function Button(props: ButtonProps) {
   const sizeClass = 
     props.size === 'flat' ? '' : 
     props.size === 'sm' ? 'text-xs p-1 gap-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-800' : 
-    props.size === 'md' ? 'text-sm px-2.5 py-1.5 py-1 gap-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800' : 
+    props.size === 'md' ? 'text-sm px-2.5 py-1.5 gap-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800' : 
     props.size === 'lg' ? 'text-base px-3 py-2 gap-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-zinc-800' : '';
-  const isOpenClass = isOpen ? 'bg-gray-100 dark:bg-zinc-800' : 'bg-transparent';
+  const isOpenClass = isOpen ? 'bg-gray-100 dark:bg-zinc-800' : '';
   const styles = `cursor-pointer text-left relative flex items-center transition-colors ${sizeClass} ${props.className ? props.className : ''} ${isOpenClass}`;
 
   useEffect(() => {

@@ -51,11 +51,11 @@ export default function EditorHeader() {
             <img src="/github.svg" className="h-5 w-5 dark:invert-100" />
           </Button>
 
-          <Button size="md" className="shrink-0">
+          <Button size="md" className="shrink-0 bg-gray-200 hover:bg-gray-300">
             Share
           </Button>
 
-          <Button size="md" className="shrink-0">
+          <Button size="md" className="shrink-0 bg-gray-900 hover:bg-gray-700 text-white">
             Publish
           </Button>
 
