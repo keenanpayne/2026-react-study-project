@@ -1,41 +1,61 @@
-import { Copy, Download, Eye, Folders, History, PencilLine, Trash } from "lucide-react";
-import Dropdown from "../base/Dropdown";
+import { Copy, Download, Earth, Eye, EyeOff, FileArchive, Folders, History, PencilLine, Trash, Zap, Lock, Search } from "lucide-react";
+import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "../base/Dropdown";
 import DropdownItem from "../base/DropdownItem";
 
-
 function DropdownRecentProjects() {
-  const iconSize = 16;
-  const iconStrokeWidth = 1;
-
   return (
-    <Dropdown className="w-60 left-[105%] -top-1">
+    <Dropdown className="w-65" nested>
+      <ul>
+        <div className="flex items-center gap-2 px-3">
+          <Search size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />
+          <input type="search" placeholder="Search projects" className="bg-transparent border-0 w-full py-2" />
+        </div>
+
+        <li className="cursor-default px-3 mt-2 text-gray-500 dark:text-zinc-300 text-xs">Last 30 Days</li>
+        <DropdownItem size="md" prepend="Active Project" title="Multi-Platform Social Scheduler" className="bg-sky-100 dark:bg-sky-800/50" />
+        <li className="cursor-default px-3 mt-2 text-gray-500 dark:text-zinc-300 text-xs">May 2025</li>
+        <DropdownItem size="md" title="Learning Management Platform" />
+        <li className="cursor-default px-3 mt-2 text-gray-500 dark:text-zinc-300 text-xs">April 2025</li>
+        <DropdownItem size="md" title="Inspiration Gallery" />
+      </ul>
+    </Dropdown>
+  )
+}
+
+function DropdownExport() {
+  return (
+    <Dropdown className="w-50" nested>
       <ul> 
-        <DropdownItem size="md" className="text-sm" title="Open recent project" icon={<Folders size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Version history" icon={<History size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Rename..." icon={<PencilLine size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Duplicate" icon={<Copy size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Export" icon={<Download size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Visibility" icon={<Eye size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Delete" icon={<Trash size={iconSize} strokeWidth={iconStrokeWidth} />} />
+        <DropdownItem size="md" title="Download" icon={<FileArchive size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+        <DropdownItem size="md" title="Open in StackBlitz" icon={<Zap size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+      </ul>
+    </Dropdown>
+  )
+}
+
+function DownloadVisibility() {
+  return (
+    <Dropdown className="w-52" nested>
+      <ul> 
+        <DropdownItem size="md" title="Public" append="Everyone can view" icon={<Earth size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+        <DropdownItem size="md" title="Secret" append="Accessible via shared URL" icon={<EyeOff size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+        <DropdownItem size="md" title="Private" append="Only owner can access" icon={<Lock size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
       </ul>
     </Dropdown>
   )
 }
 
 export default function DropdownProjects() {
-  const iconSize = 16;
-  const iconStrokeWidth = 1;
-
   return (
     <Dropdown align="left" className="w-60">
       <ul> 
-        <DropdownItem size="md" className="text-sm relative" title="Open recent project" icon={<Folders size={iconSize} strokeWidth={iconStrokeWidth} />} dropdown={<DropdownRecentProjects />} />
-        <DropdownItem size="md" className="text-sm" title="Version history" icon={<History size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Rename..." icon={<PencilLine size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Duplicate" icon={<Copy size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Export" icon={<Download size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Visibility" icon={<Eye size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Delete" icon={<Trash size={iconSize} strokeWidth={iconStrokeWidth} />} />
+        <DropdownItem size="md" title="Open recent project" icon={<Folders size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} dropdown={<DropdownRecentProjects />} />
+        <DropdownItem size="md" title="Version history" icon={<History size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+        <DropdownItem size="md" title="Rename..." icon={<PencilLine size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+        <DropdownItem size="md" title="Duplicate" icon={<Copy size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+        <DropdownItem size="md" title="Export" icon={<Download size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} dropdown={<DropdownExport />} />
+        <DropdownItem size="md" title="Visibility" icon={<Eye size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} dropdown={<DownloadVisibility />} />
+        <DropdownItem size="md" title="Delete" icon={<Trash size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
       </ul>
     </Dropdown>
   );

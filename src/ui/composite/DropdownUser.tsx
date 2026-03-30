@@ -1,19 +1,18 @@
 import { CircleQuestionMark, CreditCard, LogOut, Palette, Settings } from "lucide-react";
-import Dropdown from "../base/Dropdown";
+import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "../base/Dropdown";
 import DropdownItem from "../base/DropdownItem";
 
 export default function DropdownUser() {
-  const iconSize = 16;
-  const iconStrokeWidth = 1;
-
   return (
-    <Dropdown align="right" className="w-55">
+    <Dropdown align="right" className="w-50">
       <ul> 
-        <DropdownItem size="md" className="text-sm" title="Settings" icon={<Settings size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Help" icon={<CircleQuestionMark size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Subscription" icon={<CreditCard size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Theme" icon={<Palette size={iconSize} strokeWidth={iconStrokeWidth} />} />
-        <DropdownItem size="md" className="text-sm" title="Sign out" icon={<LogOut size={iconSize} strokeWidth={iconStrokeWidth} />} />
+        <DropdownItem size="md" title="Settings" icon={<Settings size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+        <DropdownItem size="md" title="Help" icon={<CircleQuestionMark size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+        <hr className="border-gray-200 dark:border-zinc-700" />
+        <DropdownItem size="md" title="Subscription" icon={<CreditCard size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+        <DropdownItem size="md" title="Theme" icon={<Palette size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+        <hr className="border-gray-200 dark:border-zinc-700" />
+        <DropdownItem size="md" title="Sign out" icon={<LogOut size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
       </ul>
     </Dropdown>
   );
