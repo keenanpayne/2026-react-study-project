@@ -11,7 +11,7 @@ type ChatActionsProps = {
 export default function ChatActions(props: ChatActionsProps) {
   const iconSize = 18;
   const iconStrokeWidth = 1;
-  const iconClass = "stroke-gray-700 group-hover/button:stroke-gray-900 transition-colors";
+  const iconClass = "stroke-gray-700 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-200 transition-colors";
   
   return (
     <details className="group/details space-y-5 py-3" open={props.actionsExpanded}>

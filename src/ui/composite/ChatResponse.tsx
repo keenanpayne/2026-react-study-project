@@ -30,7 +30,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         <li><strong>Post Features:</strong> What level of post complexity should be supported - text only, or also images, videos, polls, threads, and other platform-specific features?</li>
       </ol>
 
-      <hr className="border-2 border-gray-200 my-3" />
+      <hr className="border-2 border-gray-200 dark:border-zinc-600 my-3" />
 
       <h2 className="text-lg font-semibold">Plan: Social Media Scheduling Application</h2>
       
@@ -162,7 +162,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         </li>
       </ol>
 
-      <hr className="border-2 border-gray-200 my-3" />
+      <hr className="border-2 border-gray-200 dark:border-zinc-600 my-3" />
 
       <h2 className="text-lg font-semibold">Summary</h2>
 

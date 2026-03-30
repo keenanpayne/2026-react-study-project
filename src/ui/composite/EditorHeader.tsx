@@ -6,16 +6,16 @@ export default function EditorHeader() {
     <header className="py-1.5">
       <div className="flex flex-wrap items-center gap-1.5">
         <nav className="flex shrink-0 items-center space-between gap-0.5 border border-gray-200 dark:border-gray-800 rounded-lg w-auto px-0.5 py-1.5 h-8">
-          <Button size="sm" className="group/button cursor-pointer p-1.5 bg-blue-100">
-            <Eye size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-100 group-hover:stroke-gray-900 dark:group-hover:stroke-zinc-800 transition-colors" />
+          <Button size="sm" className="group/button cursor-pointer p-1.5 bg-blue-100 dark:bg-blue-900">
+            <Eye size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-100 group-hover:stroke-gray-900 dark:group-hover:stroke-zinc-800 transition-colors" />
           </Button>
 
           <Button size="sm" className="group/button cursor-pointer p-1.5">
-            <Code size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+            <Code size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
           </Button>
 
           <Button size="sm" className="group/button cursor-pointer p-1.5">
-            <Database size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+            <Database size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
           </Button>
         </nav>
 
@@ -29,33 +29,33 @@ export default function EditorHeader() {
 
           <nav className="justify-end flex items-center">
             <Button size="sm" className="group/button cursor-pointer p-1.5">
-              <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+              <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
             </Button>
 
             <Button size="sm" className="group/button cursor-pointer p-1.5">
-              <ExternalLink size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+              <ExternalLink size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
             </Button>
 
             <Button size="sm" className="group/button cursor-pointer p-1.5">
-              <MonitorSmartphone size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+              <MonitorSmartphone size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
             </Button>
 
             <Button size="sm" className="group/button cursor-pointer p-1.5">
-              <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-gray-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
+              <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover:stroke-gray-900 dark:group-hover:stroke-gray-900 transition-colors" />
             </Button>
           </nav>
         </div>
 
-        <div className="shrink-0 flex items-center gap-1.5 ml-auto">
+        <div className="shrink-0 flex items-center gap-3 ml-auto">
           <Button size="md" className="shrink-0">
             <img src="/github.svg" className="h-5 w-5 dark:invert-100" />
           </Button>
 
-          <Button size="md" className="shrink-0 bg-gray-200 hover:bg-gray-300">
+          <Button size="md" className="shrink-0 bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 hover:dark:bg-zinc-600">
             Share
           </Button>
 
-          <Button size="md" className="shrink-0 bg-gray-900 hover:bg-gray-700 text-white">
+          <Button size="md" className="shrink-0 bg-gray-900 dark:bg-zinc-100 hover:bg-gray-700 hover:dark:bg-zinc-300 text-white dark:text-black">
             Publish
           </Button>
 
