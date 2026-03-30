@@ -1,6 +1,7 @@
 import { Copy, Download, Earth, Eye, EyeOff, FileArchive, Folders, History, PencilLine, Trash, Zap, Lock, Search } from "lucide-react";
 import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "../base/Dropdown";
 import DropdownItem from "../base/DropdownItem";
+import DropdownLabel from "../base/DropdownLabel";
 
 function DropdownRecentProjects() {
   return (
@@ -11,11 +12,11 @@ function DropdownRecentProjects() {
           <input type="search" placeholder="Search projects" className="bg-transparent border-0 w-full py-2" />
         </div>
 
-        <li className="cursor-default px-3 mt-2 text-gray-500 dark:text-zinc-300 text-xs">Last 30 Days</li>
+        <DropdownLabel label="Last 30 Days" />
         <DropdownItem size="md" prepend="Active Project" title="Multi-Platform Social Scheduler" className="bg-sky-100 dark:bg-sky-800/50" />
-        <li className="cursor-default px-3 mt-2 text-gray-500 dark:text-zinc-300 text-xs">May 2025</li>
+        <DropdownLabel label="May 2025" />
         <DropdownItem size="md" title="Learning Management Platform" />
-        <li className="cursor-default px-3 mt-2 text-gray-500 dark:text-zinc-300 text-xs">April 2025</li>
+        <DropdownLabel label="April 2025" />
         <DropdownItem size="md" title="Inspiration Gallery" />
       </ul>
     </Dropdown>
