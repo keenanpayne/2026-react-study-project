@@ -1,19 +1,11 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
-import {
-  getButtonClassName,
-  type ButtonRadius,
-  type ButtonSize,
-  type ButtonVariant,
-} from "./buttonStyles";
+import type { VariantProps } from "class-variance-authority";
+import { buttonStyles } from "./buttonStyles";
 
-type SharedButtonProps = {
+type SharedButtonProps = VariantProps<typeof buttonStyles> & {
   as?: "a" | "button";
   children: ReactNode;
   className?: string;
-  size?: ButtonSize;
-  radius?: ButtonRadius;
-  variant?: ButtonVariant;
-  iconOnly?: boolean;
 };
 
 type ButtonAsButtonProps = SharedButtonProps &
@@ -40,13 +32,8 @@ export default function Button({
   iconOnly,
   ...rest
 }: ButtonProps) {
-  const buttonClassName = getButtonClassName({
-    size,
-    radius,
-    variant,
-    iconOnly,
-    className,
-  });
+  const resolvedVariant = variant ?? (size === "flat" ? "plain" : "ghost");
+  const buttonClassName = buttonStyles({ size, radius, variant: resolvedVariant, iconOnly, className });
 
   if (as === "a") {
     const anchorProps = rest as Omit<ButtonAsAnchorProps, keyof SharedButtonProps>;
