@@ -46,6 +46,7 @@ function FileItemList(props: FileItemListProps) {
 
 const file: FileContents = {
   name: 'src/App.tsx',
+  lang: 'typescript',
   contents: `import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -131,6 +132,39 @@ function App() {
 export default App;`,
 };
 
+const terminal: FileContents = {
+  name: 'Terminal',
+  lang: 'bash',
+  contents: `5:27:20 PM [vite] page reload MASTODON_SETUP_GUIDE.md
+5:27:20 PM [vite] Pre-transform error: Failed to resolve import "../contexts/AuthContext" from "src/pages/Signup.tsx". Does the file exist?
+5:27:20 PM [vite] page reload src/hooks/usePosts.ts
+5:27:20 PM [vite] page reload src/pages/Login.tsx
+5:27:20 PM [vite] page reload src/pages/Signup.tsx
+5:27:20 PM [vite] Pre-transform error: Failed to resolve import "../contexts/AuthContext" from "src/pages/Calendar.tsx". Does the file exist?
+5:27:20 PM [vite] Pre-transform error: Failed to resolve import "./contexts/AuthContext" from "src/App.tsx". Does the file exist?
+5:27:20 PM [vite] page reload src/pages/Dashboard.tsx
+5:27:21 PM [vite] hmr update /src/index.css, /src/pages/Dashboard.tsx
+5:27:22 PM [vite] hmr update /src/components/Layout.tsx
+5:27:22 PM [vite] hmr update /src/contexts/AuthContext.tsx
+5:27:22 PM [vite] hmr update /src/components/ProtectedRoute.tsx
+5:27:22 PM [vite] hmr update /src/components/StatusBadge.tsx
+5:27:22 PM [vite] hmr update /src/pages/Integrations.tsx
+5:27:22 PM [vite] hmr update /src/pages/Composer.tsx, /src/index.css
+5:27:22 PM [vite] hmr update /src/pages/Composer.tsx, /src/index.css (x2)
+5:27:22 PM [vite] hmr update /src/pages/Integrations.tsx, /src/pages/Composer.tsx, /src/index.css
+5:27:22 PM [vite] hmr update /src/pages/Composer.tsx, /src/index.css
+5:27:23 PM [vite] ✨ new dependencies optimized: react-router-dom, @supabase/supabase-js
+5:27:23 PM [vite] ✨ optimized dependencies changed. reloading
+5:49:06 PM [vite] .env changed, restarting server...
+5:49:06 PM [vite] hmr update /src/pages/Composer.tsx, /src/index.css
+5:49:06 PM [vite] hmr update /src/pages/Integrations.tsx, /src/index.css
+5:49:06 PM [vite] server restarted.
+5:49:08 PM [vite] .env changed, restarting server...
+5:49:08 PM [vite] hmr update /src/pages/Composer.tsx, /src/index.css
+5:49:08 PM [vite] hmr update /src/pages/Integrations.tsx, /src/index.css
+5:49:09 PM [vite] server restarted.`,
+};
+
 type EditorCodebaseProps = {
   isVisible: boolean;
 }
@@ -140,7 +174,7 @@ export default function EditorCodebase(props: EditorCodebaseProps) {
 
   return (
     <main className="flex-1 relative mb-3 rounded-xl border border-gray-200 dark:border-zinc-700 min-h-0 h-full w-full">
-      <section className="grid grid-cols-12 h-full">
+      <div className="grid grid-cols-12 h-full">
         <aside className="col-span-3 border-r border-gray-200 dark:border-zinc-700 overflow-scroll">
           <header className="p-1.5 border-b border-gray-200 dark:border-zinc-700">
             <nav className="flex items-center gap-1.5">
@@ -202,16 +236,26 @@ export default function EditorCodebase(props: EditorCodebaseProps) {
           />
         </article>
 
-        <div className="col-span-12 border-t border-gray-200 dark:border-zinc-700">
-          <header>
+        <section className="col-span-12 border-t border-gray-200 dark:border-zinc-700">
+          <header className="p-1.5 border-b border-gray-200 dark:border-zinc-700">
             <nav className="flex items-center gap-1.5">
               <Button size="md" rounded="md">Bolt</Button>
               <Button size="md" rounded="md">Publish Output</Button>
               <Button size="md" rounded="md">Terminal</Button>
             </nav>
           </header>
-        </div>
-      </section>
+
+          <File
+            file={terminal}
+            options={{
+              theme: { dark: 'pierre-dark', light: 'pierre-light' },
+              disableLineNumbers: true,
+              disableFileHeader: true,
+            }}
+            className="max-h-[200px] overflow-scroll rounded-b-xl"
+          />
+        </section>
+      </div>
     </main>
   )
 }
