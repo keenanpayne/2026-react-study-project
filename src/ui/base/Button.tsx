@@ -16,6 +16,7 @@ const buttonStyles = cva(
         md: "rounded-md",
         lg: "rounded-lg",
         xl: "rounded-xl",
+        pill: "rounded-full",
       },
       variant: {
         ghost: "hover:bg-gray-100 dark:hover:bg-zinc-700",

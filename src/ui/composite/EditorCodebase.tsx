@@ -1,4 +1,4 @@
-import { ChevronRight, File as FileIcon, FolderTree, Search } from "lucide-react";
+import { ChevronRight, File as FileIcon, FolderTree, Rocket, SearchCode, SquareTerminal, Zap } from "lucide-react";
 import Button from "../base/Button";
 import type { ReactNode } from "react";
 import {
@@ -18,7 +18,7 @@ type FileItemProps = {
 function FileItem(props: FileItemProps) {
   return (
     <li>
-      <p className={`flex items-center gap-1.5 cursor-pointer py-1 text-sm transition-colors ${props.nested ? 'px-4' : 'px-1.5'} ${props.selected ? 'bg-sky-100 dark:bg-sky-900/20' : 'text-gray-500 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-700'}`}>
+      <p className={`flex items-center gap-1.5 cursor-pointer py-1 text-sm transition-colors ${props.nested ? 'px-4' : 'px-1.5'} ${props.selected ? 'bg-sky-100 dark:bg-sky-800/50' : 'text-gray-500 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'}`}>
         {props.isDirectory ? <ChevronRight size={14} strokeWidth={1} className={`shrink-0 ${props.open ? 'rotate-90' : ''}`} /> : <FileIcon size={12} strokeWidth={1.5} className="shrink-0" />}
         {props.name}
       </p>
@@ -174,18 +174,18 @@ export default function EditorCodebase(props: EditorCodebaseProps) {
 
   return (
     <main className="flex-1 relative mb-3 rounded-xl border border-gray-200 dark:border-zinc-700 min-h-0 h-full w-full">
-      <div className="grid grid-cols-12 h-full">
-        <aside className="col-span-3 border-r border-gray-200 dark:border-zinc-700 overflow-scroll">
-          <header className="p-1.5 border-b border-gray-200 dark:border-zinc-700">
+      <div className="@container/editor-codebase grid grid-cols-12 h-full">
+        <aside className="col-span-4 @2xl:col-span-3 border-r border-gray-200 dark:border-zinc-700 overflow-scroll">
+          <header className="px-1.5 py-1 bg-gray-50 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 rounded-tl-xl">
             <nav className="flex items-center gap-1.5">
-              <Button size="sm" radius="md">
-                <FolderTree size={16} strokeWidth={1.5} />
-                Files
+              <Button size="md" radius="md">
+                <FolderTree size={18} strokeWidth={1.5} />
+                <span className="font-medium">Files</span>
               </Button>
 
-              <Button size="sm" radius="md">
-                <Search size={16} strokeWidth={1.5} />
-                Search
+              <Button size="md" radius="md">
+                <SearchCode size={18} strokeWidth={1.5} />
+                <span className="font-medium">Search</span>
               </Button>
             </nav>
           </header>
@@ -227,7 +227,7 @@ export default function EditorCodebase(props: EditorCodebaseProps) {
           </FileItemList>
         </aside>
 
-        <article className="col-span-9 overflow-scroll rounded-tr-xl">
+        <article className="col-span-8 @2xl:col-span-9 overflow-scroll rounded-tr-xl">
           <File
             file={file}
             options={{
@@ -238,10 +238,21 @@ export default function EditorCodebase(props: EditorCodebaseProps) {
 
         <section className="col-span-12 border-t border-gray-200 dark:border-zinc-700">
           <header className="p-1.5 border-b border-gray-200 dark:border-zinc-700">
-            <nav className="flex items-center gap-1.5">
-              <Button size="md" radius="md">Bolt</Button>
-              <Button size="md" radius="md">Publish Output</Button>
-              <Button size="md" radius="md">Terminal</Button>
+            <nav className="flex items-center gap-2">
+              <Button size="md" radius="pill" variant="subtle">
+                <Zap size={18} strokeWidth={1.5} />
+                Bolt
+              </Button>
+
+              <Button size="md" radius="pill" variant="ghost">
+                <Rocket size={18} strokeWidth={1.5} />
+                Publish Output
+              </Button>
+
+              <Button size="md" radius="pill" variant="ghost">
+                <SquareTerminal size={18} strokeWidth={1.5} />
+                Terminal
+              </Button>
             </nav>
           </header>
 
@@ -252,7 +263,7 @@ export default function EditorCodebase(props: EditorCodebaseProps) {
               disableLineNumbers: true,
               disableFileHeader: true,
             }}
-            className="max-h-[200px] overflow-scroll rounded-b-xl"
+            className="max-h-[200px] overflow-scroll rounded-b-xl px-1.5 py-0.5 text-xs leading-tight"
           />
         </section>
       </div>

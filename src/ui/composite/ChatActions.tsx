@@ -14,7 +14,7 @@ export default function ChatActions(props: ChatActionsProps) {
   const iconClass = "stroke-gray-700 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-200 transition-colors";
   
   return (
-    <details className="group/details space-y-5 py-3" open={props.actionsExpanded}>
+    <details className="group/details py-3" open={props.actionsExpanded}>
       <summary className="cursor-pointer flex items-center gap-2 mb-0">
         <span className="flex items-center flex-1 gap-2">
           <CircleEllipsis size={16} strokeWidth={1.5} /> {props.count} actions taken
@@ -23,7 +23,7 @@ export default function ChatActions(props: ChatActionsProps) {
         <ChevronDown size={20} strokeWidth={1.5} className="group-open/details:rotate-180 transition-transform duration-300" />
       </summary>
       
-      <ul className="space-y-5 pt-5">
+      <ul className="space-y-3 pt-5">
         <ChatAction key={1} title="Get current working directory" icon={<SquareTerminal size={iconSize} strokeWidth={iconStrokeWidth} className={iconClass} />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
         <ChatAction key={2} title="Listed files in project root" icon={<SquareTerminal size={iconSize} strokeWidth={iconStrokeWidth} className={iconClass} />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
         <ChatAction key={3} title="Read" icon={<Eye size={iconSize} strokeWidth={iconStrokeWidth} className={iconClass} />} actionOnClick={props.actionOnClick} actionsExpanded={props.actionsExpanded} />
