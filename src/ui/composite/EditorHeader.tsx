@@ -39,7 +39,7 @@ export default function EditorHeader(props: EditorHeaderProps) {
   return (
     <header className="py-1.5">
       <div className="flex flex-wrap items-center gap-1.5">
-        <nav className="flex shrink-0 items-center space-between gap-1.5 border border-gray-200 dark:border-gray-800 rounded-xl w-auto px-0.5 py-1.5 h-8">
+        <nav className="flex shrink-0 items-center space-between gap-1 border border-gray-200 dark:border-gray-800 rounded-xl w-auto px-0.5 py-1.5 h-8">
           <Button size="sm" className={props.isEditorOutputVisible ? activeButtonClass : inactiveButtonClass} onClick={handleEditorOutputClick}>
             <Eye size={15} strokeWidth={1.5} className={props.isEditorOutputVisible ? activeButtonIconClass : inactiveButtonIconClass} />
           </Button>
