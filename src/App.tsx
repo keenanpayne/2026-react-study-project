@@ -6,9 +6,14 @@ import ChatMessage from './ui/composite/ChatMessage';
 import ChatForm from './ui/composite/ChatForm';
 import EditorHeader from './ui/composite/EditorHeader';
 import EditorOutput from './ui/composite/EditorOutput';
+import EditorCodebase from './ui/composite/EditorCodebase';
+import EditorDatabase from './ui/composite/EditorDatabase';
 
 export default function App() {
   const [isActionDialogOpen, setIsActionDialogOpen] = useState(false);
+  const [isEditorOutputVisible, setIsEditorOutputVisible] = useState(true);
+  const [isEditorCodebaseVisible, setIsEditorCodebaseVisible] = useState(false);
+  const [isEditorDatabaseVisible, setIsEditorDatabaseVisible] = useState(false);
 
   return (
     <>
@@ -25,8 +30,10 @@ export default function App() {
         </section>
 
         <div className="md:col-span-6 lg:col-auto min-h-0 h-full overflow-scroll mx-3 md:ml-0 flex flex-col">
-          <EditorHeader />
-          <EditorOutput />
+          <EditorHeader isEditorOutputVisible={isEditorOutputVisible} setIsEditorOutputVisible={setIsEditorOutputVisible} isEditorCodebaseVisible={isEditorCodebaseVisible} setIsEditorCodebaseVisible={setIsEditorCodebaseVisible} isEditorDatabaseVisible={isEditorDatabaseVisible} setIsEditorDatabaseVisible={setIsEditorDatabaseVisible} />
+          <EditorOutput isVisible={isEditorOutputVisible} />
+          <EditorCodebase isVisible={isEditorCodebaseVisible} />
+          <EditorDatabase isVisible={isEditorDatabaseVisible} />
         </div>
       </main>
     </>

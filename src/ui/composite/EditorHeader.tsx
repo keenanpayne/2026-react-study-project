@@ -3,21 +3,53 @@ import Button from "../base/Button";
 import DropdownSettings from "./DropdownSettings";
 import DropdownUser from "./DropdownUser";
 
-export default function EditorHeader() {
+type EditorHeaderProps = {
+  isEditorOutputVisible: boolean;
+  setIsEditorOutputVisible: (visible: boolean) => void;
+  isEditorCodebaseVisible: boolean;
+  setIsEditorCodebaseVisible: (visible: boolean) => void;
+  isEditorDatabaseVisible: boolean;
+  setIsEditorDatabaseVisible: (visible: boolean) => void;
+}
+
+export default function EditorHeader(props: EditorHeaderProps) {
+  function handleEditorOutputClick() {
+    props.setIsEditorOutputVisible(true);
+    props.setIsEditorCodebaseVisible(false);
+    props.setIsEditorDatabaseVisible(false);
+  }
+
+  function handleEditorCodebaseClick() {
+    props.setIsEditorOutputVisible(false);
+    props.setIsEditorCodebaseVisible(true);
+    props.setIsEditorDatabaseVisible(false);
+  }
+
+  function handleEditorDatabaseClick() {
+    props.setIsEditorOutputVisible(false);
+    props.setIsEditorCodebaseVisible(false);
+    props.setIsEditorDatabaseVisible(true);
+  }
+
+  const activeButtonClass = "group/button rounded-[10px] p-1.5 bg-sky-200/50 dark:bg-sky-900/75 hover:bg-sky-200/50 dark:hover:bg-sky-900/75 transition-colors";
+  const inactiveButtonClass = "group/button rounded-[10px] p-1.5";
+  const activeButtonIconClass = "stroke-sky-700 dark:stroke-sky-100 group-hover/button:stroke-sky-700 dark:group-hover/button:stroke-sky-100 transition-colors";
+  const inactiveButtonIconClass = "stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors";
+
   return (
     <header className="py-1.5">
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-1.5">
         <nav className="flex shrink-0 items-center space-between gap-1.5 border border-gray-200 dark:border-gray-800 rounded-xl w-auto px-0.5 py-1.5 h-8">
-          <Button size="sm" className="group/button rounded-[10px] p-1.5 bg-sky-200/50 dark:bg-sky-900/75 hover:bg-sky-200/50 dark:hover:bg-sky-900/75 transition-colors">
-            <Eye size={15} strokeWidth={1.5} className="stroke-sky-700 dark:stroke-sky-100 group-hover/button:stroke-sky-700 dark:group-hover/button:stroke-sky-100 transition-colors" />
+          <Button size="sm" className={props.isEditorOutputVisible ? activeButtonClass : inactiveButtonClass} onClick={handleEditorOutputClick}>
+            <Eye size={15} strokeWidth={1.5} className={props.isEditorOutputVisible ? activeButtonIconClass : inactiveButtonIconClass} />
           </Button>
 
-          <Button size="sm" className="group/button rounded-[10px] p-1.5">
-            <Code size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
+          <Button size="sm" className={props.isEditorCodebaseVisible ? activeButtonClass : inactiveButtonClass} onClick={handleEditorCodebaseClick}>
+            <Code size={15} strokeWidth={1.5} className={props.isEditorCodebaseVisible ? activeButtonIconClass : inactiveButtonIconClass} />
           </Button>
 
-          <Button size="sm" className="group/button rounded-[10px] p-1.5">
-            <Database size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
+          <Button size="sm" className={props.isEditorDatabaseVisible ? activeButtonClass : inactiveButtonClass} onClick={handleEditorDatabaseClick}>
+            <Database size={15} strokeWidth={1.5} className={props.isEditorDatabaseVisible ? activeButtonIconClass : inactiveButtonIconClass} />
           </Button>
         </nav>
 
