@@ -4,7 +4,12 @@ import DropdownProjects from "./DropdownProjects";
 import UserTeams from "./UserTeams";
 import Button from "../base/Button";
 import DropdownTrigger from "./DropdownTrigger";
-import Separator from "../base/Separator";
+
+function Separator() {
+  return (
+    <span className="block text-xl antialiased h-[18px] text-gray-200 dark:text-zinc-700 leading-4">/</span>
+  );
+}
 
 export default function ChatHeader() {
   return (
