@@ -42,7 +42,7 @@ export default function ChatForm() {
 
             <Button size="flat" className="group/button shrink-0">
               <span className="sr-only">Send Message</span>
-              <ArrowUp size={28} className="bg-blue-300 group-hover/button:bg-blue-500 stroke-white rounded-full p-1.25 transition-colors" />
+              <ArrowUp size={28} className="bg-blue-300 dark:bg-blue-400/35 group-hover/button:bg-blue-500 stroke-white rounded-full p-1.25 transition-colors" />
             </Button>
           </div>
         </nav>

@@ -8,16 +8,16 @@ export default function EditorHeader() {
     <header className="py-1.5">
       <div className="flex flex-wrap items-center gap-3">
         <nav className="flex shrink-0 items-center space-between gap-1.5 border border-gray-200 dark:border-gray-800 rounded-xl w-auto px-0.5 py-1.5 h-8">
-          <Button size="sm" className="group/button rounded-[10px] p-1.5 bg-blue-100 dark:bg-blue-900">
-            <Eye size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-100 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-800 transition-colors" />
+          <Button size="sm" className="group/button rounded-[10px] p-1.5 bg-sky-200/50 dark:bg-sky-900/75 hover:bg-sky-200/50 dark:hover:bg-sky-900/75 transition-colors">
+            <Eye size={15} strokeWidth={1.5} className="stroke-sky-700 dark:stroke-sky-100 group-hover/button:stroke-sky-700 dark:group-hover/button:stroke-sky-100 transition-colors" />
           </Button>
 
           <Button size="sm" className="group/button rounded-[10px] p-1.5">
-            <Code size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-gray-900 transition-colors" />
+            <Code size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
           </Button>
 
           <Button size="sm" className="group/button rounded-[10px] p-1.5">
-            <Database size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-gray-900 transition-colors" />
+            <Database size={15} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
           </Button>
         </nav>
 
@@ -31,19 +31,19 @@ export default function EditorHeader() {
 
           <nav className="justify-end flex items-center">
             <Button size="sm" rounded="sm" className="group/button p-1.5">
-              <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-gray-900 transition-colors" />
+              <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
             </Button>
 
             <Button size="sm" rounded="sm" className="group/button p-1.5">
-              <ExternalLink size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-gray-900 transition-colors" />
+              <ExternalLink size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
             </Button>
 
             <Button size="sm" rounded="sm" className="group/button p-1.5">
-              <MonitorSmartphone size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-gray-900 transition-colors" />
+              <MonitorSmartphone size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
             </Button>
 
             <Button size="sm" rounded="sm" className="group/button p-1.5">
-              <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-gray-900 transition-colors" />
+              <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
             </Button>
           </nav>
         </div>
