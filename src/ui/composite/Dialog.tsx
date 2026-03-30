@@ -18,6 +18,7 @@ export default function Dialog(props: DialogProps) {
         <BaseDialog.Popup className={`flex flex-col fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-gray-50 dark:bg-zinc-800 transition-all duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0 max-h-[80dvh] overflow-hidden w-full md:max-w-xl z-30`}>
           <BaseDialog.Title className="mb-1 text-xl font-semibold flex items-center justify-between px-6 py-4 border-b border-gray-300 dark:border-zinc-600">
             {props.title}
+            
             <BaseDialog.Close className="cursor-pointer">
               <span className="sr-only">Close dialog</span>
               <X size={20} strokeWidth={1} />
