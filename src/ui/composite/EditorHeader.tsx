@@ -1,5 +1,7 @@
 import { Eye, Code, Database, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan } from "lucide-react";
 import Button from "../base/Button";
+import DropdownSettings from "./DropdownSettings";
+import DropdownUser from "./DropdownUser";
 
 export default function EditorHeader() {
   return (
@@ -19,7 +21,7 @@ export default function EditorHeader() {
           </Button>
         </nav>
 
-        <Button size="sm" className="group/button px-1 py-1 cursor-pointer">
+        <Button size="md" openChildren={<DropdownSettings />}>
           <Settings size={16} strokeWidth={1.5} className="stroke-gray-400 fill-gray-200 dark:fill-transparent hover:fill-gray-300 dark:hover:fill-gray-900 hover:stroke-gray-800 dark:hover:stroke-gray-300 transition-colors" />
         </Button>
 
@@ -59,7 +61,7 @@ export default function EditorHeader() {
             Publish
           </Button>
 
-          <Button size="md" className="shrink-0">
+          <Button size="md" className="shrink-0" openChildren={<DropdownUser />}>
             <img src="/me.jpg" className="w-6 h-6 rounded-full" />
           </Button>
         </div>

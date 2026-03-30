@@ -1,6 +1,6 @@
 import { ChevronsUpDown, Lock } from "lucide-react";
 import { teams, currentProject } from "../../data/mock";
-import UserProjects from "./UserProjects";
+import DropdownProjects from "./DropdownProjects";
 import UserTeams from "./UserTeams";
 import Button from "../base/Button";
 import Separator from "../base/Separator";
@@ -22,7 +22,7 @@ export default function ChatHeader() {
 
         <Separator />
 
-        <Button size="md" className="h-9" openChildren={<UserProjects />}>
+        <Button size="md" className="h-9" openChildren={<DropdownProjects />}>
           <span className="text-xs md:text-sm font-medium">{currentProject.title}</span>
           {currentProject.private && <Lock strokeWidth={1} size={14} />}
         </Button>

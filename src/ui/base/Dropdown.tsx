@@ -11,7 +11,7 @@ export default function Dropdown(props: DropdownProps) {
   const className = props.className ? props.className : '';
 
   return (
-    <div className={`bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg absolute top-10 text-left shadow-xs ${alignClass} ${className}`}>
+    <div className={`bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg absolute top-10 text-left shadow-xs z-10 ${alignClass} ${className}`}>
       {props.children}
     </div>
   )
