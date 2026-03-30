@@ -21,7 +21,7 @@ export default function ChatMessage(props: ChatMessageProps) {
         <nav className="flex justify-between items-center">
           <img src="/bolt-logo.png" alt="Bolt" className="h-3.5 dark:invert-100" />
 
-          <Button size="sm" openChildren={<DropdownChat />}>
+          <Button size="sm" rounded="md" openChildren={<DropdownChat />}>
             <Ellipsis />
           </Button>
         </nav>

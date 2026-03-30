@@ -5,6 +5,7 @@ type ButtonProps = {
   href?: string;
   className?: string;
   size?: "flat" | "sm" | "md" | "lg";
+  rounded?: "sm" | "md" | "lg" | "xl";
   children: ReactNode;
   openChildren?: ReactNode;
   onClick?: () => void;
@@ -16,11 +17,16 @@ export default function Button(props: ButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const sizeClass = 
     props.size === 'flat' ? '' : 
-    props.size === 'sm' ? 'text-xs p-1 gap-1.5 rounded-sm hover:bg-gray-100 dark:hover:bg-zinc-700' : 
-    props.size === 'md' ? 'text-sm px-2 py-1.5 gap-2 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-700' : 
-    props.size === 'lg' ? 'text-base px-3 py-2 gap-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700' : '';
+    props.size === 'sm' ? 'text-xs p-1 gap-1.5 hover:bg-gray-100 dark:hover:bg-zinc-700' : 
+    props.size === 'md' ? 'text-sm px-2 py-1.5 gap-2 hover:bg-gray-100 dark:hover:bg-zinc-700' : 
+    props.size === 'lg' ? 'text-base px-3 py-2 gap-2.5 hover:bg-gray-100 dark:hover:bg-zinc-700' : '';
+  const roundedClass = 
+    props.rounded === 'sm' ? 'rounded-sm' : 
+    props.rounded === 'md' ? 'rounded-md' : 
+    props.rounded === 'lg' ? 'rounded-lg' : 
+    props.rounded === 'xl' ? 'rounded-xl' : '';
   const isOpenClass = isOpen ? 'bg-gray-100 dark:bg-zinc-700' : '';
-  const styles = `cursor-pointer text-left relative flex items-center transition-colors ${sizeClass} ${props.className ? props.className : ''} ${isOpenClass}`;
+  const styles = `cursor-pointer text-left relative flex items-center transition-colors ${sizeClass} ${roundedClass} ${props.className ? props.className : ''} ${isOpenClass}`;
 
   useEffect(() => {
     if (!isOpen) return;
