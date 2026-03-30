@@ -3,7 +3,7 @@ import Button from "../base/Button";
 
 export default function ChatForm() {
   return (
-    <form className="sticky bottom-0 bg-white px-5 pb-5">
+    <form className="sticky bottom-0 bg-white px-5 pb-3">
       <aside className="mx-1.75 px-2 py-1 flex justify-between text-xs bg-white border-t border-l border-r border-gray-200 rounded-t-lg">
         <span>300k daily tokens remaining.</span>
 

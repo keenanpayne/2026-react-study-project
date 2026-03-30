@@ -17,7 +17,7 @@ export default function ChatMessage(props: ChatMessageProps) {
       </article>
 
       {/* Bolt Message */}
-      <article className="flex flex-col gap-3 px-5 pb-5 text-sm leading-relaxed">
+      <article className="flex flex-col gap-3 px-5 pb-6 text-sm leading-relaxed">
         <nav className="flex justify-between items-center">
           <img src="/bolt-logo.png" alt="Bolt" className="h-3.5" />
 
