@@ -7,20 +7,18 @@ import DropdownLabel from "../base/DropdownLabel";
 export default function DropdownSettings() {
   return (
     <Dropdown align="left" className="w-55">
-      <ul> 
-        <DropdownItem size="md" title="Analytics" icon={<ChartColumnIncreasing size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
-        <DropdownItem size="md" title="Authentication" icon={<BadgeCheck size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
-        <DropdownItem size="md" title="Knowledge" icon={<Lightbulb size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
-        <DropdownItem size="md" title="Server Functions" icon={<SquareFunction size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
-        <DropdownItem size="md" title="Secrets" icon={<Key size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
-        <DropdownItem size="md" title="Connectors" icon={<Component size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
-        <DropdownSeparator />
-        <DropdownItem size="md" title="All project settings" icon={<Settings size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
-        <DropdownSeparator />
-        <DropdownLabel label="Integrations" />
-        <DropdownItem size="md" title="Stripe" append="Add payments to your project" icon={<CircleDollarSign size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
-        <DropdownItem size="md" title="Bolt Database" append="Manage database settings" icon={<Database size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
-      </ul>
+      <DropdownItem size="md" title="Analytics" icon={<ChartColumnIncreasing size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+      <DropdownItem size="md" title="Authentication" icon={<BadgeCheck size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+      <DropdownItem size="md" title="Knowledge" icon={<Lightbulb size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+      <DropdownItem size="md" title="Server Functions" icon={<SquareFunction size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+      <DropdownItem size="md" title="Secrets" icon={<Key size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+      <DropdownItem size="md" title="Connectors" icon={<Component size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+      <DropdownSeparator />
+      <DropdownItem size="md" title="All project settings" icon={<Settings size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+      <DropdownSeparator />
+      <DropdownLabel label="Integrations" />
+      <DropdownItem size="md" title="Stripe" append="Add payments to your project" icon={<CircleDollarSign size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
+      <DropdownItem size="md" title="Bolt Database" append="Manage database settings" icon={<Database size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
     </Dropdown>
   );
 }

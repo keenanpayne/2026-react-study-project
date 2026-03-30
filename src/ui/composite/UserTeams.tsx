@@ -10,15 +10,13 @@ type UserTeamsProps = {
 export default function UserTeams(props: UserTeamsProps) {
   return (
     <Dropdown align="left" className="w-55">
-      <ul>
-        {props.data.map((item: Team) => (
-          <UserTeam key={item.id} team={item} />
-        ))}
+      {props.data.map((item: Team) => (
+        <UserTeam key={item.id} team={item} />
+      ))}
 
-        <DropdownSeparator />
+      <DropdownSeparator />
 
-        <UserTeam team={{ id: 0, title: 'Create a team'}} create={true} />
-      </ul>
+      <UserTeam team={{ id: 0, title: 'Create a team'}} create={true} />
     </Dropdown>
   )
 }

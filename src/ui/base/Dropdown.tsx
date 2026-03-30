@@ -17,7 +17,9 @@ export default function Dropdown(props: DropdownProps) {
 
   return (
     <div className={`bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg absolute text-left shadow-xs z-30 ${alignClass} ${nestedClass} ${className}`} tabIndex={0}>
-      {props.children}
+      <ul>
+        {props.children}
+      </ul>
     </div>
   )
 }
