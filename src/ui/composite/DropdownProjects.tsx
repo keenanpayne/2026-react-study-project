@@ -5,12 +5,6 @@ import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "../bas
 import DropdownItem from "../base/DropdownItem";
 import DropdownLabel from "../base/DropdownLabel";
 
-/**
- * @function getSectionLabel
- * @description Get the section label for a project based on the updated date
- * @param {Date} date - The updated date of the project
- * @returns {string} The section label
- */
 function getSectionLabel(date: Date): string {
   const ms30Days = 30 * 24 * 60 * 60 * 1000;
 
@@ -19,12 +13,6 @@ function getSectionLabel(date: Date): string {
   return date.toLocaleString("default", { month: "long", year: "numeric" });
 }
 
-/**
- * @function groupProjectsBySection
- * @description Group projects by section based on the updated date
- * @param {Project[]} items - The projects to group
- * @returns {Array<{ label: string; projects: Project[] }>} The grouped projects
- */
 function groupProjectsBySection(items: MockUserProject[]) {
   const groups: { label: string; projects: MockUserProject[] }[] = [];
 
