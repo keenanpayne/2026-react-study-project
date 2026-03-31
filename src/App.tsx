@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import Dialog from './ui/composite/Dialog';
 import ChatResponse from './ui/composite/ChatResponse';
 import ChatHeader from './ui/composite/ChatHeader';
@@ -9,23 +9,14 @@ import WorkbenchPreview from './ui/composite/WorkbenchPreview';
 import WorkbenchCodebase from './ui/composite/WorkbenchCodebase';
 import WorkbenchDatabase from './ui/composite/WorkbenchDatabase';
 import MobileNavigation from './ui/composite/MobileNavigation';
-import type { MobileView, WorkbenchPane } from './ui/composite/MobileNavigation';
 import MockWorkbenchPreview from './data/MockWorkbenchPreview';
 import { MockWorkbenchDatabaseTables, MockWorkbenchFile, MockWorkbenchFileTree, MockWorkbenchTerminal } from './data/MockWorkbenchCodebase';
 import { MockUserBoltTokens, MockUserCurrentProject, MockUserProjects, MockUserTeams } from './data/MockUser';
+import { useMobileNavigation } from './hooks/useMobileNavigation';
 
 export default function App() {
   const [isActionDialogOpen, setIsActionDialogOpen] = useState(false);
-  const [activePane, setActivePane] = useState<WorkbenchPane>('preview');
-  const [activeMobileView, setActiveMobileView] = useState<MobileView>('chat');
-
-  const handleMobileViewChange = useCallback((view: MobileView) => {
-    setActiveMobileView(view);
-
-    if (view !== 'chat') {
-      setActivePane(view);
-    }
-  }, []);
+  const { activePane, setActivePane, activeMobileView, handleMobileViewChange } = useMobileNavigation();
 
   const isMobileChat = activeMobileView === 'chat';
 

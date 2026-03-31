@@ -15,12 +15,12 @@ export default function MockWorkbenchPreview() {
         <form className="space-y-4 mt-6 text-gray-900">
           <div className="flex flex-col gap-2">
             <label className="text-sm" htmlFor="email">Email</label>
-            <input id="email" type="email" placeholder="you@example.com" className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+            <input id="email" type="email" placeholder="you@example.com" className="w-full px-3 py-2 border border-gray-300 rounded-lg" autoComplete="username" />
           </div>
 
           <div className="flex flex-col gap-2">
             <label className="text-sm" htmlFor="password">Password</label>
-            <input id="password" type="password" placeholder="********" className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+            <input id="password" type="password" placeholder="********" className="w-full px-3 py-2 border border-gray-300 rounded-lg" autoComplete="current-password" />
           </div>
 
           <button type="submit" className="cursor-pointer w-full px-3 py-2 bg-blue-700 hover:bg-blue-900 transition-colors text-white rounded-lg">

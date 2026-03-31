@@ -5,7 +5,7 @@ import WorkbenchFile from "./WorkbenchFile";
 import Button from "../base/Button";
 import { SearchCode, type LucideIcon } from "lucide-react";
 
-function computeInitialExpanded(
+export function computeInitialExpanded(
   nodes: MockWorkbenchFileTreeNode[],
   parentPath: string
 ): Set<string> {

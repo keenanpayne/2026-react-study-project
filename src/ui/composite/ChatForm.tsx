@@ -1,17 +1,16 @@
 import { Plus, ChevronsUpDown, MousePointerClick, Lightbulb, ArrowUp } from "lucide-react";
 import Button from "../base/Button";
 
-/**
- * @function formatTokens
- * @description Format the Bolt tokens into a truncated string
- * @param {number} tokens - The number of tokens
- * @returns {string} The formatted tokens
- */
-function formatTokens(tokens: number): string {
+export function formatTokens(tokens: number): string {
   if (tokens >= 1000000) {
-    return `${(tokens / 1000000)}M`;
+    const value = Math.round(tokens / 100000) / 10;
+    return `${value % 1 === 0 ? value.toFixed(0) : value}M`;
   } else if (tokens >= 1000) {
-    return `${(tokens / 1000)}k`;
+    const value = Math.round(tokens / 100) / 10;
+    if (value >= 1000) {
+      return `${(value / 1000) % 1 === 0 ? (value / 1000).toFixed(0) : (value / 1000)}M`;
+    }
+    return `${value % 1 === 0 ? value.toFixed(0) : value}k`;
   }
   return tokens.toString();
 }
