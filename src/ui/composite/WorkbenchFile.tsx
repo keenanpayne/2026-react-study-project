@@ -1,6 +1,28 @@
-import { ChevronRight, Columns3, FileIcon, Rows3, TableProperties } from "lucide-react";
+import { ChevronRight, Columns3, FileIcon, FolderClosed, FolderOpen, Rows3, TableProperties } from "lucide-react";
 import type { ReactNode } from "react";
 import type { MockWorkbenchFileTreeItemType } from "../../data/MockWorkbenchCodebase";
+
+interface WorkbenchFileIconProps {
+  type?: MockWorkbenchFileTreeItemType;
+  open?: boolean;
+}
+
+function WorkbenchFileIcon(props: WorkbenchFileIconProps) {
+  const iconSize = 14;
+  const iconStrokeWidth = 1.5;
+  const iconClassName = "shrink-0";
+  
+  if (!props.type) return null;
+  
+  if (props.type === "directory" && !props.open) return <FolderClosed size={iconSize} strokeWidth={iconStrokeWidth} className={iconClassName} />;
+  if (props.type === "directory" && props.open) return <FolderOpen size={iconSize} strokeWidth={iconStrokeWidth} className={iconClassName} />;
+  if (props.type === "file") return <FileIcon size={iconSize} strokeWidth={iconStrokeWidth} className={iconClassName} />;
+  if (props.type === "table") return <TableProperties size={iconSize} strokeWidth={iconStrokeWidth} className={iconClassName} />;
+  if (props.type === "row") return <Rows3 size={iconSize} strokeWidth={iconStrokeWidth} className={iconClassName} />;
+  if (props.type === "column") return <Columns3 size={iconSize} strokeWidth={iconStrokeWidth} className={iconClassName} />;
+
+  return null;
+}
 
 type WorkbenchFileProps = {
   name: string;
@@ -9,6 +31,8 @@ type WorkbenchFileProps = {
   depth?: number;
   open?: boolean;
   selected?: boolean;
+  hasChildren?: boolean;
+  onToggle?: () => void;
 }
 
 export default function WorkbenchFile(props: WorkbenchFileProps) {
@@ -16,25 +40,26 @@ export default function WorkbenchFile(props: WorkbenchFileProps) {
 
   return (
     <li>
-      <p className={`flex items-center gap-1.5 cursor-pointer py-1 pr-1.5 text-sm transition-colors ${props.selected ? 'bg-sky-100 dark:bg-sky-800/50' : 'text-gray-500 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'}`} style={{ paddingLeft: `${0.375 + depth * 0.625}rem` }}>
-        {
-          props.type === "directory" ? 
-            <ChevronRight size={14} strokeWidth={1} className={`shrink-0 ${props.open ? 'rotate-90' : ''}`} /> : 
-          props.type === "file" ? 
-            <FileIcon size={12} strokeWidth={1.5} className="shrink-0" /> :
-          props.type === "table" ?
-            <TableProperties size={12} strokeWidth={1.5} className="shrink-0" /> :
-          props.type === "row" ?
-            <Rows3 size={12} strokeWidth={1.5} className="shrink-0" /> :
-          props.type === "column" ?
-            <Columns3 size={12} strokeWidth={1.5} className="shrink-0" /> :
-            undefined
-        }
+      <div
+        className={`flex items-center gap-1.5 cursor-pointer py-1 pr-1.5 text-sm transition-colors ${props.selected ? 'bg-sky-100 dark:bg-sky-800/50' : 'text-gray-500 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'}`}
+        style={{ paddingLeft: `${0.375 + depth * 0.625}rem` }}
+        onClick={props.hasChildren ? props.onToggle : undefined}
+      >
+        <span className="flex-1 flex items-center gap-1.5">
+          <WorkbenchFileIcon type={props.type} open={props.open} />
+          <span className="select-none">{props.name}</span>
+        </span>
 
-        {props.name}
-      </p>
+        {props.hasChildren && (
+          <ChevronRight
+            size={14}
+            strokeWidth={1}
+            className={`shrink-0 transition-transform ${props.open ? 'rotate-90' : ''}`}
+          />
+        )}
+      </div>
 
-      {props.children && props.children}
+      {props.children}
     </li>
   )
 }

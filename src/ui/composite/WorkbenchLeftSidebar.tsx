@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { MockWorkbenchFileTreeNode } from "../../data/MockWorkbenchCodebase";
 import WorkbenchFileTree from "../base/WorkbenchFileTree";
 import WorkbenchFile from "./WorkbenchFile";
@@ -6,29 +6,35 @@ import Button from "../base/Button";
 import { SearchCode, type LucideIcon } from "lucide-react";
 
 /**
- * @function renderItems
- * @description Render the left sidebar items
- * @param {MockWorkbenchFileTreeNode[]} items - The items to render
- * @param {number} depth - The depth of the items
- * @returns {ReactNode} The rendered items
+ * @function computeInitialExpanded
+ * @description Compute the initial expanded state of the items
+ * @param {MockWorkbenchFileTreeNode[]} nodes - The nodes to compute the initial expanded state for
+ * @param {string} parentPath - The path to the parent node
+ * @returns {Set<string>} The set of paths that should start expanded
  */
-function renderItems(items: MockWorkbenchFileTreeNode[], depth: number): ReactNode {
-  return items.map((node) => (
-    <WorkbenchFile
-      key={node.name}
-      name={node.name}
-      type={node.type}
-      open={node.open}
-      selected={node.selected}
-      depth={depth}
-    >
-      {node.children ? (
-        <WorkbenchFileTree>
-          {renderItems(node.children, depth + 1)}
-        </WorkbenchFileTree>
-      ) : undefined}
-    </WorkbenchFile>
-  ));
+function computeInitialExpanded(
+  nodes: MockWorkbenchFileTreeNode[],
+  parentPath: string
+): Set<string> {
+  const expanded = new Set<string>();
+
+  for (const node of nodes) {
+    const path = parentPath ? `${parentPath}/${node.name}` : node.name;
+
+    if (node.children?.length) {
+      const childExpanded = computeInitialExpanded(node.children, path);
+
+      const hasSelectedChild = node.children.some((c) => c.selected);
+      const shouldExpand = node.open || hasSelectedChild || childExpanded.size > 0;
+
+      if (shouldExpand) {
+        expanded.add(path);
+        childExpanded.forEach((p) => expanded.add(p));
+      }
+    }
+  }
+
+  return expanded;
 }
 
 type WorkbenchLeftSidebarProps = {
@@ -38,9 +44,70 @@ type WorkbenchLeftSidebarProps = {
 }
 
 export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
+  const [expanded, setExpanded] = useState<Set<string>>(
+    () => computeInitialExpanded(props.list, "")
+  );
+
+  /**
+   * @function toggle
+   * @description Toggle the expanded state of an item
+   * @param {string} path - The path to the item
+   * @returns {void}
+   */
+  function toggle(path: string) {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(path)) {
+        next.delete(path);
+      } else {
+        next.add(path);
+      }
+      return next;
+    });
+  }
+
+  /**
+   * @function renderItems
+   * @description Render the left sidebar items
+   * @param {MockWorkbenchFileTreeNode[]} items - The items to render
+   * @param {number} depth - The depth of the items
+   * @param {string} parentPath - The path to the parent item
+   * @returns {ReactNode} The rendered items
+   */
+  function renderItems(
+    items: MockWorkbenchFileTreeNode[],
+    depth: number,
+    parentPath: string
+  ): ReactNode {
+    return items.map((node) => {
+      const path = parentPath ? `${parentPath}/${node.name}` : node.name;
+      const hasChildren = !!node.children?.length;
+      const isExpanded = expanded.has(path);
+
+      return (
+        <WorkbenchFile
+          key={node.name}
+          name={node.name}
+          type={node.type}
+          open={isExpanded}
+          selected={node.selected}
+          depth={depth}
+          hasChildren={hasChildren}
+          onToggle={() => toggle(path)}
+        >
+          {hasChildren && isExpanded ? (
+            <WorkbenchFileTree>
+              {renderItems(node.children!, depth + 1, path)}
+            </WorkbenchFileTree>
+          ) : undefined}
+        </WorkbenchFile>
+      );
+    });
+  }
+
   return (
-    <aside className="col-span-4 @2xl:col-span-3 border-r border-gray-200 dark:border-zinc-700 overflow-scroll">
-      <header className="px-1.5 py-1 bg-gray-50 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 rounded-tl-xl">
+    <aside className="relative col-span-4 @2xl:col-span-3 border-r border-gray-200 dark:border-zinc-700 overflow-scroll">
+      <header className="sticky top-0 left-0 px-1.5 py-1 bg-gray-50 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 rounded-tl-xl z-10">
         <nav className="flex items-center gap-1.5">
           <Button size="md" radius="md" variant="subtle">
             <props.listIcon size={18} strokeWidth={1.5} />
@@ -54,7 +121,7 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
         </nav>
       </header>
 
-      <WorkbenchFileTree>{renderItems(props.list, 0)}</WorkbenchFileTree>
+      <WorkbenchFileTree>{renderItems(props.list, 0, "")}</WorkbenchFileTree>
     </aside>
   )
 }
