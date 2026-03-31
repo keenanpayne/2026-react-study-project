@@ -20,7 +20,7 @@ function renderItems(items: MockWorkbenchFileTreeNode[], depth: number): ReactNo
       type={node.type}
       open={node.open}
       selected={node.selected}
-      nested={depth > 0}
+      depth={depth}
     >
       {node.children ? (
         <WorkbenchFileTree>
