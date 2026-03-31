@@ -1,5 +1,5 @@
 import { Eye, Code, Database, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan } from "lucide-react";
-import Button from "../base/Button";
+import Button from "./Button";
 import DropdownSettings from "./DropdownSettings";
 import DropdownUser from "./DropdownUser";
 import DropdownTrigger from "./DropdownTrigger";

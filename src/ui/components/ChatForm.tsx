@@ -1,5 +1,5 @@
 import { Plus, ChevronsUpDown, MousePointerClick, Lightbulb, ArrowUp } from "lucide-react";
-import Button from "../base/Button";
+import Button from "./Button";
 
 export function formatTokens(tokens: number): string {
   if (tokens >= 1000000) {

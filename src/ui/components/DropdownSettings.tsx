@@ -1,8 +1,8 @@
 import { BadgeCheck, ChartColumnIncreasing, CircleDollarSign, Component, Database, Key, Lightbulb, Settings, SquareFunction } from "lucide-react";
-import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "../base/Dropdown";
-import DropdownItem from "../base/DropdownItem";
-import DropdownSeparator from "../base/DropdownSeparator";
-import DropdownLabel from "../base/DropdownLabel";
+import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "./Dropdown";
+import DropdownItem from "./DropdownItem";
+import DropdownSeparator from "./DropdownSeparator";
+import DropdownLabel from "./DropdownLabel";
 
 type DropdownSettingsProps = {
   align?: "left" | "right";

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Database } from "lucide-react";
-import WorkbenchContainer from "../base/WorkbenchContainer";
-import WorkbenchContents from "../base/WorkbenchContents";
-import WorkbenchRightContent from "../base/WorkbenchRightContent";
+import WorkbenchContainer from "./WorkbenchContainer";
+import WorkbenchContents from "./WorkbenchContents";
+import WorkbenchRightContent from "./WorkbenchRightContent";
 import WorkbenchLeftSidebar from "./WorkbenchLeftSidebar";
 import DatabaseRowEditForm from "./DatabaseRowEditForm";
 import { type MockWorkbenchFileTreeNode } from "../../data/MockWorkbenchCodebase";

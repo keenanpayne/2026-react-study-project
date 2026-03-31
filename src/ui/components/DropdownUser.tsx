@@ -1,7 +1,7 @@
 import { CircleQuestionMark, CreditCard, LogOut, Palette, Settings } from "lucide-react";
-import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "../base/Dropdown";
-import DropdownItem from "../base/DropdownItem";
-import DropdownSeparator from "../base/DropdownSeparator";
+import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "./Dropdown";
+import DropdownItem from "./DropdownItem";
+import DropdownSeparator from "./DropdownSeparator";
 
 export default function DropdownUser() {
   return (

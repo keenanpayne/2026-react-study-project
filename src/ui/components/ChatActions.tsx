@@ -1,5 +1,5 @@
 import { CircleEllipsis, ChevronDown, SquareTerminal, Eye } from "lucide-react"
-import CodeString from "../base/CodeString"
+import CodeString from "./CodeString"
 import ChatAction from "./ChatAction"
 import { MockChatActions } from "../../data/MockChat"
 

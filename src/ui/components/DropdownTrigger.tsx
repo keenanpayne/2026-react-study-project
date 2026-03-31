@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import Button, { type ButtonProps } from "../base/Button";
+import Button, { type ButtonProps } from "./Button";
 import { cx } from "../../utils/cx";
 
 type DropdownTriggerProps = Extract<ButtonProps, { as?: "button" }> & {

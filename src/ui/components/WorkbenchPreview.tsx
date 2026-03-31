@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import EmptyPane from "../base/EmptyPane";
+import EmptyPane from "./EmptyPane";
 
 type WorkbenchPreviewProps = {
   isVisible: boolean;

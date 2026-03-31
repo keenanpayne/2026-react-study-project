@@ -3,7 +3,7 @@ import { MessageSquare, Eye, Code, Database, Settings } from "lucide-react";
 import DropdownTrigger from "./DropdownTrigger";
 import DropdownSettings from "./DropdownSettings";
 import DropdownUser from "./DropdownUser";
-import Button from "../base/Button";
+import Button from "./Button";
 
 export type WorkbenchPane = "preview" | "codebase" | "database";
 export type MobileView = "chat" | WorkbenchPane;

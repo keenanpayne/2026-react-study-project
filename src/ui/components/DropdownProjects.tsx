@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { Copy, Download, Earth, Eye, EyeOff, FileArchive, Folders, History, PencilLine, Trash, Zap, Lock, Search } from "lucide-react";
 import type { MockUserProject } from "../../data/MockUser";
-import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "../base/Dropdown";
-import DropdownItem from "../base/DropdownItem";
-import DropdownLabel from "../base/DropdownLabel";
+import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "./Dropdown";
+import DropdownItem from "./DropdownItem";
+import DropdownLabel from "./DropdownLabel";
 
 function getSectionLabel(date: Date): string {
   const ms30Days = 30 * 24 * 60 * 60 * 1000;

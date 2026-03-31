@@ -1,10 +1,10 @@
 import { File, type FileContents } from '@pierre/diffs/react';
 import type { MockWorkbenchFileTreeNode } from "../../data/MockWorkbenchCodebase";
 import WorkbenchLeftSidebar from "./WorkbenchLeftSidebar";
-import WorkbenchContainer from "../base/WorkbenchContainer";
-import WorkbenchContents from "../base/WorkbenchContents";
+import WorkbenchContainer from "./WorkbenchContainer";
+import WorkbenchContents from "./WorkbenchContents";
 import WorkbenchTerminal from "./WorkbenchTerminal";
-import WorkbenchRightContent from "../base/WorkbenchRightContent";
+import WorkbenchRightContent from "./WorkbenchRightContent";
 import { FolderTree } from 'lucide-react';
 import { DIFF_FILE_OPTIONS } from '../../utils/diffOptions';
 

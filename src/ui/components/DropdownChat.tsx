@@ -1,7 +1,7 @@
-import Dropdown from "../base/Dropdown";
-import DropdownItem from "../base/DropdownItem";
+import Dropdown from "./Dropdown";
+import DropdownItem from "./DropdownItem";
 import { TriangleAlert } from "lucide-react";
-import { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "../base/Dropdown";
+import { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "./Dropdown";
 
 export default function DropdownChat() {
   return (

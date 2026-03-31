@@ -2,7 +2,7 @@ import { ChevronsUpDown, Lock } from "lucide-react";
 import type { MockUserProject, MockUserTeam } from "../../data/MockUser";
 import DropdownProjects from "./DropdownProjects";
 import UserTeams from "./UserTeams";
-import Button from "../base/Button";
+import Button from "./Button";
 import DropdownTrigger from "./DropdownTrigger";
 
 function Separator() {

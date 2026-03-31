@@ -1,6 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
-import Button from "../base/Button";
+import Button from "./Button";
 
 type ChatActionProps = {
   title: ReactNode;

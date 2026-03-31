@@ -1,5 +1,5 @@
 import { File, type FileContents } from '@pierre/diffs/react';
-import Button from "../base/Button";
+import Button from "./Button";
 import { Zap, Rocket, SquareTerminal } from "lucide-react";
 import { DIFF_TERMINAL_OPTIONS } from '../../utils/diffOptions';
 

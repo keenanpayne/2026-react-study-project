@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { type MockWorkbenchFileTreeNode } from "../../data/MockWorkbenchCodebase";
-import Button from "../base/Button";
+import Button from "./Button";
 
 type DatabaseRowEditFormProps = {
   selectedRow: MockWorkbenchFileTreeNode;

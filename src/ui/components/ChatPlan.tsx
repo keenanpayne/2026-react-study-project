@@ -1,5 +1,5 @@
 import { Bookmark, Eye, Undo2 } from "lucide-react";
-import Button from "../base/Button";
+import Button from "./Button";
 
 type ChatPlanProps = {
   title: string;
