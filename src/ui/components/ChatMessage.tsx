@@ -5,8 +5,7 @@ import DropdownTrigger from './DropdownTrigger'
 import { MockChatUserMessage } from '~/data/MockChat'
 
 type ChatMessageProps = {
-  setIsActionDialogOpen: (open: boolean) => void
-  isActionDialogOpen: boolean
+  onOpenActionDetails: () => void
 }
 
 export default function ChatMessage(props: ChatMessageProps) {
@@ -35,9 +34,7 @@ export default function ChatMessage(props: ChatMessageProps) {
 
         <ChatResponse
           actionsExpanded={false}
-          actionOnClick={() =>
-            props.setIsActionDialogOpen(!props.isActionDialogOpen)
-          }
+          actionOnClick={props.onOpenActionDetails}
         />
       </article>
     </>

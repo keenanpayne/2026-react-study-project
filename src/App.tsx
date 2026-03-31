@@ -62,8 +62,7 @@ export default function App() {
 
           <div className="min-h-0 flex-1 overflow-auto">
             <ChatMessage
-              setIsActionDialogOpen={setIsActionDialogOpen}
-              isActionDialogOpen={isActionDialogOpen}
+              onOpenActionDetails={() => setIsActionDialogOpen(true)}
             />
             <ChatForm tokens={MockUserBoltTokens} />
           </div>
