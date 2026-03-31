@@ -1,4 +1,4 @@
-export default function MockEditorOutput() {
+export default function MockWorkbenchPreview() {
   return (
     <div className="bg-gray-900 w-full h-full">
       <main className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg min-w-xs lg:min-w-md">

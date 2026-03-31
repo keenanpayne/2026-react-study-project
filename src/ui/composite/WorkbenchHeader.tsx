@@ -4,32 +4,32 @@ import DropdownSettings from "./DropdownSettings";
 import DropdownUser from "./DropdownUser";
 import DropdownTrigger from "./DropdownTrigger";
 
-type EditorHeaderProps = {
-  isEditorOutputVisible: boolean;
-  setIsEditorOutputVisible: (visible: boolean) => void;
-  isEditorCodebaseVisible: boolean;
-  setIsEditorCodebaseVisible: (visible: boolean) => void;
-  isEditorDatabaseVisible: boolean;
-  setIsEditorDatabaseVisible: (visible: boolean) => void;
+type WorkbenchHeaderProps = {
+  isWorkbenchPreviewVisible: boolean;
+  setIsWorkbenchPreviewVisible: (visible: boolean) => void;
+  isWorkbenchCodebaseVisible: boolean;
+  setIsWorkbenchCodebaseVisible: (visible: boolean) => void;
+  isWorkbenchDatabaseVisible: boolean;
+  setIsWorkbenchDatabaseVisible: (visible: boolean) => void;
 }
 
-export default function EditorHeader(props: EditorHeaderProps) {
-  function handleEditorOutputClick() {
-    props.setIsEditorOutputVisible(true);
-    props.setIsEditorCodebaseVisible(false);
-    props.setIsEditorDatabaseVisible(false);
+export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
+  function handleWorkbenchPreviewClick() {
+    props.setIsWorkbenchPreviewVisible(true);
+    props.setIsWorkbenchCodebaseVisible(false);
+    props.setIsWorkbenchDatabaseVisible(false);
   }
 
-  function handleEditorCodebaseClick() {
-    props.setIsEditorOutputVisible(false);
-    props.setIsEditorCodebaseVisible(true);
-    props.setIsEditorDatabaseVisible(false);
+  function handleWorkbenchCodebaseClick() {
+    props.setIsWorkbenchPreviewVisible(false);
+    props.setIsWorkbenchCodebaseVisible(true);
+    props.setIsWorkbenchDatabaseVisible(false);
   }
 
-  function handleEditorDatabaseClick() {
-    props.setIsEditorOutputVisible(false);
-    props.setIsEditorCodebaseVisible(false);
-    props.setIsEditorDatabaseVisible(true);
+  function handleWorkbenchDatabaseClick() {
+    props.setIsWorkbenchPreviewVisible(false);
+    props.setIsWorkbenchCodebaseVisible(false);
+    props.setIsWorkbenchDatabaseVisible(true);
   }
 
   const toggleButtonClass = "group/button rounded-[10px] p-1.5";
@@ -40,16 +40,16 @@ export default function EditorHeader(props: EditorHeaderProps) {
     <header className="py-1.5">
       <div className="flex flex-wrap items-center gap-1.5">
         <nav className="flex shrink-0 items-center space-between gap-1 border border-gray-200 dark:border-gray-800 rounded-xl w-auto px-0.5 py-1.5 h-8">
-          <Button size="sm" variant={props.isEditorOutputVisible ? "selected" : "ghost"} className={toggleButtonClass} onClick={handleEditorOutputClick}>
-            <Eye size={15} strokeWidth={1.5} className={props.isEditorOutputVisible ? activeIconClass : inactiveIconClass} />
+          <Button size="sm" variant={props.isWorkbenchPreviewVisible ? "selected" : "ghost"} className={toggleButtonClass} onClick={handleWorkbenchPreviewClick}>
+            <Eye size={15} strokeWidth={1.5} className={props.isWorkbenchPreviewVisible ? activeIconClass : inactiveIconClass} />
           </Button>
 
-          <Button size="sm" variant={props.isEditorCodebaseVisible ? "selected" : "ghost"} className={toggleButtonClass} onClick={handleEditorCodebaseClick}>
-            <Code size={15} strokeWidth={1.5} className={props.isEditorCodebaseVisible ? activeIconClass : inactiveIconClass} />
+          <Button size="sm" variant={props.isWorkbenchCodebaseVisible ? "selected" : "ghost"} className={toggleButtonClass} onClick={handleWorkbenchCodebaseClick}>
+            <Code size={15} strokeWidth={1.5} className={props.isWorkbenchCodebaseVisible ? activeIconClass : inactiveIconClass} />
           </Button>
 
-          <Button size="sm" variant={props.isEditorDatabaseVisible ? "selected" : "ghost"} className={toggleButtonClass} onClick={handleEditorDatabaseClick}>
-            <Database size={15} strokeWidth={1.5} className={props.isEditorDatabaseVisible ? activeIconClass : inactiveIconClass} />
+          <Button size="sm" variant={props.isWorkbenchDatabaseVisible ? "selected" : "ghost"} className={toggleButtonClass} onClick={handleWorkbenchDatabaseClick}>
+            <Database size={15} strokeWidth={1.5} className={props.isWorkbenchDatabaseVisible ? activeIconClass : inactiveIconClass} />
           </Button>
         </nav>
 

@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 import EmptyPane from "../base/EmptyPane";
 
-type EditorOutputProps = {
+type WorkbenchPreviewProps = {
   isVisible: boolean;
   children?: ReactNode;
 }
 
-export default function EditorOutput(props: EditorOutputProps) {
+export default function WorkbenchPreview(props: WorkbenchPreviewProps) {
   if (!props.isVisible) return null;
 
   return (

@@ -2,16 +2,16 @@ import { ChevronRight, File as FileIcon, FolderTree, Rocket, SearchCode, SquareT
 import Button from "../base/Button";
 import type { ReactNode } from "react";
 import { File, type FileContents } from '@pierre/diffs/react';
-import type { MockEditorFileListNode } from "../../data/MockEditorFiles";
+import type { MockWorkbenchFileTreeNode } from "../../data/MockWorkbenchCodebase";
 
 /**
  * @function renderFileList
  * @description Render the file list
- * @param {MockEditorFileListNode[]} items - The items to render
+ * @param {MockWorkbenchFileTreeNode[]} items - The items to render
  * @param {number} depth - The depth of the items
  * @returns {ReactNode} The rendered items
  */
-function renderFileList(items: MockEditorFileListNode[], depth: number): ReactNode {
+function renderFileList(items: MockWorkbenchFileTreeNode[], depth: number): ReactNode {
   return items.map((node) => (
     <FileItem
       key={node.name}
@@ -62,19 +62,19 @@ function FileItemList(props: FileItemListProps) {
   )
 }
 
-type EditorCodebaseProps = {
+type WorkbenchCodebaseProps = {
   file: FileContents;
-  fileList: MockEditorFileListNode[];
+  fileList: MockWorkbenchFileTreeNode[];
   terminal: FileContents;
   isVisible: boolean;
 }
 
-export default function EditorCodebase(props: EditorCodebaseProps) {
+export default function WorkbenchCodebase(props: WorkbenchCodebaseProps) {
   if (!props.isVisible) return null;
 
   return (
     <main className="flex-1 relative mb-3 rounded-xl border border-gray-200 dark:border-zinc-700 min-h-0 h-full w-full">
-      <div className="@container/editor-codebase grid grid-cols-12 h-full">
+      <div className="@container grid grid-cols-12 h-full">
         <aside className="col-span-4 @2xl:col-span-3 border-r border-gray-200 dark:border-zinc-700 overflow-scroll">
           <header className="px-1.5 py-1 bg-gray-50 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 rounded-tl-xl">
             <nav className="flex items-center gap-1.5">

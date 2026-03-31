@@ -92,11 +92,11 @@ function DatabaseTable(props: DatabaseTableProps) {
     </div>
   )
 }
-type EditorDatabaseProps = {
+type WorkbenchDatabaseProps = {
   isVisible: boolean;
 }
 
-export default function EditorDatabase(props: EditorDatabaseProps) {
+export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
   if (!props.isVisible) return null;
 
   return (

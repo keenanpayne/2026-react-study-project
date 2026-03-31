@@ -4,19 +4,19 @@ import ChatResponse from './ui/composite/ChatResponse';
 import ChatHeader from './ui/composite/ChatHeader';
 import ChatMessage from './ui/composite/ChatMessage';
 import ChatForm from './ui/composite/ChatForm';
-import EditorHeader from './ui/composite/EditorHeader';
-import EditorOutput from './ui/composite/EditorOutput';
-import EditorCodebase from './ui/composite/EditorCodebase';
-import EditorDatabase from './ui/composite/EditorDatabase';
-import MockEditorOutput from './data/MockEditorOutput';
-import { MockEditorFile, MockEditorFileList, MockEditorTerminal } from './data/MockEditorFiles';
+import WorkbenchHeader from './ui/composite/WorkbenchHeader';
+import WorkbenchPreview from './ui/composite/WorkbenchPreview';
+import WorkbenchCodebase from './ui/composite/WorkbenchCodebase';
+import WorkbenchDatabase from './ui/composite/WorkbenchDatabase';
+import MockWorkbenchPreview from './data/MockWorkbenchPreview';
+import { MockWorkbenchFile, MockWorkbenchFileTree, MockWorkbenchTerminal } from './data/MockWorkbenchCodebase';
 import { MockUserBoltTokens, MockUserCurrentProject, MockUserProjects, MockUserTeams } from './data/MockUser';
 
 export default function App() {
   const [isActionDialogOpen, setIsActionDialogOpen] = useState(false);
-  const [isEditorOutputVisible, setIsEditorOutputVisible] = useState(true);
-  const [isEditorCodebaseVisible, setIsEditorCodebaseVisible] = useState(false);
-  const [isEditorDatabaseVisible, setIsEditorDatabaseVisible] = useState(false);
+  const [isWorkbenchPreviewVisible, setIsWorkbenchPreviewVisible] = useState(true);
+  const [isWorkbenchCodebaseVisible, setIsWorkbenchCodebaseVisible] = useState(false);
+  const [isWorkbenchDatabaseVisible, setIsWorkbenchDatabaseVisible] = useState(false);
 
   return (
     <>
@@ -33,10 +33,10 @@ export default function App() {
         </section>
 
         <div className="md:col-span-6 lg:col-auto min-h-0 h-full overflow-scroll mx-3 md:ml-0 flex flex-col">
-          <EditorHeader isEditorOutputVisible={isEditorOutputVisible} setIsEditorOutputVisible={setIsEditorOutputVisible} isEditorCodebaseVisible={isEditorCodebaseVisible} setIsEditorCodebaseVisible={setIsEditorCodebaseVisible} isEditorDatabaseVisible={isEditorDatabaseVisible} setIsEditorDatabaseVisible={setIsEditorDatabaseVisible} />
-          <EditorOutput isVisible={isEditorOutputVisible} children={<MockEditorOutput />} />
-          <EditorCodebase isVisible={isEditorCodebaseVisible} file={MockEditorFile} fileList={MockEditorFileList} terminal={MockEditorTerminal} />
-          <EditorDatabase isVisible={isEditorDatabaseVisible} />
+          <WorkbenchHeader isWorkbenchPreviewVisible={isWorkbenchPreviewVisible} setIsWorkbenchPreviewVisible={setIsWorkbenchPreviewVisible} isWorkbenchCodebaseVisible={isWorkbenchCodebaseVisible} setIsWorkbenchCodebaseVisible={setIsWorkbenchCodebaseVisible} isWorkbenchDatabaseVisible={isWorkbenchDatabaseVisible} setIsWorkbenchDatabaseVisible={setIsWorkbenchDatabaseVisible} />
+          <WorkbenchPreview isVisible={isWorkbenchPreviewVisible} children={<MockWorkbenchPreview />} />
+          <WorkbenchCodebase isVisible={isWorkbenchCodebaseVisible} file={MockWorkbenchFile} fileList={MockWorkbenchFileTree} terminal={MockWorkbenchTerminal} />
+          <WorkbenchDatabase isVisible={isWorkbenchDatabaseVisible} />
         </div>
       </main>
     </>

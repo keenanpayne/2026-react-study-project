@@ -1,14 +1,14 @@
 import type { FileContents } from "@pierre/diffs/react";
 
-export type MockEditorFileListNode = {
+export type MockWorkbenchFileTreeNode = {
   name: string;
   isDirectory?: boolean;
   open?: boolean;
   selected?: boolean;
-  children?: MockEditorFileListNode[];
+  children?: MockWorkbenchFileTreeNode[];
 };
 
-export const MockEditorFileList: MockEditorFileListNode[] = [
+export const MockWorkbenchFileTree: MockWorkbenchFileTreeNode[] = [
   { name: ".bolt", isDirectory: true },
   {
     name: "src",
@@ -47,7 +47,7 @@ export const MockEditorFileList: MockEditorFileListNode[] = [
   { name: "vite.config.ts" },
 ];
 
-export const MockEditorFile: FileContents = {
+export const MockWorkbenchFile: FileContents = {
   name: 'src/App.tsx',
   lang: 'typescript',
   contents: `import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -135,7 +135,7 @@ function App() {
 export default App;`,
 };
 
-export const MockEditorTerminal: FileContents = {
+export const MockWorkbenchTerminal: FileContents = {
   name: 'Terminal',
   lang: 'bash',
   contents: `5:27:20 PM [vite] page reload MASTODON_SETUP_GUIDE.md
