@@ -89,7 +89,7 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
                       <tr className="border-b border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800/50">
                         {selectedNode.children[0].children?.map((col) => (
                           <th
-                            key={col.name}
+                            key={col.id ?? col.name}
                             className="px-4 py-2 text-left font-medium text-gray-600 dark:text-zinc-300 whitespace-nowrap"
                           >
                             {col.name}
@@ -103,7 +103,7 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
                         const isSelected = selectedRow === row;
                         return (
                           <tr
-                            key={row.name}
+                            key={row.id ?? row.name}
                             onClick={() => handleSelectRow(isSelected ? null : row)}
                             className={`border-b last:border-b-0 border-gray-200 dark:border-zinc-700 cursor-pointer ${
                               isSelected
@@ -113,7 +113,7 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
                           >
                             {row.children?.map((col) => (
                               <td
-                                key={col.name}
+                                key={col.id ?? col.name}
                                 className="px-4 py-2 text-gray-700 dark:text-zinc-300 whitespace-nowrap"
                               >
                                 {col.value !== null && col.value !== undefined

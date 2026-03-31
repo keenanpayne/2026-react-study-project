@@ -1,6 +1,7 @@
 import { File, type FileContents } from '@pierre/diffs/react';
 import Button from "../base/Button";
 import { Zap, Rocket, SquareTerminal } from "lucide-react";
+import { DIFF_TERMINAL_OPTIONS } from '../../utils/diffOptions';
 
 type WorkbenchTerminalProps = {
   file: FileContents;
@@ -30,11 +31,7 @@ export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
 
       <File
         file={props.file}
-        options={{
-          theme: { dark: 'pierre-dark', light: 'pierre-light' },
-          disableLineNumbers: true,
-          disableFileHeader: true,
-        }}
+        options={DIFF_TERMINAL_OPTIONS}
         className="max-h-[200px] overflow-scroll rounded-b-xl px-1.5 py-0.5 text-xs leading-tight"
       />
     </section>

@@ -5,13 +5,6 @@ import WorkbenchFile from "./WorkbenchFile";
 import Button from "../base/Button";
 import { SearchCode, type LucideIcon } from "lucide-react";
 
-/**
- * @function computeInitialExpanded
- * @description Compute the initial expanded state of the items
- * @param {MockWorkbenchFileTreeNode[]} nodes - The nodes to compute the initial expanded state for
- * @param {string} parentPath - The path to the parent node
- * @returns {Set<string>} The set of paths that should start expanded
- */
 function computeInitialExpanded(
   nodes: MockWorkbenchFileTreeNode[],
   parentPath: string
@@ -47,16 +40,16 @@ type WorkbenchLeftSidebarProps = {
 }
 
 export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
+  const [prevList, setPrevList] = useState(props.list);
   const [expanded, setExpanded] = useState<Set<string>>(
     () => computeInitialExpanded(props.list, "")
   );
 
-  /**
-   * @function toggle
-   * @description Toggle the expanded state of an item
-   * @param {string} path - The path to the item
-   * @returns {void}
-   */
+  if (prevList !== props.list) {
+    setPrevList(props.list);
+    setExpanded(computeInitialExpanded(props.list, ""));
+  }
+
   function toggle(path: string) {
     setExpanded((prev) => {
       const next = new Set(prev);
@@ -69,14 +62,6 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
     });
   }
 
-  /**
-   * @function renderItems
-   * @description Render the left sidebar items
-   * @param {MockWorkbenchFileTreeNode[]} items - The items to render
-   * @param {number} depth - The depth of the items
-   * @param {string} parentPath - The path to the parent item
-   * @returns {ReactNode} The rendered items
-   */
   function renderItems(
     items: MockWorkbenchFileTreeNode[],
     depth: number,
@@ -90,7 +75,7 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
 
       return (
         <WorkbenchFile
-          key={node.name}
+          key={path}
           name={node.name}
           type={node.type}
           open={isExpanded}

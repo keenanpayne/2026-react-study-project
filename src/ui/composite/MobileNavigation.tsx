@@ -5,7 +5,8 @@ import DropdownSettings from "./DropdownSettings";
 import DropdownUser from "./DropdownUser";
 import Button from "../base/Button";
 
-export type MobileView = "chat" | "preview" | "codebase" | "database";
+export type WorkbenchPane = "preview" | "codebase" | "database";
+export type MobileView = "chat" | WorkbenchPane;
 
 type MobileNavigationProps = {
   activeView: MobileView;

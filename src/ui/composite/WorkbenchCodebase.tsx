@@ -6,6 +6,7 @@ import WorkbenchContents from "../base/WorkbenchContents";
 import WorkbenchTerminal from "./WorkbenchTerminal";
 import WorkbenchRightContent from "../base/WorkbenchRightContent";
 import { FolderTree } from 'lucide-react';
+import { DIFF_FILE_OPTIONS } from '../../utils/diffOptions';
 
 type WorkbenchCodebaseProps = {
   file: FileContents;
@@ -25,9 +26,7 @@ export default function WorkbenchCodebase(props: WorkbenchCodebaseProps) {
         <WorkbenchRightContent>
           <File
             file={props.file}
-            options={{
-              theme: { dark: 'pierre-dark', light: 'pierre-light' },
-            }}
+            options={DIFF_FILE_OPTIONS}
           />
         </WorkbenchRightContent>
 

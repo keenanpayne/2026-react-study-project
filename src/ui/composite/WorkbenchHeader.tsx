@@ -3,43 +3,15 @@ import Button from "../base/Button";
 import DropdownSettings from "./DropdownSettings";
 import DropdownUser from "./DropdownUser";
 import DropdownTrigger from "./DropdownTrigger";
+import type { WorkbenchPane } from "./MobileNavigation";
 
 type WorkbenchHeaderProps = {
-  isWorkbenchPreviewVisible: boolean;
-  setIsWorkbenchPreviewVisible: (visible: boolean) => void;
-  isWorkbenchCodebaseVisible: boolean;
-  setIsWorkbenchCodebaseVisible: (visible: boolean) => void;
-  isWorkbenchDatabaseVisible: boolean;
-  setIsWorkbenchDatabaseVisible: (visible: boolean) => void;
+  activePane: WorkbenchPane;
+  onPaneChange: (pane: WorkbenchPane) => void;
 }
 
 export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
-  const { 
-    isWorkbenchPreviewVisible, 
-    setIsWorkbenchPreviewVisible, 
-    isWorkbenchCodebaseVisible, 
-    setIsWorkbenchCodebaseVisible, 
-    isWorkbenchDatabaseVisible, 
-    setIsWorkbenchDatabaseVisible 
-  } = props;
-  
-  function handleWorkbenchPreviewClick() {
-    setIsWorkbenchPreviewVisible(true);
-    setIsWorkbenchCodebaseVisible(false);
-    setIsWorkbenchDatabaseVisible(false);
-  }
-
-  function handleWorkbenchCodebaseClick() {
-    setIsWorkbenchPreviewVisible(false);
-    setIsWorkbenchCodebaseVisible(true);
-    setIsWorkbenchDatabaseVisible(false);
-  }
-
-  function handleWorkbenchDatabaseClick() {
-    setIsWorkbenchPreviewVisible(false);
-    setIsWorkbenchCodebaseVisible(false);
-    setIsWorkbenchDatabaseVisible(true);
-  }
+  const { activePane, onPaneChange } = props;
 
   const toggleButtonClass = "group/button rounded-[10px] p-1.5";
   const activeIconClass = "stroke-sky-700 dark:stroke-sky-100 group-hover/button:stroke-sky-700 dark:group-hover/button:stroke-sky-100 transition-colors";
@@ -49,16 +21,16 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
     <header className="py-1.5">
       <div className="flex flex-wrap items-center gap-1.5">
         <nav className="hidden md:flex shrink-0 items-center space-between gap-1 border border-gray-200 dark:border-gray-800 rounded-xl w-auto px-0.5 py-1.5 h-8">
-          <Button size="sm" variant={isWorkbenchPreviewVisible ? "selected" : "ghost"} className={toggleButtonClass} onClick={handleWorkbenchPreviewClick}>
-            <Eye size={15} strokeWidth={1.5} className={isWorkbenchPreviewVisible ? activeIconClass : inactiveIconClass} />
+          <Button size="sm" variant={activePane === 'preview' ? "selected" : "ghost"} className={toggleButtonClass} onClick={() => onPaneChange('preview')} aria-label="Preview">
+            <Eye size={15} strokeWidth={1.5} className={activePane === 'preview' ? activeIconClass : inactiveIconClass} />
           </Button>
 
-          <Button size="sm" variant={isWorkbenchCodebaseVisible ? "selected" : "ghost"} className={toggleButtonClass} onClick={handleWorkbenchCodebaseClick}>
-            <Code size={15} strokeWidth={1.5} className={isWorkbenchCodebaseVisible ? activeIconClass : inactiveIconClass} />
+          <Button size="sm" variant={activePane === 'codebase' ? "selected" : "ghost"} className={toggleButtonClass} onClick={() => onPaneChange('codebase')} aria-label="Code">
+            <Code size={15} strokeWidth={1.5} className={activePane === 'codebase' ? activeIconClass : inactiveIconClass} />
           </Button>
 
-          <Button size="sm" variant={isWorkbenchDatabaseVisible ? "selected" : "ghost"} className={toggleButtonClass} onClick={handleWorkbenchDatabaseClick}>
-            <Database size={15} strokeWidth={1.5} className={isWorkbenchDatabaseVisible ? activeIconClass : inactiveIconClass} />
+          <Button size="sm" variant={activePane === 'database' ? "selected" : "ghost"} className={toggleButtonClass} onClick={() => onPaneChange('database')} aria-label="Database">
+            <Database size={15} strokeWidth={1.5} className={activePane === 'database' ? activeIconClass : inactiveIconClass} />
           </Button>
         </nav>
 
@@ -68,7 +40,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
           </DropdownTrigger>
         </div>
 
-        {isWorkbenchPreviewVisible && (
+        {activePane === 'preview' && (
           <div className="order-2 sm:order-1 flex flex-1 items-center rounded-full px-3 border border-gray-300 dark:border-neutral-900 bg-gray-100 dark:bg-zinc-800 h-8 md:max-w-md ml-auto mr-auto">
             <label htmlFor="url" className="sr-only">Page URL</label>
             <input id="url" type="text" value="/" className="flex-1 text-sm text-gray-800 dark:text-gray-300 mx-1 px-1" onChange={() => null} />
@@ -93,7 +65,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
           </div>
         )}
 
-        {isWorkbenchDatabaseVisible && (
+        {activePane === 'database' && (
           <nav className="order-2 sm:order-1 flex-1 flex items-center ml-auto mr-auto gap-1.5 justify-center">
             <Button size="lg" radius="pill" variant="selected">
               Database

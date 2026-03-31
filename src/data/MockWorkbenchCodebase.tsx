@@ -151,6 +151,7 @@ export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
 export type MockWorkbenchFileTreeItemType = "directory" | "file" | "table" | "row" | "column";
 
 export type MockWorkbenchFileTreeNode = {
+  id?: number;
   name: string;
   type?: MockWorkbenchFileTreeItemType;
   value?: string | number | null;
