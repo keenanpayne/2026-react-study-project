@@ -5,6 +5,7 @@ import WorkbenchContainer from "../base/WorkbenchContainer";
 import WorkbenchContents from "../base/WorkbenchContents";
 import WorkbenchTerminal from "./WorkbenchTerminal";
 import WorkbenchRightContent from "../base/WorkbenchRightContent";
+import { FolderTree } from 'lucide-react';
 
 type WorkbenchCodebaseProps = {
   file: FileContents;
@@ -19,7 +20,7 @@ export default function WorkbenchCodebase(props: WorkbenchCodebaseProps) {
   return (
     <WorkbenchContainer>
       <WorkbenchContents>
-        <WorkbenchLeftSidebar list={props.list} />
+        <WorkbenchLeftSidebar list={props.list} listLabel="Files" listIcon={FolderTree} />
 
         <WorkbenchRightContent>
           <File

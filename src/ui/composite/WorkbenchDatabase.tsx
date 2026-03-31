@@ -1,4 +1,4 @@
-import { Rows3 } from "lucide-react";
+import { Database, Rows3 } from "lucide-react";
 import WorkbenchContainer from "../base/WorkbenchContainer";
 import WorkbenchContents from "../base/WorkbenchContents";
 import WorkbenchRightContent from "../base/WorkbenchRightContent";
@@ -18,7 +18,7 @@ function DatabaseTable(props: DatabaseTableProps) {
       </div>
 
       <p className="text-sm text-gray-500 dark:text-zinc-400">
-        {props.table.children.length} row{props.table.children.length > 1 ? "s" : ""}
+        {props.table.children?.length ?? 0} row{props.table.children?.length && props.table.children?.length > 1 ? "s" : ""}
       </p>
     </div>
   )
@@ -34,7 +34,7 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
   return (
     <WorkbenchContainer>
       <WorkbenchContents>
-        <WorkbenchLeftSidebar list={props.list} />
+        <WorkbenchLeftSidebar list={props.list} listLabel="Tables" listIcon={Database} />
 
         <WorkbenchRightContent>
           <div className="p-5 flex flex-col gap-3">

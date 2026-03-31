@@ -3,7 +3,7 @@ import type { MockWorkbenchFileTreeNode } from "../../data/MockWorkbenchCodebase
 import WorkbenchFileTree from "../base/WorkbenchFileTree";
 import WorkbenchFile from "./WorkbenchFile";
 import Button from "../base/Button";
-import { FolderTree, SearchCode } from "lucide-react";
+import { SearchCode, type LucideIcon } from "lucide-react";
 
 /**
  * @function renderItems
@@ -33,6 +33,8 @@ function renderItems(items: MockWorkbenchFileTreeNode[], depth: number): ReactNo
 
 type WorkbenchLeftSidebarProps = {
   list: MockWorkbenchFileTreeNode[];
+  listLabel: string;
+  listIcon: LucideIcon;
 }
 
 export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
@@ -40,9 +42,9 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
     <aside className="col-span-4 @2xl:col-span-3 border-r border-gray-200 dark:border-zinc-700 overflow-scroll">
       <header className="px-1.5 py-1 bg-gray-50 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 rounded-tl-xl">
         <nav className="flex items-center gap-1.5">
-          <Button size="md" radius="md">
-            <FolderTree size={18} strokeWidth={1.5} />
-            <span className="font-medium">Files</span>
+          <Button size="md" radius="md" variant="subtle">
+            <props.listIcon size={18} strokeWidth={1.5} />
+            <span className="font-medium">{props.listLabel}</span>
           </Button>
 
           <Button size="md" radius="md">
