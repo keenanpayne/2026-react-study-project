@@ -1,5 +1,5 @@
 import { ChevronRight } from "lucide-react";
-import type { ReactNode } from "react";
+import { useState, useRef, type ReactNode, type FocusEvent } from "react";
 
 type DropdownItemProps = {
   title: string;
@@ -12,6 +12,9 @@ type DropdownItemProps = {
 }
 
 export default function DropdownItem(props: DropdownItemProps) {
+  const [isSubOpen, setIsSubOpen] = useState(false);
+  const itemRef = useRef<HTMLLIElement>(null);
+
   const size = 
     props.size === 'sm' ? 'text-xs p-1 m-1' : 
     props.size === 'md' ? 'text-sm px-1.5 py-1 mx-1.5 my-1' : 
@@ -21,9 +24,22 @@ export default function DropdownItem(props: DropdownItemProps) {
   const classNames = `group/dropdown-item cursor-pointer flex flex-wrap items-center justify-between rounded-md hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors ${size} ${dropdownClass} ${className}`;
   const prependAppendClass = 'text-xs text-gray-500 dark:text-zinc-300 block w-full';
 
-  return (
-    <li className={classNames} tabIndex={0}>
+  const handleBlur = (e: FocusEvent) => {
+    if (itemRef.current && !itemRef.current.contains(e.relatedTarget as Node)) {
+      setIsSubOpen(false);
+    }
+  };
 
+  return (
+    <li
+      ref={props.dropdown ? itemRef : undefined}
+      className={classNames}
+      tabIndex={0}
+      onMouseEnter={props.dropdown ? () => setIsSubOpen(true) : undefined}
+      onMouseLeave={props.dropdown ? () => setIsSubOpen(false) : undefined}
+      onFocus={props.dropdown ? () => setIsSubOpen(true) : undefined}
+      onBlur={props.dropdown ? handleBlur : undefined}
+    >
       <p className="flex-1 flex items-center gap-2.5">
         {props.icon}
 
@@ -34,14 +50,11 @@ export default function DropdownItem(props: DropdownItemProps) {
         </span>
       </p>
 
-
       {props.dropdown && (
         <>
           <ChevronRight size={16} strokeWidth={1.5} className="stroke-gray-700 dark:stroke-zinc-400 group-hover/dropdown-item:stroke-gray-900 dark:group-hover/dropdown-item:stroke-zinc-300 transition-colors" />
 
-          <div className="opacity-0 group-hover/dropdown-item:opacity-100 transition-opacity">
-            {props.dropdown}
-          </div>
+          {isSubOpen && props.dropdown}
         </>
       )}
     </li>
