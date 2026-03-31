@@ -1,13 +1,9 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react'
 
 type WorkbenchFileTreeProps = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export default function WorkbenchFileTree(props: WorkbenchFileTreeProps) {
-  return (
-    <ul className="text-left h-full">
-      {props.children}
-    </ul>
-  )
+  return <ul className="h-full text-left">{props.children}</ul>
 }

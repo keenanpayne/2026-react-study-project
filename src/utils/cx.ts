@@ -5,5 +5,5 @@
  * @returns {string} The joined class names
  */
 export function cx(...values: Array<string | false | null | undefined>) {
-  return values.filter(Boolean).join(" ");
+  return values.filter(Boolean).join(' ')
 }

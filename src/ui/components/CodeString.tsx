@@ -1,9 +1,11 @@
 type CodeStringProps = {
-  text: string;
+  text: string
 }
 
 export default function CodeString(props: CodeStringProps) {
   return (
-    <code className="bg-gray-100 dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded-sm px-1 py-0.75 text-xs font-mono">{props.text}</code>
-  );
+    <code className="rounded-sm border border-gray-300 bg-gray-100 px-1 py-0.75 font-mono text-xs dark:border-zinc-600 dark:bg-zinc-700">
+      {props.text}
+    </code>
+  )
 }

@@ -1,51 +1,89 @@
-import type { ReactNode } from "react";
-import { MessageSquare, Eye, Code, Database, Settings } from "lucide-react";
-import DropdownTrigger from "./DropdownTrigger";
-import DropdownSettings from "./DropdownSettings";
-import DropdownUser from "./DropdownUser";
-import Button from "./Button";
+import type { ReactNode } from 'react'
+import { MessageSquare, Eye, Code, Database, Settings } from 'lucide-react'
+import DropdownTrigger from './DropdownTrigger'
+import DropdownSettings from './DropdownSettings'
+import DropdownUser from './DropdownUser'
+import Button from './Button'
 
-export type WorkbenchPane = "preview" | "codebase" | "database";
-export type MobileView = "chat" | WorkbenchPane;
+export type WorkbenchPane = 'preview' | 'codebase' | 'database'
+export type MobileView = 'chat' | WorkbenchPane
 
 type MobileNavigationProps = {
-  activeView: MobileView;
-  onViewChange: (view: MobileView) => void;
-};
+  activeView: MobileView
+  onViewChange: (view: MobileView) => void
+}
 
 type NavItem = {
-  id: string;
-  label: string;
-  icon: ReactNode;
+  id: string
+  label: string
+  icon: ReactNode
 } & (
   | { view: MobileView; dropdown?: never }
   | { dropdown: ReactNode; view?: never }
-);
+)
 
-const ICON_SIZE = 20;
-const ICON_STROKE_WIDTH = 1.5;
+const ICON_SIZE = 20
+const ICON_STROKE_WIDTH = 1.5
 
-export default function MobileNavigation({ activeView, onViewChange }: MobileNavigationProps) {
+export default function MobileNavigation({
+  activeView,
+  onViewChange,
+}: MobileNavigationProps) {
   const navItems: NavItem[] = [
-    { id: "chat", label: "Chat", view: "chat", icon: <MessageSquare size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} /> },
-    { id: "preview", label: "Preview", view: "preview", icon: <Eye size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} /> },
-    { id: "codebase", label: "Code", view: "codebase", icon: <Code size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} /> },
-    { id: "database", label: "Database", view: "database", icon: <Database size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} /> },
-    { id: "settings", label: "Settings", dropdown: <DropdownSettings align="right" />, icon: <Settings size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} /> },
-    { id: "user", label: "Profile", dropdown: <DropdownUser />, icon: <img src="/me.jpg" alt="User avatar" className="w-5 h-5 rounded-full" /> },
-  ];
+    {
+      id: 'chat',
+      label: 'Chat',
+      view: 'chat',
+      icon: <MessageSquare size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+    },
+    {
+      id: 'preview',
+      label: 'Preview',
+      view: 'preview',
+      icon: <Eye size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+    },
+    {
+      id: 'codebase',
+      label: 'Code',
+      view: 'codebase',
+      icon: <Code size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+    },
+    {
+      id: 'database',
+      label: 'Database',
+      view: 'database',
+      icon: <Database size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+    },
+    {
+      id: 'settings',
+      label: 'Settings',
+      dropdown: <DropdownSettings align="right" />,
+      icon: <Settings size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+    },
+    {
+      id: 'user',
+      label: 'Profile',
+      dropdown: <DropdownUser />,
+      icon: (
+        <img src="/me.jpg" alt="User avatar" className="h-5 w-5 rounded-full" />
+      ),
+    },
+  ]
 
-  const baseClass = "flex flex-col items-center gap-1 text-xs transition-colors";
-  const activeClass = "text-sky-600 dark:text-sky-400";
-  const inactiveClass = "text-gray-500 dark:text-gray-400";
-  const labelClass = "h-0 xs:h-auto opacity-0 xs:opacity-100";
+  const baseClass = 'flex flex-col items-center gap-1 text-xs transition-colors'
+  const activeClass = 'text-sky-600 dark:text-sky-400'
+  const inactiveClass = 'text-gray-500 dark:text-gray-400'
+  const labelClass = 'h-0 xs:h-auto opacity-0 xs:opacity-100'
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 z-40 flex items-center justify-evenly bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-700 px-1.5 sm:px-3 py-3 md:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-evenly border-t border-gray-200 bg-white px-1.5 py-3 sm:px-3 md:hidden dark:border-zinc-700 dark:bg-zinc-900">
       {navItems.map((item) => {
         if (item.dropdown) {
           return (
-            <div key={item.id} className="**:[[tabindex='0']]:bottom-14 **:[[tabindex='0']]:top-auto">
+            <div
+              key={item.id}
+              className="**:[[tabindex='0']]:top-auto **:[[tabindex='0']]:bottom-14"
+            >
               <DropdownTrigger
                 size="flat"
                 variant="plain"
@@ -56,12 +94,12 @@ export default function MobileNavigation({ activeView, onViewChange }: MobileNav
                 <span className={labelClass}>{item.label}</span>
               </DropdownTrigger>
             </div>
-          );
+          )
         }
 
-        if (!item.view) return null;
+        if (!item.view) return null
 
-        const isActive = activeView === item.view;
+        const isActive = activeView === item.view
 
         return (
           <Button
@@ -74,8 +112,8 @@ export default function MobileNavigation({ activeView, onViewChange }: MobileNav
             {item.icon}
             <span className={labelClass}>{item.label}</span>
           </Button>
-        );
+        )
       })}
     </nav>
-  );
+  )
 }

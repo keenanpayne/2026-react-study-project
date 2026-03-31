@@ -1,12 +1,14 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react'
 
 type WorkbenchRightContentProps = {
-  children?: ReactNode;
+  children?: ReactNode
 }
 
-export default function WorkbenchRightContent(props: WorkbenchRightContentProps) {
+export default function WorkbenchRightContent(
+  props: WorkbenchRightContentProps,
+) {
   return (
-    <div className="col-span-12 @md:col-span-7 @lg:col-span-8 @2xl:col-span-9 overflow-scroll rounded-tr-xl">
+    <div className="col-span-12 overflow-scroll rounded-tr-xl @md:col-span-7 @lg:col-span-8 @2xl:col-span-9">
       {props.children}
     </div>
   )

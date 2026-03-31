@@ -1,21 +1,21 @@
-import { X } from "lucide-react";
-import { type MockWorkbenchFileTreeNode } from "~/data/MockWorkbenchCodebase";
-import Button from "./Button";
+import { X } from 'lucide-react'
+import { type MockWorkbenchFileTreeNode } from '~/data/MockWorkbenchCodebase'
+import Button from './Button'
 
 type DatabaseRowEditFormProps = {
-  selectedRow: MockWorkbenchFileTreeNode;
-  editedValues: Record<string, string>;
-  onValueChange: (columnName: string, value: string) => void;
-  onClose: () => void;
-  onSave: () => void;
-};
+  selectedRow: MockWorkbenchFileTreeNode
+  editedValues: Record<string, string>
+  onValueChange: (columnName: string, value: string) => void
+  onClose: () => void
+  onSave: () => void
+}
 
 export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
-  if (!props.selectedRow.children) return null;
+  if (!props.selectedRow.children) return null
 
   return (
     <div className="rounded-lg border border-gray-200 dark:border-zinc-700">
-      <div className="flex items-center justify-between px-4 py-3 rounded-t-lg border-b border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800/50">
+      <div className="flex items-center justify-between rounded-t-lg border-b border-gray-200 bg-gray-50 px-4 py-3 dark:border-zinc-700 dark:bg-zinc-800/50">
         <h2 className="text-sm font-medium text-gray-700 dark:text-zinc-300">
           Edit Row: {props.selectedRow.name}
         </h2>
@@ -31,9 +31,9 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
         </Button>
       </div>
 
-      <div className="p-4 flex flex-col gap-3">
+      <div className="flex flex-col gap-3 p-4">
         {props.selectedRow.children.map((col) => {
-          const isNumeric = typeof col.value === "number";
+          const isNumeric = typeof col.value === 'number'
 
           return (
             <div key={col.name} className="flex flex-col gap-1">
@@ -42,13 +42,13 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
               </label>
 
               <input
-                type={isNumeric ? "number" : "text"}
-                value={props.editedValues[col.name] ?? ""}
+                type={isNumeric ? 'number' : 'text'}
+                value={props.editedValues[col.name] ?? ''}
                 onChange={(e) => props.onValueChange(col.name, e.target.value)}
-                className="px-3 py-1.5 text-sm rounded-md border border-gray-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
+                className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:ring-blue-400"
               />
             </div>
-          );
+          )
         })}
 
         <div className="flex items-center gap-2 pt-2">
@@ -72,5 +72,5 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

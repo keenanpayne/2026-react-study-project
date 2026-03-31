@@ -1,72 +1,152 @@
-import { Eye, Code, Database, Settings, RotateCw, ExternalLink, MonitorSmartphone, Scan } from "lucide-react";
-import Button from "./Button";
-import DropdownSettings from "./DropdownSettings";
-import DropdownUser from "./DropdownUser";
-import DropdownTrigger from "./DropdownTrigger";
-import type { WorkbenchPane } from "./MobileNavigation";
+import {
+  Eye,
+  Code,
+  Database,
+  Settings,
+  RotateCw,
+  ExternalLink,
+  MonitorSmartphone,
+  Scan,
+} from 'lucide-react'
+import Button from './Button'
+import DropdownSettings from './DropdownSettings'
+import DropdownUser from './DropdownUser'
+import DropdownTrigger from './DropdownTrigger'
+import type { WorkbenchPane } from './MobileNavigation'
 
 type WorkbenchHeaderProps = {
-  activePane: WorkbenchPane;
-  onPaneChange: (pane: WorkbenchPane) => void;
+  activePane: WorkbenchPane
+  onPaneChange: (pane: WorkbenchPane) => void
 }
 
 export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
-  const { activePane, onPaneChange } = props;
+  const { activePane, onPaneChange } = props
 
-  const toggleButtonClass = "group/button rounded-[10px] p-1.5";
-  const activeIconClass = "stroke-sky-700 dark:stroke-sky-100 group-hover/button:stroke-sky-700 dark:group-hover/button:stroke-sky-100 transition-colors";
-  const inactiveIconClass = "stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors";
+  const toggleButtonClass = 'group/button rounded-[10px] p-1.5'
+  const activeIconClass =
+    'stroke-sky-700 dark:stroke-sky-100 group-hover/button:stroke-sky-700 dark:group-hover/button:stroke-sky-100 transition-colors'
+  const inactiveIconClass =
+    'stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors'
 
   return (
     <header className="py-1.5">
       <div className="flex flex-wrap items-center gap-1.5">
-        <nav className="hidden md:flex shrink-0 items-center space-between gap-1 border border-gray-200 dark:border-gray-800 rounded-xl w-auto px-0.5 py-1.5 h-8">
-          <Button size="sm" variant={activePane === 'preview' ? "selected" : "ghost"} className={toggleButtonClass} onClick={() => onPaneChange('preview')} aria-label="Preview">
-            <Eye size={15} strokeWidth={1.5} className={activePane === 'preview' ? activeIconClass : inactiveIconClass} />
+        <nav className="space-between hidden h-8 w-auto shrink-0 items-center gap-1 rounded-xl border border-gray-200 px-0.5 py-1.5 md:flex dark:border-gray-800">
+          <Button
+            size="sm"
+            variant={activePane === 'preview' ? 'selected' : 'ghost'}
+            className={toggleButtonClass}
+            onClick={() => onPaneChange('preview')}
+            aria-label="Preview"
+          >
+            <Eye
+              size={15}
+              strokeWidth={1.5}
+              className={
+                activePane === 'preview' ? activeIconClass : inactiveIconClass
+              }
+            />
           </Button>
 
-          <Button size="sm" variant={activePane === 'codebase' ? "selected" : "ghost"} className={toggleButtonClass} onClick={() => onPaneChange('codebase')} aria-label="Code">
-            <Code size={15} strokeWidth={1.5} className={activePane === 'codebase' ? activeIconClass : inactiveIconClass} />
+          <Button
+            size="sm"
+            variant={activePane === 'codebase' ? 'selected' : 'ghost'}
+            className={toggleButtonClass}
+            onClick={() => onPaneChange('codebase')}
+            aria-label="Code"
+          >
+            <Code
+              size={15}
+              strokeWidth={1.5}
+              className={
+                activePane === 'codebase' ? activeIconClass : inactiveIconClass
+              }
+            />
           </Button>
 
-          <Button size="sm" variant={activePane === 'database' ? "selected" : "ghost"} className={toggleButtonClass} onClick={() => onPaneChange('database')} aria-label="Database">
-            <Database size={15} strokeWidth={1.5} className={activePane === 'database' ? activeIconClass : inactiveIconClass} />
+          <Button
+            size="sm"
+            variant={activePane === 'database' ? 'selected' : 'ghost'}
+            className={toggleButtonClass}
+            onClick={() => onPaneChange('database')}
+            aria-label="Database"
+          >
+            <Database
+              size={15}
+              strokeWidth={1.5}
+              className={
+                activePane === 'database' ? activeIconClass : inactiveIconClass
+              }
+            />
           </Button>
         </nav>
 
-        <div className="hidden md:block shrink-0">
-          <DropdownTrigger size="md" radius="md" className="group/button" dropdown={<DropdownSettings />}>
-            <Settings size={16} strokeWidth={1.5} className="stroke-gray-400 fill-gray-200 dark:fill-transparent group-hover/button:fill-gray-300 dark:group-hover/button:fill-gray-900 group-hover/button:stroke-gray-800 dark:group-hover/button:stroke-gray-300 transition-colors" />
+        <div className="hidden shrink-0 md:block">
+          <DropdownTrigger
+            size="md"
+            radius="md"
+            className="group/button"
+            dropdown={<DropdownSettings />}
+          >
+            <Settings
+              size={16}
+              strokeWidth={1.5}
+              className="fill-gray-200 stroke-gray-400 transition-colors group-hover/button:fill-gray-300 group-hover/button:stroke-gray-800 dark:fill-transparent dark:group-hover/button:fill-gray-900 dark:group-hover/button:stroke-gray-300"
+            />
           </DropdownTrigger>
         </div>
 
         {activePane === 'preview' && (
-          <div className="order-2 sm:order-1 flex flex-1 items-center rounded-full px-3 border border-gray-300 dark:border-neutral-900 bg-gray-100 dark:bg-zinc-800 h-8 md:max-w-md ml-auto mr-auto">
-            <label htmlFor="url" className="sr-only">Page URL</label>
-            <input id="url" type="text" value="/" className="flex-1 text-sm text-gray-800 dark:text-gray-300 mx-1 px-1" onChange={() => null} />
+          <div className="order-2 mr-auto ml-auto flex h-8 flex-1 items-center rounded-full border border-gray-300 bg-gray-100 px-3 sm:order-1 md:max-w-md dark:border-neutral-900 dark:bg-zinc-800">
+            <label htmlFor="url" className="sr-only">
+              Page URL
+            </label>
+            <input
+              id="url"
+              type="text"
+              value="/"
+              className="mx-1 flex-1 px-1 text-sm text-gray-800 dark:text-gray-300"
+              onChange={() => null}
+            />
 
-            <nav className="justify-end flex items-center">
+            <nav className="flex items-center justify-end">
               <Button size="sm" radius="sm" className="group/button p-1.5">
-                <RotateCw size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
+                <RotateCw
+                  size={14}
+                  strokeWidth={1.5}
+                  className="stroke-gray-600 transition-colors group-hover/button:stroke-gray-900 dark:stroke-zinc-300 dark:group-hover/button:stroke-zinc-300"
+                />
               </Button>
 
               <Button size="sm" radius="sm" className="group/button p-1.5">
-                <ExternalLink size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
+                <ExternalLink
+                  size={14}
+                  strokeWidth={1.5}
+                  className="stroke-gray-600 transition-colors group-hover/button:stroke-gray-900 dark:stroke-zinc-300 dark:group-hover/button:stroke-zinc-300"
+                />
               </Button>
 
               <Button size="sm" radius="sm" className="group/button p-1.5">
-                <MonitorSmartphone size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
+                <MonitorSmartphone
+                  size={14}
+                  strokeWidth={1.5}
+                  className="stroke-gray-600 transition-colors group-hover/button:stroke-gray-900 dark:stroke-zinc-300 dark:group-hover/button:stroke-zinc-300"
+                />
               </Button>
 
               <Button size="sm" radius="sm" className="group/button p-1.5">
-                <Scan size={14} strokeWidth={1.5} className="stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors" />
+                <Scan
+                  size={14}
+                  strokeWidth={1.5}
+                  className="stroke-gray-600 transition-colors group-hover/button:stroke-gray-900 dark:stroke-zinc-300 dark:group-hover/button:stroke-zinc-300"
+                />
               </Button>
             </nav>
           </div>
         )}
 
         {activePane === 'database' && (
-          <nav className="order-2 sm:order-1 flex-1 flex items-center ml-auto mr-auto gap-1.5 justify-center">
+          <nav className="order-2 mr-auto ml-auto flex flex-1 items-center justify-center gap-1.5 sm:order-1">
             <Button size="lg" radius="pill" variant="selected">
               Database
             </Button>
@@ -85,7 +165,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
           </nav>
         )}
 
-        <div className="order-1 sm:order-2 shrink-0 flex items-center gap-3 ml-auto mr-auto sm:mr-0">
+        <div className="order-1 mr-auto ml-auto flex shrink-0 items-center gap-3 sm:order-2 sm:mr-0">
           <Button size="md" radius="md" className="shrink-0" iconOnly>
             <img src="/github.svg" className="h-5 w-5 dark:invert-100" />
           </Button>
@@ -105,7 +185,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             wrapperClassName="shrink-0"
             dropdown={<DropdownUser />}
           >
-            <img src="/me.jpg" className="w-6 h-6 rounded-full" />
+            <img src="/me.jpg" className="h-6 w-6 rounded-full" />
           </DropdownTrigger>
         </div>
       </div>

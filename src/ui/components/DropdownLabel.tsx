@@ -1,9 +1,11 @@
 type DropdownLabelProps = {
-  label: string;
+  label: string
 }
 
 export default function DropdownLabel(props: DropdownLabelProps) {
   return (
-    <li className="cursor-default px-3 mt-2 text-gray-500 dark:text-zinc-300 text-xs">{props.label}</li>
-  );
+    <li className="mt-2 cursor-default px-3 text-xs text-gray-500 dark:text-zinc-300">
+      {props.label}
+    </li>
+  )
 }
