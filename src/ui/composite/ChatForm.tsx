@@ -31,7 +31,7 @@ export default function ChatForm(props: ChatFormProps) {
         </Button>
       </aside>
 
-      <div className="relative w-full px-3 py-3 sm:pb-0 sm:group-focus-within/form:pb-0 rounded-xl bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600">
+      <div className="relative w-full px-3 py-3 sm:pb-0 sm:group-focus-within/form:pb-0 rounded-xl bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 shadow-md sm:shadow-sm">
         <label htmlFor="command" className="sr-only">Command</label>
         <textarea id="command" placeholder="How can Bolt help you today? (or /command)" className="w-full px-1.5 py-2 sm:h-20 group-focus-within/form:h-20 text-sm resize-none" />
 
