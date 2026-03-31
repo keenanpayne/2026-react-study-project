@@ -92,16 +92,20 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
         )}
 
         {isWorkbenchDatabaseVisible && (
-          <nav className="flex-1 flex items-center ml-auto mr-auto gap-3 justify-center">
-            <Button size="md" radius="xl" variant="ghost">
+          <nav className="flex-1 flex items-center ml-auto mr-auto gap-1.5 justify-center">
+            <Button size="lg" radius="pill" variant="selected">
+              Database
+            </Button>
+
+            <Button size="lg" radius="pill" variant="ghost">
               Logs
             </Button>
 
-            <Button size="md" radius="xl" variant="ghost">
+            <Button size="lg" radius="pill" variant="ghost">
               Security Audit
             </Button>
 
-            <Button size="md" radius="xl" variant="ghost">
+            <Button size="lg" radius="pill" variant="ghost">
               Advanced
             </Button>
           </nav>
@@ -112,11 +116,11 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             <img src="/github.svg" className="h-5 w-5 dark:invert-100" />
           </Button>
 
-          <Button size="md" radius="md" variant="subtle" className="shrink-0">
+          <Button size="lg" radius="md" variant="subtle" className="shrink-0">
             Share
           </Button>
 
-          <Button size="md" radius="md" variant="primary" className="shrink-0">
+          <Button size="lg" radius="md" variant="primary" className="shrink-0">
             Publish
           </Button>
 

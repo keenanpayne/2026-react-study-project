@@ -11,17 +11,17 @@ export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
     <section className="col-span-12 border-t border-gray-200 dark:border-zinc-700">
       <header className="p-1.5 border-b border-gray-200 dark:border-zinc-700">
         <nav className="flex items-center gap-2">
-          <Button size="md" radius="pill" variant="subtle">
+          <Button size="lg" radius="pill" variant="selected">
             <Zap size={18} strokeWidth={1.5} />
             Bolt
           </Button>
 
-          <Button size="md" radius="pill" variant="ghost">
+          <Button size="lg" radius="pill" variant="ghost">
             <Rocket size={18} strokeWidth={1.5} />
             Publish Output
           </Button>
 
-          <Button size="md" radius="pill" variant="ghost">
+          <Button size="lg" radius="pill" variant="ghost">
             <SquareTerminal size={18} strokeWidth={1.5} />
             Terminal
           </Button>

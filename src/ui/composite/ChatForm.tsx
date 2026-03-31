@@ -22,8 +22,8 @@ type ChatFormProps = {
 
 export default function ChatForm(props: ChatFormProps) {
   return (
-    <form className="sticky bottom-0 bg-white dark:bg-zinc-900 px-5 pb-3">
-      <aside className="mx-1.75 px-2 py-1.5 flex flex-col sm:flex-row gap-1 sm:gap-0 justify-between text-xs bg-white dark:bg-zinc-800 border-t border-l border-r border-gray-200 dark:border-zinc-600 rounded-t-lg">
+    <form className="sticky bottom-0 bg-white dark:bg-zinc-900 px-4 pb-3">
+      <aside className="mx-2 px-2 py-1.5 flex flex-col sm:flex-row gap-1 sm:gap-0 justify-between text-xs bg-white dark:bg-zinc-800 border-t border-l border-r border-gray-300 dark:border-zinc-700 rounded-t-lg">
         <span>{formatTokens(props.tokens)} daily tokens remaining.</span>
 
         <Button size="flat" className="text-blue-500 dark:text-blue-400 hover:underline">
@@ -31,7 +31,7 @@ export default function ChatForm(props: ChatFormProps) {
         </Button>
       </aside>
 
-      <div className="w-full px-3 pt-3 rounded-lg bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600">
+      <div className="relative w-full px-3 pt-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600">
         <label htmlFor="command" className="sr-only">Command</label>
         <textarea id="command" placeholder="How can Bolt help you today? (or /command)" className="w-full px-1.5 py-2 h-20 text-sm resize-none" />
 

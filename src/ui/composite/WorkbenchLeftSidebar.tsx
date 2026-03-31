@@ -112,14 +112,14 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
 
   return (
     <aside className="relative col-span-4 @2xl:col-span-3 border-r border-gray-200 dark:border-zinc-700 overflow-scroll">
-      <header className="sticky top-0 left-0 px-1.5 py-1 bg-gray-50 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 rounded-tl-xl z-10">
+      <header className="sticky top-0 left-0 px-1 py-1 bg-gray-50 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 rounded-tl-xl z-10">
         <nav className="flex items-center gap-1.5">
-          <Button size="md" radius="md" variant="subtle">
+          <Button size="md" radius="lg" variant="selected">
             <props.listIcon size={18} strokeWidth={1.5} />
             <span className="font-medium">{props.listLabel}</span>
           </Button>
 
-          <Button size="md" radius="md">
+          <Button size="md" radius="lg">
             <SearchCode size={18} strokeWidth={1.5} />
             <span className="font-medium">Search</span>
           </Button>
