@@ -41,6 +41,8 @@ type WorkbenchLeftSidebarProps = {
   list: MockWorkbenchFileTreeNode[];
   listLabel: string;
   listIcon: LucideIcon;
+  selectedNode?: MockWorkbenchFileTreeNode | null;
+  onSelect?: (node: MockWorkbenchFileTreeNode) => void;
 }
 
 export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
@@ -91,10 +93,11 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
           name={node.name}
           type={node.type}
           open={isExpanded}
-          selected={node.selected}
+          selected={node.selected || node === props.selectedNode}
           depth={depth}
           hasChildren={isExpandable}
           onToggle={() => toggle(path)}
+          onClick={() => props.onSelect?.(node)}
         >
           {isExpandable && isExpanded ? (
             <WorkbenchFileTree>

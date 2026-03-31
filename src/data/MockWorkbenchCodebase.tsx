@@ -7,6 +7,7 @@ export type MockWorkbenchDatabaseTable = {
   created_at: Date;
   updated_at: Date;
   children?: MockWorkbenchDatabaseRow[];
+  selected?: boolean;
 }
 
 export type MockWorkbenchDatabaseRow = {
@@ -17,6 +18,7 @@ export type MockWorkbenchDatabaseRow = {
   updated_at: Date;
   children?: MockWorkbenchDatabaseColumn[];
   expandable?: boolean;
+  selected?: boolean;
 }
 
 export type MockWorkbenchDatabaseColumn = {

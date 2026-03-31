@@ -33,6 +33,7 @@ type WorkbenchFileProps = {
   selected?: boolean;
   hasChildren?: boolean;
   onToggle?: () => void;
+  onClick?: () => void;
 }
 
 export default function WorkbenchFile(props: WorkbenchFileProps) {
@@ -43,7 +44,10 @@ export default function WorkbenchFile(props: WorkbenchFileProps) {
       <div
         className={`flex items-center gap-1.5 cursor-pointer py-1 pr-1.5 text-sm transition-colors ${props.selected ? 'bg-sky-100 dark:bg-sky-800/50' : 'text-gray-500 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'}`}
         style={{ paddingLeft: `${0.375 + depth * 0.625}rem` }}
-        onClick={props.hasChildren ? props.onToggle : undefined}
+        onClick={() => {
+          if (props.hasChildren) props.onToggle?.();
+          props.onClick?.();
+        }}
       >
         <span className="flex-1 flex items-center gap-1.5">
           <WorkbenchFileIcon type={props.type} open={props.open} />
