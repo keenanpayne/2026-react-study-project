@@ -6,24 +6,26 @@ import Button from "../base/Button";
 import { FolderTree, SearchCode } from "lucide-react";
 
 /**
- * @function renderWorkbenchFileTree
- * @description Render the file list
+ * @function renderItems
+ * @description Render the left sidebar items
  * @param {MockWorkbenchFileTreeNode[]} items - The items to render
  * @param {number} depth - The depth of the items
  * @returns {ReactNode} The rendered items
  */
-function renderWorkbenchFileTree(items: MockWorkbenchFileTreeNode[], depth: number): ReactNode {
+function renderItems(items: MockWorkbenchFileTreeNode[], depth: number): ReactNode {
   return items.map((node) => (
     <WorkbenchFile
       key={node.name}
       name={node.name}
-      isDirectory={node.isDirectory}
+      type={node.type}
       open={node.open}
       selected={node.selected}
       nested={depth > 0}
     >
       {node.children ? (
-        <WorkbenchFileTree>{renderWorkbenchFileTree(node.children, depth + 1)}</WorkbenchFileTree>
+        <WorkbenchFileTree>
+          {renderItems(node.children, depth + 1)}
+        </WorkbenchFileTree>
       ) : undefined}
     </WorkbenchFile>
   ));
@@ -50,7 +52,7 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
         </nav>
       </header>
 
-      <WorkbenchFileTree>{renderWorkbenchFileTree(props.fileList, 0)}</WorkbenchFileTree>
+      <WorkbenchFileTree>{renderItems(props.fileList, 0)}</WorkbenchFileTree>
     </aside>
   )
 }

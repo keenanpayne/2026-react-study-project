@@ -1,50 +1,146 @@
 import type { FileContents } from "@pierre/diffs/react";
 
+export type MockWorkbenchDatabaseTable = {
+  id: number;
+  type: MockWorkbenchFileTreeItemType;
+  name: string;
+  children: MockWorkbenchDatabaseRow[];
+}
+
+export type MockWorkbenchDatabaseRow = {
+  id: number;
+  type: MockWorkbenchFileTreeItemType;
+  title: string;
+  name: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
+  {
+    id: 1,
+    name: "posts",
+    type: "table",
+    children: [
+      {
+        id: 1,
+        type: "row",
+        title: "Post 1",
+        name: "Content 1",
+        created_at: new Date("2021-01-01"),
+        updated_at: new Date("2021-01-01"),
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "post_media",
+    type: "table",
+    children: [
+      {
+        id: 1,
+        type: "row",
+        title: "Post Media 1",
+        name: "Content 1",
+        created_at: new Date("2021-01-01"),
+        updated_at: new Date("2021-01-01"),
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "social_accounts",
+    type: "table",
+    children: [
+      {
+        id: 1,
+        type: "row",
+        title: "Social Account 1",
+        name: "Content 1",
+        created_at: new Date("2021-01-01"),
+        updated_at: new Date("2021-01-01"),
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "post_platforms",
+    type: "table",
+    children: [
+      {
+        id: 1,
+        type: "row",
+        title: "Post Platform 1",
+        name: "Content 1",
+        created_at: new Date("2021-01-01"),
+        updated_at: new Date("2021-01-01"),
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "users",
+    type: "table",
+    children: [
+      {
+        id: 1,
+        type: "row",
+        title: "User 1",
+        name: "Content 1",
+        created_at: new Date("2021-01-01"),
+        updated_at: new Date("2021-01-01"),
+      },
+    ],
+  },
+];
+
+export type MockWorkbenchFileTreeItemType = "directory" | "file" | "table" | "row" | "column";
+
 export type MockWorkbenchFileTreeNode = {
   name: string;
-  isDirectory?: boolean;
+  type?: MockWorkbenchFileTreeItemType;
   open?: boolean;
   selected?: boolean;
   children?: MockWorkbenchFileTreeNode[];
 };
 
 export const MockWorkbenchFileTree: MockWorkbenchFileTreeNode[] = [
-  { name: ".bolt", isDirectory: true },
+  { name: ".bolt", type: "directory" },
   {
     name: "src",
-    isDirectory: true,
+    type: "directory",
     open: true,
     children: [
-      { name: "components", isDirectory: true },
-      { name: "contexts", isDirectory: true },
-      { name: "hooks", isDirectory: true },
-      { name: "lib", isDirectory: true },
-      { name: "pages", isDirectory: true },
-      { name: "services", isDirectory: true },
-      { name: "utils", isDirectory: true },
-      { name: "App.tsx", selected: true },
-      { name: "index.css" },
-      { name: "main.tsx" },
-      { name: "vite-env.d.ts" },
+      { name: "components", type: "directory" },
+      { name: "contexts", type: "directory" },
+      { name: "hooks", type: "directory" },
+      { name: "lib", type: "directory" },
+      { name: "pages", type: "directory" },
+      { name: "services", type: "directory" },
+      { name: "utils", type: "directory" },
+      { name: "App.tsx", selected: true, type: "file" },
+      { name: "index.css", type: "file" },
+      { name: "main.tsx", type: "file" },
+      { name: "vite-env.d.ts", type: "file" },
     ],
   },
-  { name: "supabase", isDirectory: true },
-  { name: ".env" },
-  { name: ".gitignore" },
-  { name: ".eslint.config.js" },
-  { name: "IMPLEMENTATION_SUMMARY.md" },
-  { name: "index.html" },
-  { name: "MASTODON_SETUP_GUIDE.md" },
-  { name: "package-lock.json" },
-  { name: "package.json" },
-  { name: "PHASE_2_MASTODON_COMPLETE.md" },
-  { name: "postcss.config.js" },
-  { name: "tailwind.config.js" },
-  { name: "tsconfig.app.json" },
-  { name: "tsconfig.json" },
-  { name: "tsconfig.node.json" },
-  { name: "TWITTER_SETUP_GUIDE.md" },
-  { name: "vite.config.ts" },
+  { name: "supabase", type: "directory" },
+  { name: ".env", type: "file" },
+  { name: ".gitignore", type: "file" },
+  { name: ".eslint.config.js", type: "file" },
+  { name: "IMPLEMENTATION_SUMMARY.md", type: "file" },
+  { name: "index.html", type: "file" },
+  { name: "MASTODON_SETUP_GUIDE.md", type: "file" },
+  { name: "package-lock.json", type: "file" },
+  { name: "package.json", type: "file" },
+  { name: "PHASE_2_MASTODON_COMPLETE.md", type: "file" },
+  { name: "postcss.config.js", type: "file" },
+  { name: "tailwind.config.js", type: "file" },
+  { name: "tsconfig.app.json", type: "file" },
+  { name: "tsconfig.json", type: "file" },
+  { name: "tsconfig.node.json", type: "file" },
+  { name: "TWITTER_SETUP_GUIDE.md", type: "file" },
+  { name: "vite.config.ts", type: "file" },
 ];
 
 export const MockWorkbenchFile: FileContents = {
