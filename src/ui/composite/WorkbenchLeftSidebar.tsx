@@ -82,6 +82,7 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
     return items.map((node) => {
       const path = parentPath ? `${parentPath}/${node.name}` : node.name;
       const hasChildren = !!node.children?.length;
+      const isExpandable = hasChildren && node.expandable !== false;
       const isExpanded = expanded.has(path);
 
       return (
@@ -92,10 +93,10 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
           open={isExpanded}
           selected={node.selected}
           depth={depth}
-          hasChildren={hasChildren}
+          hasChildren={isExpandable}
           onToggle={() => toggle(path)}
         >
-          {hasChildren && isExpanded ? (
+          {isExpandable && isExpanded ? (
             <WorkbenchFileTree>
               {renderItems(node.children!, depth + 1, path)}
             </WorkbenchFileTree>

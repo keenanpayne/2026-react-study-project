@@ -16,6 +16,7 @@ export type MockWorkbenchDatabaseRow = {
   created_at: Date;
   updated_at: Date;
   children?: MockWorkbenchDatabaseColumn[];
+  expandable?: boolean;
 }
 
 export type MockWorkbenchDatabaseColumn = {
@@ -37,6 +38,7 @@ export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
       {
         id: 1,
         type: "row",
+        expandable: false,
         name: "Keenan Payne",
         created_at: new Date("2025-11-23T19:10:02.578Z"),
         updated_at: new Date("2025-11-23T19:10:02.578Z"),
@@ -69,6 +71,7 @@ export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
       {
         id: 1,
         type: "row",
+        expandable: false,
         name: "This is what I'm thinking about",
         created_at: new Date("2025-11-23T19:10:58.705Z"),
         updated_at: new Date("2025-11-23T19:10:58.705Z"),
@@ -99,7 +102,8 @@ export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
       {
         id: 1,
         type: "row",
-        name: "twitter - pending",
+        expandable: false,
+        name: "twitter",
         created_at: new Date("2025-11-23T19:10:58.814Z"),
         updated_at: new Date("2025-11-23T19:10:58.814Z"),
         children: [
@@ -115,7 +119,8 @@ export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
       {
         id: 2,
         type: "row",
-        name: "bluesky - pending",
+        expandable: false,
+        name: "bluesky",
         created_at: new Date("2025-11-23T19:10:58.905Z"),
         updated_at: new Date("2025-11-23T19:10:58.905Z"),
         children: [
@@ -147,6 +152,7 @@ export type MockWorkbenchFileTreeNode = {
   type?: MockWorkbenchFileTreeItemType;
   open?: boolean;
   selected?: boolean;
+  expandable?: boolean;
   children?: MockWorkbenchFileTreeNode[];
 };
 
