@@ -32,7 +32,7 @@ function renderItems(items: MockWorkbenchFileTreeNode[], depth: number): ReactNo
 }
 
 type WorkbenchLeftSidebarProps = {
-  fileList: MockWorkbenchFileTreeNode[];
+  list: MockWorkbenchFileTreeNode[];
 }
 
 export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
@@ -52,7 +52,7 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
         </nav>
       </header>
 
-      <WorkbenchFileTree>{renderItems(props.fileList, 0)}</WorkbenchFileTree>
+      <WorkbenchFileTree>{renderItems(props.list, 0)}</WorkbenchFileTree>
     </aside>
   )
 }

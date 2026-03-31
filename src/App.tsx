@@ -9,7 +9,7 @@ import WorkbenchPreview from './ui/composite/WorkbenchPreview';
 import WorkbenchCodebase from './ui/composite/WorkbenchCodebase';
 import WorkbenchDatabase from './ui/composite/WorkbenchDatabase';
 import MockWorkbenchPreview from './data/MockWorkbenchPreview';
-import { MockWorkbenchFile, MockWorkbenchFileTree, MockWorkbenchTerminal } from './data/MockWorkbenchCodebase';
+import { MockWorkbenchDatabaseTables, MockWorkbenchFile, MockWorkbenchFileTree, MockWorkbenchTerminal } from './data/MockWorkbenchCodebase';
 import { MockUserBoltTokens, MockUserCurrentProject, MockUserProjects, MockUserTeams } from './data/MockUser';
 
 export default function App() {
@@ -35,8 +35,8 @@ export default function App() {
         <div className="md:col-span-6 lg:col-auto min-h-0 h-full overflow-scroll mx-3 md:ml-0 flex flex-col">
           <WorkbenchHeader isWorkbenchPreviewVisible={isWorkbenchPreviewVisible} setIsWorkbenchPreviewVisible={setIsWorkbenchPreviewVisible} isWorkbenchCodebaseVisible={isWorkbenchCodebaseVisible} setIsWorkbenchCodebaseVisible={setIsWorkbenchCodebaseVisible} isWorkbenchDatabaseVisible={isWorkbenchDatabaseVisible} setIsWorkbenchDatabaseVisible={setIsWorkbenchDatabaseVisible} />
           <WorkbenchPreview isVisible={isWorkbenchPreviewVisible} children={<MockWorkbenchPreview />} />
-          <WorkbenchCodebase isVisible={isWorkbenchCodebaseVisible} file={MockWorkbenchFile} fileList={MockWorkbenchFileTree} terminal={MockWorkbenchTerminal} />
-          <WorkbenchDatabase isVisible={isWorkbenchDatabaseVisible} />
+          <WorkbenchCodebase isVisible={isWorkbenchCodebaseVisible} file={MockWorkbenchFile} list={MockWorkbenchFileTree} terminal={MockWorkbenchTerminal} />
+          <WorkbenchDatabase isVisible={isWorkbenchDatabaseVisible} list={MockWorkbenchDatabaseTables} />
         </div>
       </main>
     </>

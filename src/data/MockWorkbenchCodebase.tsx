@@ -4,13 +4,23 @@ export type MockWorkbenchDatabaseTable = {
   id: number;
   type: MockWorkbenchFileTreeItemType;
   name: string;
-  children: MockWorkbenchDatabaseRow[];
+  created_at: Date;
+  updated_at: Date;
+  children?: MockWorkbenchDatabaseRow[];
 }
 
 export type MockWorkbenchDatabaseRow = {
   id: number;
   type: MockWorkbenchFileTreeItemType;
-  title: string;
+  name: string;
+  created_at: Date;
+  updated_at: Date;
+  children?: MockWorkbenchDatabaseColumn[];
+}
+
+export type MockWorkbenchDatabaseColumn = {
+  id: number;
+  type: MockWorkbenchFileTreeItemType;
   name: string;
   created_at: Date;
   updated_at: Date;
@@ -21,11 +31,12 @@ export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
     id: 1,
     name: "posts",
     type: "table",
+    created_at: new Date("2021-01-01"),
+    updated_at: new Date("2021-01-01"),
     children: [
       {
         id: 1,
         type: "row",
-        title: "Post 1",
         name: "Content 1",
         created_at: new Date("2021-01-01"),
         updated_at: new Date("2021-01-01"),
@@ -36,11 +47,12 @@ export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
     id: 2,
     name: "post_media",
     type: "table",
+    created_at: new Date("2021-01-01"),
+    updated_at: new Date("2021-01-01"),
     children: [
       {
         id: 1,
         type: "row",
-        title: "Post Media 1",
         name: "Content 1",
         created_at: new Date("2021-01-01"),
         updated_at: new Date("2021-01-01"),
@@ -51,11 +63,12 @@ export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
     id: 3,
     name: "social_accounts",
     type: "table",
+    created_at: new Date("2021-01-01"),
+    updated_at: new Date("2021-01-01"),
     children: [
       {
         id: 1,
         type: "row",
-        title: "Social Account 1",
         name: "Content 1",
         created_at: new Date("2021-01-01"),
         updated_at: new Date("2021-01-01"),
@@ -66,11 +79,12 @@ export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
     id: 4,
     name: "post_platforms",
     type: "table",
+    created_at: new Date("2021-01-01"),
+    updated_at: new Date("2021-01-01"),
     children: [
       {
         id: 1,
         type: "row",
-        title: "Post Platform 1",
         name: "Content 1",
         created_at: new Date("2021-01-01"),
         updated_at: new Date("2021-01-01"),
@@ -81,11 +95,12 @@ export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
     id: 5,
     name: "users",
     type: "table",
+    created_at: new Date("2021-01-01"),
+    updated_at: new Date("2021-01-01"),
     children: [
       {
         id: 1,
         type: "row",
-        title: "User 1",
         name: "Content 1",
         created_at: new Date("2021-01-01"),
         updated_at: new Date("2021-01-01"),

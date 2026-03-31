@@ -8,7 +8,7 @@ import WorkbenchRightContent from "../base/WorkbenchRightContent";
 
 type WorkbenchCodebaseProps = {
   file: FileContents;
-  fileList: MockWorkbenchFileTreeNode[];
+  list: MockWorkbenchFileTreeNode[];
   terminal: FileContents;
   isVisible: boolean;
 }
@@ -19,7 +19,7 @@ export default function WorkbenchCodebase(props: WorkbenchCodebaseProps) {
   return (
     <WorkbenchContainer>
       <WorkbenchContents>
-        <WorkbenchLeftSidebar fileList={props.fileList} />
+        <WorkbenchLeftSidebar list={props.list} />
 
         <WorkbenchRightContent>
           <File

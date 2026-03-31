@@ -3,7 +3,7 @@ import WorkbenchContainer from "../base/WorkbenchContainer";
 import WorkbenchContents from "../base/WorkbenchContents";
 import WorkbenchRightContent from "../base/WorkbenchRightContent";
 import WorkbenchLeftSidebar from "./WorkbenchLeftSidebar";
-import { MockWorkbenchDatabaseTables, type MockWorkbenchDatabaseTable } from "../../data/MockWorkbenchCodebase";
+import { MockWorkbenchDatabaseTables, type MockWorkbenchDatabaseTable, type MockWorkbenchFileTreeNode } from "../../data/MockWorkbenchCodebase";
 
 interface DatabaseTableProps {
   table: MockWorkbenchDatabaseTable;
@@ -24,6 +24,7 @@ function DatabaseTable(props: DatabaseTableProps) {
   )
 }
 type WorkbenchDatabaseProps = {
+  list: MockWorkbenchFileTreeNode[];
   isVisible: boolean;
 }
 
@@ -33,7 +34,7 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
   return (
     <WorkbenchContainer>
       <WorkbenchContents>
-        {/* <WorkbenchLeftSidebar fileList={props.fileList} /> */}
+        <WorkbenchLeftSidebar list={props.list} />
 
         <WorkbenchRightContent>
           <div className="p-5 flex flex-col gap-3">
