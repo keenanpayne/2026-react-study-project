@@ -4,9 +4,13 @@ import DropdownItem from "../base/DropdownItem";
 import DropdownSeparator from "../base/DropdownSeparator";
 import DropdownLabel from "../base/DropdownLabel";
 
-export default function DropdownSettings() {
+type DropdownSettingsProps = {
+  align?: "left" | "right";
+};
+
+export default function DropdownSettings({ align = "left" }: DropdownSettingsProps) {
   return (
-    <Dropdown align="left" className="w-55">
+    <Dropdown align={align} className="w-55">
       <DropdownItem size="md" title="Analytics" icon={<ChartColumnIncreasing size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
       <DropdownItem size="md" title="Authentication" icon={<BadgeCheck size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
       <DropdownItem size="md" title="Knowledge" icon={<Lightbulb size={DROPDOWN_ICON_SIZE} strokeWidth={DROPDOWN_ICON_STROKE_WIDTH} />} />
