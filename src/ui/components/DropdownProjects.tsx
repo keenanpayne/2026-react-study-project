@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Copy, Download, Earth, Eye, EyeOff, FileArchive, Folders, History, PencilLine, Trash, Zap, Lock, Search } from "lucide-react";
-import type { MockUserProject } from "../../data/MockUser";
+import type { MockUserProject } from "~/data/MockUser";
 import Dropdown, { DROPDOWN_ICON_SIZE, DROPDOWN_ICON_STROKE_WIDTH } from "./Dropdown";
 import DropdownItem from "./DropdownItem";
 import DropdownLabel from "./DropdownLabel";

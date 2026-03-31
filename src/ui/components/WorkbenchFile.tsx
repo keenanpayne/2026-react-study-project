@@ -1,6 +1,6 @@
 import { ChevronRight, Columns3, FileIcon, FolderClosed, FolderOpen, Rows3, TableProperties } from "lucide-react";
 import type { ReactNode } from "react";
-import type { MockWorkbenchFileTreeItemType } from "../../data/MockWorkbenchCodebase";
+import type { MockWorkbenchFileTreeItemType } from "~/data/MockWorkbenchCodebase";
 
 interface WorkbenchFileIconProps {
   type?: MockWorkbenchFileTreeItemType;

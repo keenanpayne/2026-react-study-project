@@ -1,7 +1,7 @@
 import { Plus, ChevronsUpDown, MousePointerClick, Lightbulb, ArrowUp } from "lucide-react";
 import Button from "./Button";
 
-export function formatTokens(tokens: number): string {
+function formatTokens(tokens: number): string {
   if (tokens >= 1000000) {
     const value = Math.round(tokens / 100000) / 10;
     return `${value % 1 === 0 ? value.toFixed(0) : value}M`;

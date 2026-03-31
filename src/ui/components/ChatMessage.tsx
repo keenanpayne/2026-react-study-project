@@ -1,8 +1,8 @@
+import { Ellipsis } from "lucide-react";
 import ChatResponse from "./ChatResponse";
 import DropdownChat from "./DropdownChat";
 import DropdownTrigger from "./DropdownTrigger";
-import { Ellipsis } from "lucide-react";
-import { MockChatUserMessage } from "../../data/MockChat";
+import { MockChatUserMessage } from "~/data/MockChat";
 
 type ChatMessageProps = {
   setIsActionDialogOpen: (open: boolean) => void;

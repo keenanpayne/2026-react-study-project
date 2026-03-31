@@ -1,5 +1,5 @@
 import { ChevronsUpDown, Lock } from "lucide-react";
-import type { MockUserProject, MockUserTeam } from "../../data/MockUser";
+import type { MockUserProject, MockUserTeam } from "~/data/MockUser";
 import DropdownProjects from "./DropdownProjects";
 import UserTeams from "./UserTeams";
 import Button from "./Button";

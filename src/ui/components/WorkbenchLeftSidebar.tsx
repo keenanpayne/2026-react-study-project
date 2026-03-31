@@ -1,11 +1,11 @@
 import { useState, type ReactNode } from "react";
-import type { MockWorkbenchFileTreeNode } from "../../data/MockWorkbenchCodebase";
+import type { MockWorkbenchFileTreeNode } from "~/data/MockWorkbenchCodebase";
 import WorkbenchFileTree from "./WorkbenchFileTree";
 import WorkbenchFile from "./WorkbenchFile";
 import Button from "./Button";
 import { SearchCode, type LucideIcon } from "lucide-react";
 
-export function computeInitialExpanded(
+function computeInitialExpanded(
   nodes: MockWorkbenchFileTreeNode[],
   parentPath: string
 ): Set<string> {

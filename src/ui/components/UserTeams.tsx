@@ -1,4 +1,4 @@
-import type { MockUserTeam } from "../../data/MockUser";
+import type { MockUserTeam } from "~/data/MockUser";
 import Dropdown from "./Dropdown";
 import DropdownSeparator from "./DropdownSeparator";
 import UserTeam from "./UserTeam";

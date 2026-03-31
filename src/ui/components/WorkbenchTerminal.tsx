@@ -1,7 +1,7 @@
 import { File, type FileContents } from '@pierre/diffs/react';
 import Button from "./Button";
 import { Zap, Rocket, SquareTerminal } from "lucide-react";
-import { DIFF_TERMINAL_OPTIONS } from '../../utils/diffOptions';
+import { DIFF_TERMINAL_OPTIONS } from "~/utils/diffOptions";
 
 type WorkbenchTerminalProps = {
   file: FileContents;
