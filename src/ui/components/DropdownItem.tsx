@@ -1,5 +1,12 @@
 import { ChevronRight } from 'lucide-react'
-import { useState, useRef, type ReactNode, type FocusEvent } from 'react'
+import {
+  useEffect,
+  useState,
+  useRef,
+  type ReactNode,
+  type FocusEvent,
+  type MouseEvent,
+} from 'react'
 
 type DropdownItemProps = {
   title: string
@@ -14,6 +21,7 @@ type DropdownItemProps = {
 export default function DropdownItem(props: DropdownItemProps) {
   const [isSubOpen, setIsSubOpen] = useState(false)
   const itemRef = useRef<HTMLLIElement>(null)
+  const openedViaClick = useRef(false)
 
   const size =
     props.size === 'sm'
@@ -32,18 +40,65 @@ export default function DropdownItem(props: DropdownItemProps) {
   const handleBlur = (e: FocusEvent) => {
     if (itemRef.current && !itemRef.current.contains(e.relatedTarget as Node)) {
       setIsSubOpen(false)
+      openedViaClick.current = false
     }
   }
+
+  const handleClick = (e: MouseEvent) => {
+    e.stopPropagation()
+    if (isSubOpen) {
+      setIsSubOpen(false)
+      openedViaClick.current = false
+    } else {
+      setIsSubOpen(true)
+      openedViaClick.current = true
+    }
+  }
+
+  useEffect(() => {
+    if (!isSubOpen) return
+
+    const handlePointerDown = (e: PointerEvent) => {
+      if (itemRef.current && !itemRef.current.contains(e.target as Node)) {
+        setIsSubOpen(false)
+        openedViaClick.current = false
+      }
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsSubOpen(false)
+        openedViaClick.current = false
+        itemRef.current?.focus()
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isSubOpen])
 
   return (
     <li
       ref={props.dropdown ? itemRef : undefined}
       className={classNames}
       tabIndex={0}
+      onClick={props.dropdown ? handleClick : undefined}
       onMouseEnter={props.dropdown ? () => setIsSubOpen(true) : undefined}
-      onMouseLeave={props.dropdown ? () => setIsSubOpen(false) : undefined}
+      onMouseLeave={
+        props.dropdown
+          ? () => {
+              if (!openedViaClick.current) setIsSubOpen(false)
+            }
+          : undefined
+      }
       onFocus={props.dropdown ? () => setIsSubOpen(true) : undefined}
       onBlur={props.dropdown ? handleBlur : undefined}
+      aria-expanded={props.dropdown ? isSubOpen : undefined}
+      aria-haspopup={props.dropdown ? 'menu' : undefined}
     >
       <p className="flex flex-1 items-center gap-2.5">
         {props.icon}

@@ -1,5 +1,6 @@
 import type { MockUserTeam } from '~/data/MockUser'
 import Dropdown from './Dropdown'
+import DropdownList from './DropdownList'
 import DropdownSeparator from './DropdownSeparator'
 import UserTeam from './UserTeam'
 
@@ -10,13 +11,15 @@ type UserTeamsProps = {
 export default function UserTeams(props: UserTeamsProps) {
   return (
     <Dropdown align="left" className="w-55">
-      {props.data.map((item: MockUserTeam) => (
-        <UserTeam key={item.id} team={item} />
-      ))}
+      <DropdownList>
+        {props.data.map((item: MockUserTeam) => (
+          <UserTeam key={item.id} team={item} />
+        ))}
 
-      <DropdownSeparator />
+        <DropdownSeparator />
 
-      <UserTeam team={{ id: 0, title: 'Create a team' }} create={true} />
+        <UserTeam team={{ id: 0, title: 'Create a team' }} create={true} />
+      </DropdownList>
     </Dropdown>
   )
 }
