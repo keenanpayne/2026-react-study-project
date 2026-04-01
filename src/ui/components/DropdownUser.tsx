@@ -4,6 +4,7 @@ import {
   LogOut,
   Palette,
   Settings,
+  type LucideIcon,
 } from 'lucide-react'
 import Dropdown, {
   DROPDOWN_ICON_SIZE,
@@ -14,6 +15,30 @@ import DropdownList from './DropdownList'
 import DropdownSeparator from './DropdownSeparator'
 import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 
+type UserEntry =
+  | { kind: 'item'; id: string; title: string; icon: LucideIcon }
+  | { kind: 'separator'; id: string }
+
+const USER_ENTRIES = [
+  { kind: 'item', id: 'settings', title: 'Settings', icon: Settings },
+  {
+    kind: 'item',
+    id: 'help',
+    title: 'Help',
+    icon: CircleQuestionMark,
+  },
+  { kind: 'separator', id: 'sep-after-help' },
+  {
+    kind: 'item',
+    id: 'subscription',
+    title: 'Subscription',
+    icon: CreditCard,
+  },
+  { kind: 'item', id: 'theme', title: 'Theme', icon: Palette },
+  { kind: 'separator', id: 'sep-before-sign-out' },
+  { kind: 'item', id: 'sign-out', title: 'Sign out', icon: LogOut },
+] satisfies readonly UserEntry[]
+
 export default function DropdownUser() {
   const closeCtx = useDropdownTriggerClose()
   const handleSelect = () => closeCtx?.close()
@@ -21,63 +46,26 @@ export default function DropdownUser() {
   return (
     <Dropdown align="right" className="w-50">
       <DropdownList>
-        <DropdownItem
-          size="md"
-          title="Settings"
-          onSelect={handleSelect}
-          icon={
-            <Settings
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
+        {USER_ENTRIES.map((entry) => {
+          if (entry.kind === 'separator') {
+            return <DropdownSeparator key={entry.id} />
           }
-        />
-        <DropdownItem
-          size="md"
-          title="Help"
-          onSelect={handleSelect}
-          icon={
-            <CircleQuestionMark
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+          const Icon = entry.icon
+          return (
+            <DropdownItem
+              key={entry.id}
+              size="md"
+              title={entry.title}
+              onSelect={handleSelect}
+              icon={
+                <Icon
+                  size={DROPDOWN_ICON_SIZE}
+                  strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+                />
+              }
             />
-          }
-        />
-        <DropdownSeparator />
-        <DropdownItem
-          size="md"
-          title="Subscription"
-          onSelect={handleSelect}
-          icon={
-            <CreditCard
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-        />
-        <DropdownItem
-          size="md"
-          title="Theme"
-          onSelect={handleSelect}
-          icon={
-            <Palette
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-        />
-        <DropdownSeparator />
-        <DropdownItem
-          size="md"
-          title="Sign out"
-          onSelect={handleSelect}
-          icon={
-            <LogOut
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-        />
+          )
+        })}
       </DropdownList>
     </Dropdown>
   )

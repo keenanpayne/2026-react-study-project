@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useMemo, useState, type ReactNode } from 'react'
 import {
   Copy,
   Download,
@@ -12,6 +12,7 @@ import {
   Trash,
   Zap,
   Lock,
+  type LucideIcon,
 } from 'lucide-react'
 import type { MockUserProject } from '~/data/MockUser'
 import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
@@ -106,84 +107,102 @@ function DropdownRecentProjects(props: DropdownRecentProjectsProps) {
   )
 }
 
+const EXPORT_ROWS: { id: string; title: string; icon: LucideIcon }[] = [
+  { id: 'download', title: 'Download', icon: FileArchive },
+  { id: 'stackblitz', title: 'Open in StackBlitz', icon: Zap },
+]
+
 function DropdownExport() {
   const closeCtx = useDropdownTriggerClose()
+  const handleSelect = () => closeCtx?.close()
 
   return (
     <Dropdown className="w-50" nested>
       <DropdownList>
-        <DropdownItem
-          size="md"
-          title="Download"
-          onSelect={() => closeCtx?.close()}
-          icon={
-            <FileArchive
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+        {EXPORT_ROWS.map((row) => {
+          const Icon = row.icon
+          return (
+            <DropdownItem
+              key={row.id}
+              size="md"
+              title={row.title}
+              onSelect={handleSelect}
+              icon={
+                <Icon
+                  size={DROPDOWN_ICON_SIZE}
+                  strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+                />
+              }
             />
-          }
-        />
-        <DropdownItem
-          size="md"
-          title="Open in StackBlitz"
-          onSelect={() => closeCtx?.close()}
-          icon={
-            <Zap
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-        />
+          )
+        })}
       </DropdownList>
     </Dropdown>
   )
 }
 
+const VISIBILITY_ROWS: {
+  id: string
+  title: string
+  append: string
+  icon: LucideIcon
+}[] = [
+  {
+    id: 'public',
+    title: 'Public',
+    append: 'Everyone can view',
+    icon: Earth,
+  },
+  {
+    id: 'secret',
+    title: 'Secret',
+    append: 'Accessible via shared URL',
+    icon: EyeOff,
+  },
+  {
+    id: 'private',
+    title: 'Private',
+    append: 'Only owner can access',
+    icon: Lock,
+  },
+]
+
 function DownloadVisibility() {
   const closeCtx = useDropdownTriggerClose()
+  const handleSelect = () => closeCtx?.close()
 
   return (
     <Dropdown className="w-52" nested>
       <DropdownList>
-        <DropdownItem
-          size="md"
-          title="Public"
-          append="Everyone can view"
-          onSelect={() => closeCtx?.close()}
-          icon={
-            <Earth
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+        {VISIBILITY_ROWS.map((row) => {
+          const Icon = row.icon
+          return (
+            <DropdownItem
+              key={row.id}
+              size="md"
+              title={row.title}
+              append={row.append}
+              onSelect={handleSelect}
+              icon={
+                <Icon
+                  size={DROPDOWN_ICON_SIZE}
+                  strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+                />
+              }
             />
-          }
-        />
-        <DropdownItem
-          size="md"
-          title="Secret"
-          append="Accessible via shared URL"
-          onSelect={() => closeCtx?.close()}
-          icon={
-            <EyeOff
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-        />
-        <DropdownItem
-          size="md"
-          title="Private"
-          append="Only owner can access"
-          onSelect={() => closeCtx?.close()}
-          icon={
-            <Lock
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-        />
+          )
+        })}
       </DropdownList>
     </Dropdown>
   )
+}
+
+type ProjectMenuRow = {
+  id: string
+  title: string
+  icon: LucideIcon
+  dropdown?: ReactNode
+  className?: string
 }
 
 type DropdownProjectsProps = {
@@ -195,92 +214,66 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
   const closeCtx = useDropdownTriggerClose()
   const handleSelect = () => closeCtx?.close()
 
+  const menuRows = useMemo<ProjectMenuRow[]>(
+    () => [
+      {
+        id: 'recent',
+        title: 'Open recent project',
+        icon: Folders,
+        dropdown: (
+          <DropdownRecentProjects
+            projects={props.projects}
+            currentProject={props.currentProject}
+          />
+        ),
+      },
+      { id: 'history', title: 'Version history', icon: History },
+      { id: 'rename', title: 'Rename...', icon: PencilLine },
+      { id: 'duplicate', title: 'Duplicate', icon: Copy },
+      {
+        id: 'export',
+        title: 'Export',
+        icon: Download,
+        dropdown: <DropdownExport />,
+      },
+      {
+        id: 'visibility',
+        title: 'Visibility',
+        icon: Eye,
+        dropdown: <DownloadVisibility />,
+      },
+      {
+        id: 'delete',
+        title: 'Delete',
+        icon: Trash,
+        className: 'text-danger hover:bg-danger-bg',
+      },
+    ],
+    [props.projects, props.currentProject],
+  )
+
   return (
     <Dropdown align="left" className="w-60">
       <DropdownList>
-        <DropdownItem
-          size="md"
-          title="Open recent project"
-          icon={
-            <Folders
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+        {menuRows.map((row) => {
+          const Icon = row.icon
+          return (
+            <DropdownItem
+              key={row.id}
+              size="md"
+              title={row.title}
+              className={row.className}
+              onSelect={row.dropdown ? undefined : handleSelect}
+              dropdown={row.dropdown}
+              icon={
+                <Icon
+                  size={DROPDOWN_ICON_SIZE}
+                  strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+                />
+              }
             />
-          }
-          dropdown={
-            <DropdownRecentProjects
-              projects={props.projects}
-              currentProject={props.currentProject}
-            />
-          }
-        />
-        <DropdownItem
-          size="md"
-          title="Version history"
-          onSelect={handleSelect}
-          icon={
-            <History
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-        />
-        <DropdownItem
-          size="md"
-          title="Rename..."
-          onSelect={handleSelect}
-          icon={
-            <PencilLine
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-        />
-        <DropdownItem
-          size="md"
-          title="Duplicate"
-          onSelect={handleSelect}
-          icon={
-            <Copy
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-        />
-        <DropdownItem
-          size="md"
-          title="Export"
-          icon={
-            <Download
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-          dropdown={<DropdownExport />}
-        />
-        <DropdownItem
-          size="md"
-          title="Visibility"
-          icon={
-            <Eye
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-          dropdown={<DownloadVisibility />}
-        />
-        <DropdownItem
-          size="md"
-          title="Delete"
-          className="text-danger hover:bg-danger-bg"
-          onSelect={handleSelect}
-          icon={
-            <Trash
-              size={DROPDOWN_ICON_SIZE}
-              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-            />
-          }
-        />
+          )
+        })}
       </DropdownList>
     </Dropdown>
   )

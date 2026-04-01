@@ -90,7 +90,7 @@ export default function ChatForm(props: ChatFormProps) {
             <Button size="md" radius="xl" className="shrink-0">
               <MousePointerClick
                 size={18}
-                strokeWidth={1}
+                strokeWidth={1.5}
                 className="stroke-icon-default"
               />
               <span className="text-text-secondary text-xs">Select</span>
@@ -99,7 +99,7 @@ export default function ChatForm(props: ChatFormProps) {
             <Button size="md" radius="xl" className="shrink-0">
               <Lightbulb
                 size={18}
-                strokeWidth={1}
+                strokeWidth={1.5}
                 className="stroke-icon-default"
               />
               <span className="text-text-secondary text-xs">Plan</span>
