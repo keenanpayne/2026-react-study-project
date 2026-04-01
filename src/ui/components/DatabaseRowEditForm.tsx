@@ -37,7 +37,10 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
 
           return (
             <div key={col.name} className="flex flex-col gap-1">
-              <label className="text-text-muted text-xs font-medium">
+              <label
+                className="text-text-muted text-xs font-medium"
+                htmlFor={col.name}
+              >
                 {col.name}
               </label>
 
@@ -45,6 +48,8 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
                 type={isNumeric ? 'number' : 'text'}
                 value={props.editedValues[col.name] ?? ''}
                 onChange={(e) => props.onValueChange(col.name, e.target.value)}
+                name={col.name}
+                id={col.name}
                 className="input-base"
               />
             </div>

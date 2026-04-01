@@ -12,8 +12,8 @@ const buttonStyles = cva(
       size: {
         flat: '',
         sm: 'text-xs p-1 gap-1.5',
-        md: 'text-sm px-2 py-1.5 gap-2',
-        lg: 'text-sm px-3 py-1.5 gap-2',
+        md: 'text-sm px-1.25 sm:px-2 py-1.5 gap-1.5',
+        lg: 'text-sm px-1.5 sm:px-2 sm:px-3 py-1.5 gap-1.5',
       },
       radius: {
         sm: 'rounded-sm',

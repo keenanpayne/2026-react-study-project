@@ -19,7 +19,7 @@ export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
       >
         <nav className="flex items-center gap-2">
           <Button size="lg" radius="pill" variant="selected">
-            <Zap size={18} strokeWidth={1.5} />
+            <Zap size={18} strokeWidth={1.5} className="fill-fill-subtle" />
             Bolt
           </Button>
 

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Plus,
   ChevronsUpDown,
@@ -29,6 +30,9 @@ type ChatFormProps = {
 }
 
 export default function ChatForm(props: ChatFormProps) {
+  const [message, setMessage] = useState('')
+  const canSend = message.trim().length > 0
+
   return (
     <form className="group/form bg-surface mb-3 shrink-0 px-4 pb-3 md:mb-0">
       <aside className="border-border-default mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-focus-within/form:flex sm:flex sm:flex-row sm:gap-0">
@@ -46,6 +50,8 @@ export default function ChatForm(props: ChatFormProps) {
 
         <textarea
           id="command"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           placeholder="How can Bolt help you today? (or /command)"
           className="w-full resize-none px-1.5 py-1 text-base outline-none group-focus-within/form:h-20 focus:outline-none focus-visible:outline-none sm:h-20 sm:text-sm"
         />
@@ -54,7 +60,7 @@ export default function ChatForm(props: ChatFormProps) {
           <div className="flex items-center gap-3">
             <DropdownTrigger
               size="flat"
-              className="group/button shrink-0"
+              className="group/button shrink-0 rounded-full"
               dropdown={<DropdownAttachments />}
             >
               <span className="sr-only">Upload</span>
@@ -86,8 +92,8 @@ export default function ChatForm(props: ChatFormProps) {
             </DropdownTrigger>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Button size="md" radius="xl" className="shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
+            <Button size="sm" radius="xl" className="shrink-0">
               <MousePointerClick
                 size={18}
                 strokeWidth={1.5}
@@ -96,7 +102,7 @@ export default function ChatForm(props: ChatFormProps) {
               <span className="text-text-secondary text-xs">Select</span>
             </Button>
 
-            <Button size="md" radius="xl" className="shrink-0">
+            <Button size="sm" radius="xl" className="shrink-0">
               <Lightbulb
                 size={18}
                 strokeWidth={1.5}
@@ -105,7 +111,11 @@ export default function ChatForm(props: ChatFormProps) {
               <span className="text-text-secondary text-xs">Plan</span>
             </Button>
 
-            <Button size="flat" className="group/button shrink-0">
+            <Button
+              size="flat"
+              className="group/button shrink-0"
+              disabled={!canSend}
+            >
               <span className="sr-only">Send Message</span>
               <ArrowUp
                 size={28}

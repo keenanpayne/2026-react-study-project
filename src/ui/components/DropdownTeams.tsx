@@ -13,6 +13,8 @@ type TeamProps = {
 }
 
 function Team(props: TeamProps) {
+  const active = props.team.active
+
   const handleKeyDown = (e: KeyboardEvent<HTMLLIElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
@@ -22,7 +24,7 @@ function Team(props: TeamProps) {
 
   return (
     <li
-      className="hover:bg-hover-item mx-1.5 my-1.5 flex cursor-pointer items-center gap-2.5 rounded-md p-2 transition-colors"
+      className={`hover:bg-hover-item mx-1.5 my-1.5 flex cursor-pointer items-center gap-2.5 rounded-md p-2 transition-colors ${active ? 'bg-selected hover:bg-selected-hover' : ''}`}
       tabIndex={0}
       onClick={props.onActivate}
       onKeyDown={handleKeyDown}

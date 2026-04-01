@@ -13,11 +13,11 @@ type DropdownProps = {
 export default function Dropdown(props: DropdownProps) {
   const alignClass =
     props.align === 'left'
-      ? 'left-0 top-10'
+      ? 'left-0 top-[calc(100%+4px)]'
       : props.align === 'right'
-        ? 'right-0 top-10'
+        ? 'right-0 top-[calc(100%+4px)]'
         : props.align === 'top'
-          ? 'bottom-10 left-0'
+          ? 'bottom-[calc(100%+4px)] left-0'
           : ''
 
   const baseClass = props.nested
