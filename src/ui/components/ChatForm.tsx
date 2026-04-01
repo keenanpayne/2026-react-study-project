@@ -27,7 +27,7 @@ type ChatFormProps = {
 
 export default function ChatForm(props: ChatFormProps) {
   return (
-    <form className="group/form bg-surface sticky bottom-0 px-4 pb-3">
+    <form className="group/form bg-surface sticky bottom-3 px-4 pb-3">
       <aside className="border-border-default bg-surface-raised mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-focus-within/form:flex sm:flex sm:flex-row sm:gap-0">
         <span>{formatTokens(props.tokens)} daily tokens remaining.</span>
 
@@ -43,7 +43,7 @@ export default function ChatForm(props: ChatFormProps) {
         <textarea
           id="command"
           placeholder="How can Bolt help you today? (or /command)"
-          className="w-full resize-none px-1.5 py-2 text-sm group-focus-within/form:h-20 sm:h-20"
+          className="w-full resize-none px-1.5 py-2 text-base group-focus-within/form:h-20 sm:h-20 sm:text-sm"
         />
 
         <nav className="hidden items-center justify-between gap-3 py-1.5 group-focus-within/form:flex sm:flex">
