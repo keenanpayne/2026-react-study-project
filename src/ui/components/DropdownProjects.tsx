@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import {
   Copy,
   Download,
@@ -12,7 +12,6 @@ import {
   Trash,
   Zap,
   Lock,
-  Search,
 } from 'lucide-react'
 import type { MockUserProject } from '~/data/MockUser'
 import Dropdown, {
@@ -22,6 +21,7 @@ import Dropdown, {
 import DropdownItem from './DropdownItem'
 import DropdownLabel from './DropdownLabel'
 import DropdownList from './DropdownList'
+import SearchInput from './SearchInput'
 
 function getSectionLabel(date: Date): string {
   const ms30Days = 30 * 24 * 60 * 60 * 1000
@@ -54,42 +54,51 @@ type DropdownRecentProjectsProps = {
 }
 
 function DropdownRecentProjects(props: DropdownRecentProjectsProps) {
-  const sections = groupProjectsBySection(props.projects)
+  const [query, setQuery] = useState('')
+
+  const filtered = query
+    ? props.projects.filter((p) =>
+        p.title.toLowerCase().includes(query.toLowerCase()),
+      )
+    : props.projects
+
+  const sections = groupProjectsBySection(filtered)
 
   return (
     <Dropdown className="w-65" nested>
-      <div className="flex items-center gap-2 px-3">
-        <Search
-          size={DROPDOWN_ICON_SIZE}
-          strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-        />
-        <input
-          type="search"
-          placeholder="Search projects"
-          className="w-full border-0 bg-transparent py-2"
-        />
-      </div>
+      <SearchInput
+        value={query}
+        onChange={setQuery}
+        placeholder="Search projects"
+        className="px-3"
+        iconSize={DROPDOWN_ICON_SIZE}
+        iconStrokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+      />
 
-      <DropdownList>
-        {sections.map(({ label, projects: sectionProjects }) => (
-          <Fragment key={label}>
-            <DropdownLabel label={label} />
-            {sectionProjects.map((project) => {
-              const isActive = project.id === props.currentProject.id
+      {sections.length === 0 ? (
+        <p className="text-text-muted px-3 py-2 text-sm">No projects found</p>
+      ) : (
+        <DropdownList>
+          {sections.map(({ label, projects: sectionProjects }) => (
+            <Fragment key={label}>
+              <DropdownLabel label={label} />
+              {sectionProjects.map((project) => {
+                const isActive = project.id === props.currentProject.id
 
-              return (
-                <DropdownItem
-                  key={project.id}
-                  size="md"
-                  title={project.title}
-                  prepend={isActive ? 'Active Project' : undefined}
-                  className={isActive ? 'bg-selected' : undefined}
-                />
-              )
-            })}
-          </Fragment>
-        ))}
-      </DropdownList>
+                return (
+                  <DropdownItem
+                    key={project.id}
+                    size="md"
+                    title={project.title}
+                    prepend={isActive ? 'Active Project' : undefined}
+                    className={isActive ? 'bg-selected' : undefined}
+                  />
+                )
+              })}
+            </Fragment>
+          ))}
+        </DropdownList>
+      )}
     </Dropdown>
   )
 }
