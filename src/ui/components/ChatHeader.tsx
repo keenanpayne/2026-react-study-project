@@ -46,10 +46,12 @@ export default function ChatHeader(props: ChatHeaderProps) {
           wrapperClassName="shrink-0"
           dropdown={<UserTeams data={props.teams} />}
         >
-          <img
-            src="/me.jpg"
-            className="avatar border-border-default h-6 w-6 border"
-          />
+          {props.teams.find((team) => team.active)?.icon && (
+            <img
+              src={props.teams.find((team) => team.active)?.icon}
+              className="avatar border-border-default h-6 w-6 border"
+            />
+          )}
           <ChevronsUpDown
             size={16}
             strokeWidth={2}

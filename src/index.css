@@ -148,7 +148,7 @@
   padding-inline: var(--spacing-3);
   padding-block: calc(var(--spacing-1) * 1.5);
   font-size: var(--text-sm);
-  
+
   &:focus {
     border-color: transparent;
     outline: none;

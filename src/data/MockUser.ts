@@ -39,6 +39,7 @@ export type MockUserTeam = {
   title: string
   type?: 'Personal' | 'Pro' | 'Team' | 'Enterprise'
   icon?: string
+  active?: boolean
   created_at?: Date
   updated_at?: Date
 }
@@ -49,6 +50,7 @@ export const MockUserTeams: MockUserTeam[] = [
     title: 'Keenan Payne',
     type: 'Personal',
     icon: '/me.jpg',
+    active: true,
     created_at: new Date(),
     updated_at: new Date(),
   },

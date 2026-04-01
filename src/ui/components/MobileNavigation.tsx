@@ -4,6 +4,7 @@ import DropdownTrigger from './DropdownTrigger'
 import DropdownSettings from './DropdownSettings'
 import DropdownUser from './DropdownUser'
 import Button from './Button'
+import type { MockUserTeam } from '~/data/MockUser'
 
 export type WorkbenchPane = 'preview' | 'codebase' | 'database'
 export type MobileView = 'chat' | WorkbenchPane
@@ -11,6 +12,7 @@ export type MobileView = 'chat' | WorkbenchPane
 type MobileNavigationProps = {
   activeView: MobileView
   onViewChange: (view: MobileView) => void
+  teams: MockUserTeam[]
 }
 
 type NavItem = {
@@ -28,7 +30,14 @@ const ICON_STROKE_WIDTH = 1.5
 export default function MobileNavigation({
   activeView,
   onViewChange,
+  teams,
 }: MobileNavigationProps) {
+  const activeTeam = teams.find((team) => team.active)
+
+  if (!activeTeam) {
+    return null
+  }
+
   const navItems: NavItem[] = [
     {
       id: 'chat',
@@ -64,7 +73,13 @@ export default function MobileNavigation({
       id: 'user',
       label: 'Profile',
       dropdown: <DropdownUser />,
-      icon: <img src="/me.jpg" alt="User avatar" className="avatar h-5 w-5" />,
+      icon: (
+        <img
+          src={activeTeam.icon}
+          alt="User avatar"
+          className="avatar h-6 w-6"
+        />
+      ),
     },
   ]
 

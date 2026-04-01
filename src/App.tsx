@@ -72,6 +72,7 @@ export default function App() {
           className={`mx-3 h-full min-h-0 flex-col overflow-scroll md:col-span-6 md:ml-0 lg:col-auto ${isMobileChat ? 'hidden md:flex' : 'flex'}`}
         >
           <WorkbenchHeader
+            teams={MockUserTeams}
             activePane={activePane}
             onPaneChange={setActivePane}
           />
@@ -93,6 +94,7 @@ export default function App() {
       </main>
 
       <MobileNavigation
+        teams={MockUserTeams}
         activeView={activeMobileView}
         onViewChange={handleMobileViewChange}
       />

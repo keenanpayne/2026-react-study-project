@@ -13,14 +13,21 @@ import DropdownSettings from './DropdownSettings'
 import DropdownUser from './DropdownUser'
 import DropdownTrigger from './DropdownTrigger'
 import type { WorkbenchPane } from './MobileNavigation'
+import type { MockUserTeam } from '~/data/MockUser'
 
 type WorkbenchHeaderProps = {
   activePane: WorkbenchPane
   onPaneChange: (pane: WorkbenchPane) => void
+  teams: MockUserTeam[]
 }
 
 export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
-  const { activePane, onPaneChange } = props
+  const { activePane, onPaneChange, teams } = props
+  const activeTeam = teams.find((team) => team.active)
+
+  if (!activeTeam) {
+    return null
+  }
 
   const toggleButtonClass = 'group/button rounded-[10px] p-1.5'
   const activeIconClass =
@@ -185,7 +192,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             wrapperClassName="shrink-0"
             dropdown={<DropdownUser />}
           >
-            <img src="/me.jpg" className="avatar h-6 w-6" />
+            <img src={activeTeam.icon} className="avatar h-6 w-6" />
           </DropdownTrigger>
         </div>
       </div>
