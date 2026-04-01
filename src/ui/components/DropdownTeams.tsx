@@ -1,12 +1,15 @@
-import { UsersRound } from 'lucide-react'
 import type { MockUserTeam } from '~/data/MockUser'
+import Dropdown from './Dropdown'
+import DropdownList from './DropdownList'
+import DropdownSeparator from './DropdownSeparator'
+import { UsersRound } from 'lucide-react'
 
-type UserTeamProps = {
+type TeamProps = {
   team: MockUserTeam
   create?: boolean
 }
 
-export default function UserTeam(props: UserTeamProps) {
+function Team(props: TeamProps) {
   return (
     <li
       key={props.team.id}
@@ -38,5 +41,25 @@ export default function UserTeam(props: UserTeamProps) {
         )}
       </p>
     </li>
+  )
+}
+
+type DropdownTeamsProps = {
+  data: MockUserTeam[]
+}
+
+export default function DropdownTeams(props: DropdownTeamsProps) {
+  return (
+    <Dropdown align="left" className="w-55">
+      <DropdownList>
+        {props.data.map((item: MockUserTeam) => (
+          <Team key={item.id} team={item} />
+        ))}
+
+        <DropdownSeparator />
+
+        <Team team={{ id: 0, title: 'Create a team' }} create={true} />
+      </DropdownList>
+    </Dropdown>
   )
 }

@@ -1,7 +1,7 @@
 import { ChevronsUpDown, Lock } from 'lucide-react'
 import type { MockUserProject, MockUserTeam } from '~/data/MockUser'
 import DropdownProjects from './DropdownProjects'
-import UserTeams from './UserTeams'
+import DropdownTeams from './DropdownTeams'
 import Button from './Button'
 import DropdownTrigger from './DropdownTrigger'
 import BoltLogo from './BoltLogo'
@@ -41,7 +41,7 @@ export default function ChatHeader(props: ChatHeaderProps) {
           radius="md"
           className="h-9"
           wrapperClassName="shrink-0"
-          dropdown={<UserTeams data={props.teams} />}
+          dropdown={<DropdownTeams data={props.teams} />}
         >
           {props.teams.find((team) => team.active)?.icon && (
             <img
