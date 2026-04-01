@@ -36,7 +36,7 @@ export default function ChatForm(props: ChatFormProps) {
         </Button>
       </aside>
 
-      <div className="border-border-strong bg-surface-raised relative w-full rounded-xl border px-3 py-3 shadow-md transition-shadow focus-within:shadow-[0_0_0_2px_var(--color-focus-ring)] sm:pb-0 sm:shadow-sm sm:group-focus-within/form:pb-0 sm:focus-within:shadow-[0_0_0_2px_var(--color-focus-ring)]">
+      <div className="relative w-full rounded-xl border border-transparent bg-[linear-gradient(var(--color-surface-raised),var(--color-surface-raised)),linear-gradient(to_bottom_right,var(--color-blue-400),var(--color-blue-100))] [background-clip:padding-box,border-box] bg-origin-border px-3 py-3 shadow-md transition-shadow focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)] sm:pb-0 sm:shadow-sm sm:group-focus-within/form:pb-0 sm:focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)]">
         <label htmlFor="command" className="sr-only">
           Command
         </label>
