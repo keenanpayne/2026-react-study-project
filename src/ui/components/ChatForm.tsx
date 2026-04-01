@@ -6,6 +6,8 @@ import {
   ArrowUp,
 } from 'lucide-react'
 import Button from './Button'
+import DropdownModels from './DropdownModels'
+import DropdownTrigger from './DropdownTrigger'
 
 function formatTokens(tokens: number): string {
   if (tokens >= 1000000) {
@@ -36,7 +38,7 @@ export default function ChatForm(props: ChatFormProps) {
         </Button>
       </aside>
 
-      <div className="relative w-full rounded-xl border border-transparent bg-[linear-gradient(var(--color-surface-raised),var(--color-surface-raised)),linear-gradient(to_bottom_right,var(--color-blue-400),var(--color-blue-100))] [background-clip:padding-box,border-box] bg-origin-border px-3 py-3 shadow-md transition-shadow focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)] sm:pb-0 sm:shadow-sm sm:group-focus-within/form:pb-0 sm:focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)]">
+      <div className="relative w-full rounded-xl border border-transparent bg-[linear-gradient(var(--color-surface-raised),var(--color-surface-raised)),linear-gradient(to_bottom_right,var(--color-blue-400),var(--color-blue-100))] [background-clip:padding-box,border-box] bg-origin-border p-3 shadow-md transition-shadow focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)] sm:pb-0 sm:shadow-sm sm:group-focus-within/form:pb-0 sm:focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)]">
         <label htmlFor="command" className="sr-only">
           Command
         </label>
@@ -57,18 +59,30 @@ export default function ChatForm(props: ChatFormProps) {
               />
             </Button>
 
-            <Button size="sm" radius="xl" className="shrink-0">
+            <DropdownTrigger
+              size="md"
+              radius="xl"
+              className="group/trigger shrink-0"
+              dropdown={<DropdownModels />}
+            >
+              <img
+                src="/anthropic.svg"
+                alt=""
+                className="h-4 w-4 shrink-0 object-contain grayscale group-focus-within/trigger:grayscale-0 group-hover/trigger:grayscale-0 group-active/trigger:grayscale-0"
+              />
+
               <span className="text-text-secondary text-xs">Sonnet 4.5</span>
+
               <ChevronsUpDown
                 size={14}
                 strokeWidth={1}
                 className="stroke-icon-default"
               />
-            </Button>
+            </DropdownTrigger>
           </div>
 
           <div className="flex items-center gap-3">
-            <Button size="sm" radius="xl" className="shrink-0">
+            <Button size="md" radius="xl" className="shrink-0">
               <MousePointerClick
                 size={18}
                 strokeWidth={1}
@@ -77,7 +91,7 @@ export default function ChatForm(props: ChatFormProps) {
               <span className="text-text-secondary text-xs">Select</span>
             </Button>
 
-            <Button size="sm" radius="xl" className="shrink-0">
+            <Button size="md" radius="xl" className="shrink-0">
               <Lightbulb
                 size={18}
                 strokeWidth={1}

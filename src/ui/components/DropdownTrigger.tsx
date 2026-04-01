@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Button, { type ButtonProps } from './Button'
+import { DropdownTriggerCloseContext } from './dropdownTriggerCloseContext'
 import { cx } from '~/utils/cx'
 
 type DropdownTriggerProps = Extract<ButtonProps, { as?: 'button' }> & {
@@ -12,6 +13,8 @@ export default function DropdownTrigger(props: DropdownTriggerProps) {
     props
   const [isOpen, setIsOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
+
+  const close = () => setIsOpen(false)
 
   useEffect(() => {
     if (!isOpen) return
@@ -44,22 +47,27 @@ export default function DropdownTrigger(props: DropdownTriggerProps) {
   }, [isOpen])
 
   return (
-    <div ref={rootRef} className={cx('relative inline-flex', wrapperClassName)}>
-      <Button
-        aria-expanded={isOpen}
-        aria-haspopup="menu"
-        data-dropdown-trigger="true"
-        variant={isOpen ? 'selected' : 'ghost'}
-        onClick={(event) => {
-          setIsOpen((current) => !current)
-          onClick?.(event)
-        }}
-        {...buttonProps}
+    <DropdownTriggerCloseContext.Provider value={{ close }}>
+      <div
+        ref={rootRef}
+        className={cx('relative inline-flex', wrapperClassName)}
       >
-        {children}
-      </Button>
+        <Button
+          aria-expanded={isOpen}
+          aria-haspopup="menu"
+          data-dropdown-trigger="true"
+          variant={isOpen ? 'selected' : 'ghost'}
+          onClick={(event) => {
+            setIsOpen((current) => !current)
+            onClick?.(event)
+          }}
+          {...buttonProps}
+        >
+          {children}
+        </Button>
 
-      {isOpen ? dropdown : null}
-    </div>
+        {isOpen ? dropdown : null}
+      </div>
+    </DropdownTriggerCloseContext.Provider>
   )
 }

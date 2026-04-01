@@ -4,7 +4,7 @@ export const DROPDOWN_ICON_SIZE = 16
 export const DROPDOWN_ICON_STROKE_WIDTH = 1
 
 type DropdownProps = {
-  align?: 'left' | 'right'
+  align?: 'left' | 'right' | 'top'
   nested?: boolean
   children: ReactNode
   className?: string
@@ -16,7 +16,9 @@ export default function Dropdown(props: DropdownProps) {
       ? 'left-0 top-10'
       : props.align === 'right'
         ? 'right-0 top-10'
-        : ''
+        : props.align === 'top'
+          ? 'bottom-10 left-0'
+          : ''
 
   const baseClass = props.nested
     ? 'bg-surface-raised z-30 text-left md:border-border-default md:absolute md:rounded-lg md:border md:shadow-xs'
