@@ -106,7 +106,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
         </div>
 
         {activePane === 'preview' && (
-          <div className="border-border-strong bg-surface-muted order-2 mr-auto ml-auto flex h-8 flex-1 items-center rounded-full border px-3 sm:order-1 md:max-w-md">
+          <div className="border-border-strong bg-surface-muted order-2 mr-auto ml-auto flex h-8 flex-1 items-center rounded-full border px-3 transition-shadow focus-within:shadow-[0_0_0_2px_var(--color-focus-ring)] sm:order-1 md:max-w-md">
             <label htmlFor="url" className="sr-only">
               Page URL
             </label>
@@ -114,7 +114,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
               id="url"
               type="text"
               value="/"
-              className="text-text-heading mx-1 flex-1 px-1 text-sm"
+              className="text-text-heading mx-1 flex-1 px-1 text-sm outline-none focus:outline-none focus-visible:outline-none"
               onChange={() => null}
             />
 
