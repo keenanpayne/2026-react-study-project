@@ -4,6 +4,7 @@ import DropdownProjects from './DropdownProjects'
 import UserTeams from './UserTeams'
 import Button from './Button'
 import DropdownTrigger from './DropdownTrigger'
+import BoltLogo from './BoltLogo'
 
 function Separator() {
   return (
@@ -30,11 +31,7 @@ export default function ChatHeader(props: ChatHeaderProps) {
           href="https://bolt.new"
           className="h-10 shrink-0"
         >
-          <img
-            src="/bolt-logo-wordmark.png"
-            alt="Bolt.new"
-            className="invert-dark h-6"
-          />
+          <BoltLogo className="h-6" wordmark />
         </Button>
 
         <Separator />
