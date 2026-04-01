@@ -49,6 +49,7 @@ export default function DropdownTrigger(props: DropdownTriggerProps) {
         aria-expanded={isOpen}
         aria-haspopup="menu"
         data-dropdown-trigger="true"
+        variant={isOpen ? 'selected' : 'ghost'}
         onClick={(event) => {
           setIsOpen((current) => !current)
           onClick?.(event)

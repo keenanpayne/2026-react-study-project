@@ -17,12 +17,20 @@ export default function Dropdown(props: DropdownProps) {
       : props.align === 'right'
         ? 'right-0 top-10'
         : ''
-  const nestedClass = props.nested ? 'left-[105%] -top-1' : ''
+
+  const baseClass = props.nested
+    ? 'bg-surface-raised z-30 text-left md:border-border-default md:absolute md:rounded-lg md:border md:shadow-xs'
+    : 'border-border-default bg-surface-raised absolute z-30 rounded-lg border text-left shadow-xs'
+
+  const nestedClass = props.nested
+    ? 'max-md:w-full md:left-[105%] md:-top-1'
+    : ''
+
   const className = props.className ? props.className : ''
 
   return (
     <div
-      className={`border-border-default bg-surface-raised absolute z-30 rounded-lg border text-left shadow-xs ${alignClass} ${nestedClass} ${className}`}
+      className={`${baseClass} ${alignClass} ${nestedClass} ${className}`}
       tabIndex={0}
     >
       {props.children}

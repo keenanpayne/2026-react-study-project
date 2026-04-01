@@ -118,10 +118,12 @@ export default function DropdownItem(props: DropdownItemProps) {
           <ChevronRight
             size={16}
             strokeWidth={1.5}
-            className="icon-interactive group-hover/dropdown-item:stroke-icon-hover"
+            className="icon-interactive group-hover/dropdown-item:stroke-icon-hover max-md:rotate-90"
           />
 
-          {isSubOpen && props.dropdown}
+          {isSubOpen && (
+            <div className="w-full md:contents">{props.dropdown}</div>
+          )}
         </>
       )}
     </li>
