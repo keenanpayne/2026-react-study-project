@@ -6,6 +6,7 @@ import {
   ArrowUp,
 } from 'lucide-react'
 import Button from './Button'
+import DropdownAttachments from './DropdownAttachments'
 import DropdownModels from './DropdownModels'
 import DropdownTrigger from './DropdownTrigger'
 
@@ -51,13 +52,17 @@ export default function ChatForm(props: ChatFormProps) {
 
         <nav className="hidden items-center justify-between gap-3 py-1.5 group-focus-within/form:flex sm:flex">
           <div className="flex items-center gap-3">
-            <Button size="flat" className="group/button shrink-0">
+            <DropdownTrigger
+              size="flat"
+              className="group/button shrink-0"
+              dropdown={<DropdownAttachments />}
+            >
               <span className="sr-only">Upload</span>
               <Plus
                 size={28}
                 className="icon-circle bg-surface-emphasis group-hover/button:bg-hover-strong p-1.25"
               />
-            </Button>
+            </DropdownTrigger>
 
             <DropdownTrigger
               size="md"
