@@ -7,7 +7,7 @@ type BoltLogoProps = {
 
 export default function BoltLogo(props: BoltLogoProps) {
   const { wordmark = false, className = '' } = props
-  const src = wordmark ? '/bolt-logo-wordmark.png' : '/bolt-logo.png'
+  const src = wordmark ? '/bolt-logo-wordmark.webp' : '/bolt-logo.webp'
   const classNames = cx('invert-dark', className)
 
   return <img src={src} alt="Bolt.new logo" className={classNames} />
