@@ -27,7 +27,7 @@ type ChatFormProps = {
 
 export default function ChatForm(props: ChatFormProps) {
   return (
-    <form className="group/form bg-surface sticky bottom-3 px-4 pb-3">
+    <form className="group/form bg-surface mb-3 shrink-0 px-4 pb-3 md:mb-0">
       <aside className="border-border-default bg-surface-raised mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-focus-within/form:flex sm:flex sm:flex-row sm:gap-0">
         <span>{formatTokens(props.tokens)} daily tokens remaining.</span>
 

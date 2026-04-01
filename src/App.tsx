@@ -64,8 +64,9 @@ export default function App() {
             <ChatMessage
               onOpenActionDetails={() => setIsActionDialogOpen(true)}
             />
-            <ChatForm tokens={MockUserBoltTokens} />
           </div>
+
+          <ChatForm tokens={MockUserBoltTokens} />
         </section>
 
         <div
