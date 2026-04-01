@@ -19,6 +19,7 @@ export default function UserTeam(props: UserTeamProps) {
             src={props.team.icon}
             alt={props.team.title}
             className="avatar border-border-strong h-8 w-8 border"
+            loading="lazy"
           />
         )
       ) : (

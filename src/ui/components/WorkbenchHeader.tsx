@@ -187,6 +187,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
               src="/github.svg"
               alt="GitHub"
               className="invert-dark h-5 w-5"
+              loading="lazy"
             />
           </Button>
 
@@ -209,6 +210,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
               src={activeTeam.icon}
               alt={activeTeam.title}
               className="avatar h-6 w-6"
+              loading="lazy"
             />
           </DropdownTrigger>
         </div>
