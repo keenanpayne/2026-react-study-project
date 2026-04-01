@@ -76,7 +76,7 @@ export default function MobileNavigation({
       icon: (
         <img
           src={activeTeam.icon}
-          alt="User avatar"
+          alt={activeTeam.title}
           className="avatar h-6 w-6"
         />
       ),

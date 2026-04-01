@@ -95,6 +95,8 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             className="group/button"
             dropdown={<DropdownSettings />}
           >
+            <span className="sr-only">Open settings</span>
+
             <Settings
               size={16}
               strokeWidth={1.5}
@@ -118,6 +120,8 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
 
             <nav className="flex items-center justify-end">
               <Button size="sm" radius="sm" className="group/button p-1.5">
+                <span className="sr-only">Reload preview</span>
+
                 <RotateCw
                   size={14}
                   strokeWidth={1.5}
@@ -126,6 +130,8 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
               </Button>
 
               <Button size="sm" radius="sm" className="group/button p-1.5">
+                <span className="sr-only">Open preview in separate tab</span>
+
                 <ExternalLink
                   size={14}
                   strokeWidth={1.5}
@@ -134,6 +140,8 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
               </Button>
 
               <Button size="sm" radius="sm" className="group/button p-1.5">
+                <span className="sr-only">Responsive mode</span>
+
                 <MonitorSmartphone
                   size={14}
                   strokeWidth={1.5}
@@ -142,6 +150,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
               </Button>
 
               <Button size="sm" radius="sm" className="group/button p-1.5">
+                <span className="sr-only">Full screen</span>
                 <Scan
                   size={14}
                   strokeWidth={1.5}
@@ -174,7 +183,11 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
 
         <div className="order-1 mr-auto ml-auto flex shrink-0 items-center gap-3 sm:order-2 sm:mr-0">
           <Button size="md" radius="md" className="shrink-0" iconOnly>
-            <img src="/github.svg" className="invert-dark h-5 w-5" />
+            <img
+              src="/github.svg"
+              alt="GitHub"
+              className="invert-dark h-5 w-5"
+            />
           </Button>
 
           <Button size="lg" radius="md" variant="subtle" className="shrink-0">
@@ -192,7 +205,11 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             wrapperClassName="shrink-0"
             dropdown={<DropdownUser />}
           >
-            <img src={activeTeam.icon} className="avatar h-6 w-6" />
+            <img
+              src={activeTeam.icon}
+              alt={activeTeam.title}
+              className="avatar h-6 w-6"
+            />
           </DropdownTrigger>
         </div>
       </div>

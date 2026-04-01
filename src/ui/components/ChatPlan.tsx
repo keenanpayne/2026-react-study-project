@@ -30,6 +30,8 @@ export default function ChatPlan(props: ChatPlanProps) {
 
       <nav className="flex items-center gap-0.5">
         <Button size="sm" radius="sm" iconOnly>
+          <span className="sr-only">Bookmark</span>
+
           <Bookmark
             size={20}
             strokeWidth={1.5}
@@ -38,10 +40,14 @@ export default function ChatPlan(props: ChatPlanProps) {
         </Button>
 
         <Button size="sm" radius="sm" iconOnly>
+          <span className="sr-only">Preview this version</span>
+
           <Eye size={20} strokeWidth={1.5} />
         </Button>
 
         <Button size="sm" radius="sm" iconOnly>
+          <span className="sr-only">Restore this version</span>
+
           <Undo2 size={20} strokeWidth={1.5} />
         </Button>
       </nav>

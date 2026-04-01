@@ -1,0 +1,3 @@
+# robots.txt — full site crawl allowed
+User-agent: *
+Allow: /

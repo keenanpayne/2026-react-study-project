@@ -25,6 +25,7 @@ export default function ChatMessage(props: ChatMessageProps) {
           <BoltLogo className="h-3.5" />
 
           <DropdownTrigger size="sm" radius="md" dropdown={<DropdownChat />}>
+            <span className="sr-only">Open chat menu</span>
             <Ellipsis />
           </DropdownTrigger>
         </nav>

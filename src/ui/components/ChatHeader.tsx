@@ -46,6 +46,7 @@ export default function ChatHeader(props: ChatHeaderProps) {
           {props.teams.find((team) => team.active)?.icon && (
             <img
               src={props.teams.find((team) => team.active)?.icon}
+              alt={props.teams.find((team) => team.active)?.title}
               className="avatar border-border-default h-6 w-6 border"
             />
           )}
