@@ -50,7 +50,7 @@ export default function App() {
         )}
       </Dialog>
 
-      <main className="h-full pb-15 md:grid md:grid-cols-12 md:pb-0 lg:grid-cols-[450px_1fr]">
+      <main className="h-full overflow-hidden pb-15 md:grid md:grid-cols-12 md:pb-0 lg:grid-cols-[450px_1fr]">
         <section
           className={`relative h-full min-h-0 flex-col md:col-span-6 lg:col-auto ${isMobileChat ? 'flex' : 'hidden md:flex'}`}
         >
@@ -77,16 +77,19 @@ export default function App() {
             activePane={activePane}
             onPaneChange={setActivePane}
           />
+
           <WorkbenchPreview
             isVisible={activePane === 'preview'}
             children={<MockWorkbenchPreview />}
           />
+
           <WorkbenchCodebase
             isVisible={activePane === 'codebase'}
             file={MockWorkbenchFile}
             list={MockWorkbenchFileTree}
             terminal={MockWorkbenchTerminal}
           />
+
           <WorkbenchDatabase
             isVisible={activePane === 'database'}
             list={MockWorkbenchDatabaseTables}

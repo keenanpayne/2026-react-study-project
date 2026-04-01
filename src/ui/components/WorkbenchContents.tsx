@@ -5,7 +5,5 @@ type WorkbenchContentsProps = {
 }
 
 export default function WorkbenchContents(props: WorkbenchContentsProps) {
-  return (
-    <div className="@container grid h-full grid-cols-12">{props.children}</div>
-  )
+  return <div className="@container flex h-full flex-col">{props.children}</div>
 }

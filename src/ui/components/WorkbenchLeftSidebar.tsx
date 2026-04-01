@@ -3,8 +3,10 @@ import type { MockWorkbenchFileTreeNode } from '~/data/MockWorkbenchCodebase'
 import WorkbenchFileTree from './WorkbenchFileTree'
 import WorkbenchFile from './WorkbenchFile'
 import Button from './Button'
+import CollapseToggle from './CollapseToggle'
 import SearchInput from './SearchInput'
 import { SearchCode, type LucideIcon } from 'lucide-react'
+import { useCollapsible } from '~/hooks/useCollapsible'
 
 function computeInitialExpanded(
   nodes: MockWorkbenchFileTreeNode[],
@@ -87,6 +89,7 @@ type WorkbenchLeftSidebarProps = {
 }
 
 export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
+  const { isExpanded: panelExpanded, toggle: togglePanel } = useCollapsible()
   const [prevList, setPrevList] = useState(props.list)
   const [expanded, setExpanded] = useState<Set<string>>(() =>
     computeInitialExpanded(props.list, ''),
@@ -180,41 +183,63 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
   }
 
   return (
-    <aside className="border-border-default relative col-span-12 overflow-scroll border-r border-b @md:col-span-5 @md:border-b-0 @lg:col-span-4 @2xl:col-span-3">
-      <header className="section-header sticky top-0 left-0 z-10 rounded-tl-xl px-1 py-1">
-        <nav className="flex items-center gap-1.5">
-          <Button size="md" radius="lg" variant="selected">
-            <props.listIcon size={18} strokeWidth={1.5} />
-            <span className="font-medium">{props.listLabel}</span>
-          </Button>
+    <aside
+      className={`border-border-default relative min-w-0 border-r border-b transition-[flex-grow] duration-200 ease-out @md:border-b-0 ${panelExpanded ? 'overflow-auto @md:flex-5 @lg:flex-4 @2xl:flex-3' : 'h-10 flex-none overflow-hidden @md:h-auto @md:min-w-10 @md:flex-0'}`}
+    >
+      <header
+        className={`section-header sticky top-0 left-0 z-10 h-10 rounded-tl-xl px-1 py-1`}
+      >
+        <nav className="flex items-center justify-between gap-1.5">
+          {panelExpanded && (
+            <div className="flex items-center gap-1.5">
+              <Button size="md" radius="lg" variant="selected">
+                <props.listIcon size={18} strokeWidth={1.5} />
+                <span className="font-medium">{props.listLabel}</span>
+              </Button>
 
-          {searchActive ? (
-            <SearchInput
-              value={query}
-              onChange={setQuery}
-              placeholder="Search files..."
-              autoFocus
-              onKeyDown={handleSearchKeyDown}
-              onBlur={handleSearchBlur}
-              className="h-8 min-w-0 flex-1 px-2 text-sm font-medium"
-              icon={<SearchCode size={22} strokeWidth={1.5} />}
-            />
-          ) : (
-            <Button size="md" radius="lg" onClick={() => setSearchActive(true)}>
-              <SearchCode size={18} strokeWidth={1.5} />
-              <span className="font-medium">Search</span>
-            </Button>
+              {searchActive ? (
+                <SearchInput
+                  value={query}
+                  onChange={setQuery}
+                  placeholder="Search"
+                  autoFocus
+                  onKeyDown={handleSearchKeyDown}
+                  onBlur={handleSearchBlur}
+                  className="h-8 min-w-0 flex-1 px-2 text-sm font-medium placeholder:font-medium"
+                  icon={<SearchCode size={22} strokeWidth={1.5} />}
+                />
+              ) : (
+                <Button
+                  size="md"
+                  radius="lg"
+                  onClick={() => setSearchActive(true)}
+                >
+                  <SearchCode size={18} strokeWidth={1.5} />
+                  <span className="font-medium">Search</span>
+                </Button>
+              )}
+            </div>
           )}
+
+          <CollapseToggle
+            isExpanded={panelExpanded}
+            onToggle={togglePanel}
+            direction="horizontal"
+          />
         </nav>
       </header>
 
-      {query && filteredList.length === 0 ? (
-        <p className="text-text-muted px-3 py-2 text-sm">No files match</p>
-      ) : (
-        <WorkbenchFileTree>
-          {renderItems(filteredList, 0, '')}
-        </WorkbenchFileTree>
-      )}
+      <div
+        className={`overflow-hidden transition-opacity duration-200 ease-out ${panelExpanded ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+      >
+        {query && filteredList.length === 0 ? (
+          <p className="text-text-muted px-3 py-2 text-sm">No files match</p>
+        ) : (
+          <WorkbenchFileTree>
+            {renderItems(filteredList, 0, '')}
+          </WorkbenchFileTree>
+        )}
+      </div>
     </aside>
   )
 }

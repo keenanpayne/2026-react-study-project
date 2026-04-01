@@ -16,20 +16,20 @@ type WorkbenchCodebaseProps = {
 }
 
 export default function WorkbenchCodebase(props: WorkbenchCodebaseProps) {
-  if (!props.isVisible) return null
-
   return (
-    <WorkbenchContainer>
+    <WorkbenchContainer className={props.isVisible ? '' : 'hidden'}>
       <WorkbenchContents>
-        <WorkbenchLeftSidebar
-          list={props.list}
-          listLabel="Files"
-          listIcon={FolderTree}
-        />
+        <div className="flex min-h-0 flex-col @md:flex-1 @md:flex-row">
+          <WorkbenchLeftSidebar
+            list={props.list}
+            listLabel="Files"
+            listIcon={FolderTree}
+          />
 
-        <WorkbenchRightContent>
-          <File file={props.file} options={DIFF_FILE_OPTIONS} />
-        </WorkbenchRightContent>
+          <WorkbenchRightContent>
+            <File file={props.file} options={DIFF_FILE_OPTIONS} />
+          </WorkbenchRightContent>
+        </div>
 
         <WorkbenchTerminal file={props.terminal} />
       </WorkbenchContents>
