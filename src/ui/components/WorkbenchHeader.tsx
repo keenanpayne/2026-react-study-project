@@ -24,14 +24,14 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
 
   const toggleButtonClass = 'group/button rounded-[10px] p-1.5'
   const activeIconClass =
-    'stroke-sky-700 dark:stroke-sky-100 group-hover/button:stroke-sky-700 dark:group-hover/button:stroke-sky-100 transition-colors'
+    'stroke-icon-active group-hover/button:stroke-icon-active transition-colors'
   const inactiveIconClass =
-    'stroke-gray-600 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-300 transition-colors'
+    'icon-interactive group-hover/button:stroke-icon-hover'
 
   return (
     <header className="py-1.5">
       <div className="flex flex-wrap items-center gap-1.5">
-        <nav className="space-between hidden h-8 w-auto shrink-0 items-center gap-1 rounded-xl border border-gray-200 px-0.5 py-1.5 md:flex dark:border-gray-800">
+        <nav className="space-between border-border-default hidden h-8 w-auto shrink-0 items-center gap-1 rounded-xl border px-0.5 py-1.5 md:flex">
           <Button
             size="sm"
             variant={activePane === 'preview' ? 'selected' : 'ghost'}
@@ -84,20 +84,20 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
         <div className="hidden shrink-0 md:block">
           <DropdownTrigger
             size="md"
-            radius="md"
+            radius="xl"
             className="group/button"
             dropdown={<DropdownSettings />}
           >
             <Settings
               size={16}
               strokeWidth={1.5}
-              className="fill-gray-200 stroke-gray-400 transition-colors group-hover/button:fill-gray-300 group-hover/button:stroke-gray-800 dark:fill-transparent dark:group-hover/button:fill-gray-900 dark:group-hover/button:stroke-gray-300"
+              className="fill-fill-subtle stroke-icon-muted group-hover/button:fill-fill-subtle-hover group-hover/button:stroke-text-heading transition-colors"
             />
           </DropdownTrigger>
         </div>
 
         {activePane === 'preview' && (
-          <div className="order-2 mr-auto ml-auto flex h-8 flex-1 items-center rounded-full border border-gray-300 bg-gray-100 px-3 sm:order-1 md:max-w-md dark:border-neutral-900 dark:bg-zinc-800">
+          <div className="border-border-strong bg-surface-muted order-2 mr-auto ml-auto flex h-8 flex-1 items-center rounded-full border px-3 sm:order-1 md:max-w-md">
             <label htmlFor="url" className="sr-only">
               Page URL
             </label>
@@ -105,7 +105,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
               id="url"
               type="text"
               value="/"
-              className="mx-1 flex-1 px-1 text-sm text-gray-800 dark:text-gray-300"
+              className="text-text-heading mx-1 flex-1 px-1 text-sm"
               onChange={() => null}
             />
 
@@ -114,7 +114,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
                 <RotateCw
                   size={14}
                   strokeWidth={1.5}
-                  className="stroke-gray-600 transition-colors group-hover/button:stroke-gray-900 dark:stroke-zinc-300 dark:group-hover/button:stroke-zinc-300"
+                  className="icon-interactive group-hover/button:stroke-icon-hover"
                 />
               </Button>
 
@@ -122,7 +122,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
                 <ExternalLink
                   size={14}
                   strokeWidth={1.5}
-                  className="stroke-gray-600 transition-colors group-hover/button:stroke-gray-900 dark:stroke-zinc-300 dark:group-hover/button:stroke-zinc-300"
+                  className="icon-interactive group-hover/button:stroke-icon-hover"
                 />
               </Button>
 
@@ -130,7 +130,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
                 <MonitorSmartphone
                   size={14}
                   strokeWidth={1.5}
-                  className="stroke-gray-600 transition-colors group-hover/button:stroke-gray-900 dark:stroke-zinc-300 dark:group-hover/button:stroke-zinc-300"
+                  className="icon-interactive group-hover/button:stroke-icon-hover"
                 />
               </Button>
 
@@ -138,7 +138,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
                 <Scan
                   size={14}
                   strokeWidth={1.5}
-                  className="stroke-gray-600 transition-colors group-hover/button:stroke-gray-900 dark:stroke-zinc-300 dark:group-hover/button:stroke-zinc-300"
+                  className="icon-interactive group-hover/button:stroke-icon-hover"
                 />
               </Button>
             </nav>
@@ -167,7 +167,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
 
         <div className="order-1 mr-auto ml-auto flex shrink-0 items-center gap-3 sm:order-2 sm:mr-0">
           <Button size="md" radius="md" className="shrink-0" iconOnly>
-            <img src="/github.svg" className="h-5 w-5 dark:invert-100" />
+            <img src="/github.svg" className="invert-dark h-5 w-5" />
           </Button>
 
           <Button size="lg" radius="md" variant="subtle" className="shrink-0">
@@ -185,7 +185,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             wrapperClassName="shrink-0"
             dropdown={<DropdownUser />}
           >
-            <img src="/me.jpg" className="h-6 w-6 rounded-full" />
+            <img src="/me.jpg" className="avatar h-6 w-6" />
           </DropdownTrigger>
         </div>
       </div>

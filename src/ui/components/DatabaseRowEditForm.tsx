@@ -14,9 +14,9 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
   if (!props.selectedRow.children) return null
 
   return (
-    <div className="rounded-lg border border-gray-200 dark:border-zinc-700">
-      <div className="flex items-center justify-between rounded-t-lg border-b border-gray-200 bg-gray-50 px-4 py-3 dark:border-zinc-700 dark:bg-zinc-800/50">
-        <h2 className="text-sm font-medium text-gray-700 dark:text-zinc-300">
+    <div className="panel-card rounded-lg">
+      <div className="section-header flex items-center justify-between rounded-t-lg px-4 py-3">
+        <h2 className="text-text-secondary text-sm font-medium">
           Edit Row: {props.selectedRow.name}
         </h2>
 
@@ -37,7 +37,7 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
 
           return (
             <div key={col.name} className="flex flex-col gap-1">
-              <label className="text-xs font-medium text-gray-500 dark:text-zinc-400">
+              <label className="text-text-muted text-xs font-medium">
                 {col.name}
               </label>
 
@@ -45,7 +45,7 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
                 type={isNumeric ? 'number' : 'text'}
                 value={props.editedValues[col.name] ?? ''}
                 onChange={(e) => props.onValueChange(col.name, e.target.value)}
-                className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:ring-blue-400"
+                className="input-base"
               />
             </div>
           )
@@ -54,18 +54,18 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
         <div className="flex items-center gap-2 pt-2">
           <Button
             onClick={props.onClose}
-            variant="subtle"
+            variant="danger"
             radius="md"
-            size="md"
+            size="lg"
           >
             Cancel
           </Button>
 
           <Button
             onClick={props.onSave}
-            variant="primary"
+            variant="success"
             radius="md"
-            size="md"
+            size="lg"
           >
             Save
           </Button>

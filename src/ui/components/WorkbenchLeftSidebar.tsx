@@ -101,8 +101,8 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
   }
 
   return (
-    <aside className="relative col-span-12 overflow-scroll border-r border-b border-gray-200 @md:col-span-5 @md:border-b-0 @lg:col-span-4 @2xl:col-span-3 dark:border-zinc-700">
-      <header className="sticky top-0 left-0 z-10 rounded-tl-xl border-b border-gray-200 bg-gray-50 px-1 py-1 dark:border-zinc-700 dark:bg-zinc-800">
+    <aside className="border-border-default relative col-span-12 overflow-scroll border-r border-b @md:col-span-5 @md:border-b-0 @lg:col-span-4 @2xl:col-span-3">
+      <header className="section-header sticky top-0 left-0 z-10 rounded-tl-xl px-1 py-1">
         <nav className="flex items-center gap-1.5">
           <Button size="md" radius="lg" variant="selected">
             <props.listIcon size={18} strokeWidth={1.5} />

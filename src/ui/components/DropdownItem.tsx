@@ -33,9 +33,8 @@ export default function DropdownItem(props: DropdownItemProps) {
           : ''
   const dropdownClass = props.dropdown ? 'relative' : ''
   const className = props.className ? props.className : ''
-  const classNames = `group/dropdown-item cursor-pointer flex flex-wrap items-center justify-between rounded-md hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors ${size} ${dropdownClass} ${className}`
-  const prependAppendClass =
-    'text-xs text-gray-500 dark:text-zinc-300 block w-full'
+  const classNames = `group/dropdown-item cursor-pointer flex flex-wrap items-center justify-between rounded-md hover:bg-hover-item transition-colors ${size} ${dropdownClass} ${className}`
+  const prependAppendClass = 'text-xs text-text-muted block w-full'
 
   const handleBlur = (e: FocusEvent) => {
     if (itemRef.current && !itemRef.current.contains(e.relatedTarget as Node)) {
@@ -119,7 +118,7 @@ export default function DropdownItem(props: DropdownItemProps) {
           <ChevronRight
             size={16}
             strokeWidth={1.5}
-            className="stroke-gray-700 transition-colors group-hover/dropdown-item:stroke-gray-900 dark:stroke-zinc-400 dark:group-hover/dropdown-item:stroke-zinc-300"
+            className="icon-interactive group-hover/dropdown-item:stroke-icon-hover"
           />
 
           {isSubOpen && props.dropdown}

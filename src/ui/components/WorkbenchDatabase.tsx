@@ -74,7 +74,7 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
 
         <WorkbenchRightContent>
           <div className="flex flex-col gap-3">
-            <header className="flex items-center justify-between gap-1 border-b border-gray-200 px-5 py-2 dark:border-zinc-700">
+            <header className="divider-bottom flex items-center justify-between gap-1 px-5 py-2">
               <h1>
                 {selectedNode ? (
                   <>
@@ -95,14 +95,14 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
 
             <div className="px-4 py-2">
               {selectedNode?.children && selectedNode.children.length > 0 ? (
-                <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-zinc-700">
+                <div className="panel-card overflow-x-auto rounded-lg">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200 bg-gray-50 dark:border-zinc-700 dark:bg-zinc-800/50">
+                      <tr className="section-header">
                         {selectedNode.children[0].children?.map((col) => (
                           <th
                             key={col.id ?? col.name}
-                            className="px-4 py-2 text-left font-medium whitespace-nowrap text-gray-600 dark:text-zinc-300"
+                            className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
                           >
                             {col.name}
                           </th>
@@ -119,24 +119,22 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
                             onClick={() =>
                               handleSelectRow(isSelected ? null : row)
                             }
-                            className={`cursor-pointer border-b border-gray-200 last:border-b-0 dark:border-zinc-700 ${
+                            className={`divider-bottom cursor-pointer last:border-b-0 ${
                               isSelected
-                                ? 'bg-blue-50 dark:bg-blue-900/20'
-                                : 'hover:bg-gray-50 dark:hover:bg-zinc-800/30'
+                                ? 'bg-selected'
+                                : 'hover:bg-surface-raised'
                             }`}
                           >
                             {row.children?.map((col) => (
                               <td
                                 key={col.id ?? col.name}
-                                className="px-4 py-2 whitespace-nowrap text-gray-700 dark:text-zinc-300"
+                                className="text-text-secondary px-4 py-2 whitespace-nowrap"
                               >
                                 {col.value !== null &&
                                 col.value !== undefined ? (
                                   String(col.value)
                                 ) : (
-                                  <span className="text-gray-400 dark:text-zinc-500">
-                                    NULL
-                                  </span>
+                                  <span className="text-text-faint">NULL</span>
                                 )}
                               </td>
                             ))}
@@ -147,7 +145,7 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
                   </table>
                 </div>
               ) : selectedNode ? (
-                <p className="text-sm text-gray-500 dark:text-zinc-400">
+                <p className="text-text-muted text-sm">
                   No rows in this table.
                 </p>
               ) : null}

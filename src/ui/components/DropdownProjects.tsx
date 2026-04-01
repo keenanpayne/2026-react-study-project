@@ -83,9 +83,7 @@ function DropdownRecentProjects(props: DropdownRecentProjectsProps) {
                   size="md"
                   title={project.title}
                   prepend={isActive ? 'Active Project' : undefined}
-                  className={
-                    isActive ? 'bg-sky-100 dark:bg-sky-800/50' : undefined
-                  }
+                  className={isActive ? 'bg-selected' : undefined}
                 />
               )
             })}
@@ -247,6 +245,7 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
         <DropdownItem
           size="md"
           title="Delete"
+          className="text-danger hover:bg-danger-bg"
           icon={
             <Trash
               size={DROPDOWN_ICON_SIZE}

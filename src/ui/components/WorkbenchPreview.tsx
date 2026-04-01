@@ -10,7 +10,7 @@ export default function WorkbenchPreview(props: WorkbenchPreviewProps) {
   if (!props.isVisible) return null
 
   return (
-    <div className="relative mb-3 h-full min-h-0 w-full flex-1 overflow-hidden rounded-xl border border-gray-200 dark:border-zinc-700">
+    <div className="panel-card relative mb-3 h-full min-h-0 w-full flex-1 overflow-hidden rounded-xl">
       {props.children ? (
         props.children
       ) : (

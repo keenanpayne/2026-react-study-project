@@ -23,14 +23,13 @@ const buttonStyles = cva(
         pill: 'rounded-full',
       },
       variant: {
-        ghost: 'hover:bg-gray-100 dark:hover:bg-zinc-700',
+        ghost: 'hover:bg-hover-item',
         plain: '',
-        selected:
-          'bg-sky-200/50 hover:bg-sky-200/50 dark:bg-sky-900/75 dark:hover:bg-sky-900/75',
-        subtle:
-          'bg-gray-200 hover:bg-gray-300 dark:bg-zinc-700 dark:hover:bg-zinc-600',
-        primary:
-          'bg-gray-900 text-white hover:bg-gray-700 dark:bg-zinc-100 dark:text-black dark:hover:bg-zinc-300',
+        selected: 'bg-selected hover:bg-selected-hover',
+        subtle: 'bg-surface-emphasis hover:bg-hover-strong',
+        primary: 'bg-inverse text-text-inverse hover:bg-inverse-hover',
+        danger: 'bg-danger text-white hover:bg-danger-hover',
+        success: 'bg-success text-white hover:bg-success-hover',
       },
       iconOnly: {
         false: null,

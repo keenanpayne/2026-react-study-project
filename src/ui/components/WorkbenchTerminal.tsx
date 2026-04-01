@@ -9,8 +9,8 @@ type WorkbenchTerminalProps = {
 
 export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
   return (
-    <section className="col-span-12 border-t border-gray-200 dark:border-zinc-700">
-      <header className="border-b border-gray-200 p-1.5 dark:border-zinc-700">
+    <section className="border-border-default col-span-12 border-t">
+      <header className="section-header p-1.5">
         <nav className="flex items-center gap-2">
           <Button size="lg" radius="pill" variant="selected">
             <Zap size={18} strokeWidth={1.5} />

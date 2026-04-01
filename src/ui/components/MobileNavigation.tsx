@@ -64,19 +64,17 @@ export default function MobileNavigation({
       id: 'user',
       label: 'Profile',
       dropdown: <DropdownUser />,
-      icon: (
-        <img src="/me.jpg" alt="User avatar" className="h-5 w-5 rounded-full" />
-      ),
+      icon: <img src="/me.jpg" alt="User avatar" className="avatar h-5 w-5" />,
     },
   ]
 
   const baseClass = 'flex flex-col items-center gap-1 text-xs transition-colors'
-  const activeClass = 'text-sky-600 dark:text-sky-400'
-  const inactiveClass = 'text-gray-500 dark:text-gray-400'
+  const activeClass = 'text-nav-active'
+  const inactiveClass = 'text-text-muted'
   const labelClass = 'h-0 xs:h-auto opacity-0 xs:opacity-100'
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-evenly border-t border-gray-200 bg-white px-1.5 py-3 sm:px-3 md:hidden dark:border-zinc-700 dark:bg-zinc-900">
+    <nav className="border-border-default bg-surface fixed inset-x-0 bottom-0 z-40 flex items-center justify-evenly border-t px-1.5 py-3 sm:px-3 md:hidden">
       {navItems.map((item) => {
         if (item.dropdown) {
           return (

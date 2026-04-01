@@ -12,8 +12,7 @@ type ChatActionsProps = {
 const iconConfig = {
   size: 18,
   strokeWidth: 1,
-  className:
-    'stroke-gray-700 dark:stroke-zinc-300 group-hover/button:stroke-gray-900 dark:group-hover/button:stroke-zinc-200 transition-colors',
+  className: 'icon-interactive group-hover/button:stroke-icon-hover',
 }
 
 const iconMap = {

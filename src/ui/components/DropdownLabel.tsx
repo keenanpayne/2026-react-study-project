@@ -4,7 +4,7 @@ type DropdownLabelProps = {
 
 export default function DropdownLabel(props: DropdownLabelProps) {
   return (
-    <li className="mt-2 cursor-default px-3 text-xs text-gray-500 dark:text-zinc-300">
+    <li className="text-text-muted mt-2 cursor-default px-3 text-xs">
       {props.label}
     </li>
   )

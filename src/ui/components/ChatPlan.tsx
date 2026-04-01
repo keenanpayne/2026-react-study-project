@@ -9,15 +9,13 @@ type ChatPlanProps = {
 
 export default function ChatPlan(props: ChatPlanProps) {
   return (
-    <aside className="my-3 flex justify-between rounded-lg border border-gray-300 px-3 py-2.5 md:max-w-[80%] dark:border-zinc-600">
+    <aside className="border-border-strong my-3 flex justify-between rounded-lg border px-3 py-2.5 md:max-w-[80%]">
       <header className="flex flex-col">
-        <p className="text-xs text-gray-500 dark:text-zinc-400">
-          {props.version}
-        </p>
+        <p className="text-text-muted text-xs">{props.version}</p>
 
         <h3 className="font-semibold">{props.title}</h3>
 
-        <p className="mt-0.5 text-xs text-gray-500 dark:text-zinc-400">
+        <p className="text-text-muted mt-0.5 text-xs">
           <time dateTime={props.createdAt.toISOString()}>
             {props.createdAt.toLocaleString('en-US', {
               month: 'short',

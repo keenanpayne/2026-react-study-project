@@ -7,7 +7,7 @@ import DropdownTrigger from './DropdownTrigger'
 
 function Separator() {
   return (
-    <span className="block h-[18px] text-xl leading-4 text-gray-200 antialiased dark:text-zinc-700">
+    <span className="text-text-subtle block h-[18px] text-xl leading-4 antialiased">
       /
     </span>
   )
@@ -21,7 +21,7 @@ type ChatHeaderProps = {
 
 export default function ChatHeader(props: ChatHeaderProps) {
   return (
-    <header className="sticky top-0 left-0 z-10 bg-white px-2.5 py-1.5 dark:bg-zinc-900">
+    <header className="bg-surface sticky top-0 left-0 z-10 px-2.5 py-1.5">
       <nav className="flex items-center gap-0.5 sm:gap-1 md:gap-1.5">
         <Button
           size="md"
@@ -33,7 +33,7 @@ export default function ChatHeader(props: ChatHeaderProps) {
           <img
             src="/bolt-logo-wordmark.png"
             alt="Bolt.new"
-            className="h-6 dark:invert-100"
+            className="invert-dark h-6"
           />
         </Button>
 
@@ -48,12 +48,12 @@ export default function ChatHeader(props: ChatHeaderProps) {
         >
           <img
             src="/me.jpg"
-            className="h-6 w-6 rounded-full border border-gray-300 dark:border-zinc-700"
+            className="avatar border-border-default h-6 w-6 border"
           />
           <ChevronsUpDown
             size={16}
             strokeWidth={2}
-            className="stroke-gray-400 dark:stroke-zinc-400"
+            className="stroke-icon-muted"
           />
         </DropdownTrigger>
 

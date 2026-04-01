@@ -30,7 +30,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         ))}
       </ol>
 
-      <hr className="my-3 border-2 border-gray-200 dark:border-zinc-600" />
+      <hr className="border-border-default my-3 border-2" />
 
       <h2 className="text-lg font-semibold">{MockChatResponse.planTitle}</h2>
 
@@ -50,7 +50,7 @@ export default function ChatResponse(props: ChatResponseProps) {
         ))}
       </ol>
 
-      <hr className="my-3 border-2 border-gray-200 dark:border-zinc-600" />
+      <hr className="border-border-default my-3 border-2" />
 
       <h2 className="text-lg font-semibold">{MockChatResponse.summaryTitle}</h2>
 

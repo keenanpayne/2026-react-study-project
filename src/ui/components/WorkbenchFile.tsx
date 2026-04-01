@@ -92,7 +92,7 @@ export default function WorkbenchFile(props: WorkbenchFileProps) {
   return (
     <li>
       <div
-        className={`flex cursor-pointer items-center gap-1.5 py-1 pr-1.5 text-sm transition-colors ${props.selected ? 'bg-sky-100 dark:bg-sky-800/50' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-200'}`}
+        className={`flex cursor-pointer items-center gap-1.5 py-1 pr-1.5 text-sm transition-colors ${props.selected ? 'bg-selected' : 'text-text-muted hover:bg-hover-item hover:text-text-heading'}`}
         style={{ paddingLeft: `${0.375 + depth * 0.625}rem` }}
         onClick={() => {
           if (props.hasChildren) props.onToggle?.()

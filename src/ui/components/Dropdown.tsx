@@ -22,7 +22,7 @@ export default function Dropdown(props: DropdownProps) {
 
   return (
     <div
-      className={`absolute z-30 rounded-lg border border-gray-200 bg-white text-left shadow-xs dark:border-zinc-700 dark:bg-zinc-800 ${alignClass} ${nestedClass} ${className}`}
+      className={`border-border-default bg-surface-raised absolute z-30 rounded-lg border text-left shadow-xs ${alignClass} ${nestedClass} ${className}`}
       tabIndex={0}
     >
       {props.children}
