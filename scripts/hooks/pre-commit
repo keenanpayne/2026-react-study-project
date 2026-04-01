@@ -1,0 +1,34 @@
+#!/bin/sh
+
+echo "Running prettier formatting..."
+
+npm run format
+
+if [ $? -ne 0 ]; then
+  echo "Error: Prettier formatting failed. Commit aborted."
+  exit 1
+fi
+
+echo "Running ESLint..."
+
+npm run lint
+
+if [ $? -ne 0 ]; then
+  echo "Error: ESLint failed. Commit aborted."
+  exit 1
+fi
+
+echo "Running TypeScript check..."
+
+npm run typecheck
+
+if [ $? -ne 0 ]; then
+  echo "Error: TypeScript check failed. Commit aborted."
+  exit 1
+fi
+
+git add -u
+
+echo "Pre-commit checks passed. Proceeding with commit..."
+
+exit 0
