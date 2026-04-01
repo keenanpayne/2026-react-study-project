@@ -21,14 +21,18 @@ export default function ChatMessage(props: ChatMessageProps) {
 
       {/* Bolt Message */}
       <article className="flex flex-col gap-3 px-5 pb-6 text-sm leading-relaxed">
-        <nav className="flex items-center justify-between">
+        <div
+          role="toolbar"
+          aria-label="Message actions"
+          className="flex items-center justify-between"
+        >
           <BoltLogo className="h-3.5" />
 
           <DropdownTrigger size="sm" radius="md" dropdown={<DropdownChat />}>
             <span className="sr-only">Open chat menu</span>
             <Ellipsis />
           </DropdownTrigger>
-        </nav>
+        </div>
 
         <ChatResponse
           actionsExpanded={false}

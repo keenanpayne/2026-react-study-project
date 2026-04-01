@@ -133,7 +133,7 @@ export default function DropdownItem(props: DropdownItemProps) {
       ref={props.dropdown ? itemRef : undefined}
       className={classNames}
       tabIndex={0}
-      role={props.role}
+      role={props.role ?? 'menuitem'}
       aria-selected={props.selected}
       aria-disabled={props.disabled}
       onClick={props.dropdown ? handleClick : handleSelectClick}
@@ -158,7 +158,7 @@ export default function DropdownItem(props: DropdownItemProps) {
       aria-expanded={props.dropdown ? isSubOpen : undefined}
       aria-haspopup={props.dropdown ? 'menu' : undefined}
     >
-      <p className="flex flex-1 items-center gap-2.5">
+      <span className="flex flex-1 items-center gap-2.5">
         {props.icon}
 
         <span>
@@ -170,7 +170,7 @@ export default function DropdownItem(props: DropdownItemProps) {
             <span className={prependAppendClass}>{props.append}</span>
           )}
         </span>
-      </p>
+      </span>
 
       {props.trailing}
 

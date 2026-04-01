@@ -34,7 +34,7 @@ export default function DropdownAttachments() {
           <DropdownItem
             key={label}
             size="sm"
-            role="option"
+            role="menuitem"
             icon={
               <Icon
                 size={DROPDOWN_ICON_SIZE}

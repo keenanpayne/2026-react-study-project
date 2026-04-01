@@ -1,4 +1,4 @@
-import { useRef, useEffect, type KeyboardEvent } from 'react'
+import { useRef, useEffect, type KeyboardEvent, type ReactNode } from 'react'
 import { Search } from 'lucide-react'
 
 type SearchInputProps = {
@@ -39,6 +39,7 @@ export default function SearchInput(props: SearchInputProps) {
       <input
         ref={inputRef}
         type="search"
+        aria-label={props.placeholder ?? 'Search'}
         placeholder={props.placeholder ?? 'Search'}
         className="w-full border-0 bg-transparent py-2 outline-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:outline-none"
         value={props.value}

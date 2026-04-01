@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type KeyboardEvent } from 'react'
 import { Database } from 'lucide-react'
 import WorkbenchContainer from './WorkbenchContainer'
 import WorkbenchContents from './WorkbenchContents'
@@ -74,7 +74,7 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
           <WorkbenchRightContent>
             <div className="flex flex-col gap-3">
               <header className="divider-bottom flex flex-col gap-0.5 px-5 py-2">
-                <h1 className="font-medium">
+                <h2 className="font-medium">
                   {selectedNode ? (
                     <>
                       Table:{' '}
@@ -83,7 +83,7 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
                   ) : (
                     'Tables'
                   )}
-                </h1>
+                </h2>
 
                 <p className="text-sm">
                   {selectedNode
@@ -115,9 +115,19 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
                           return (
                             <tr
                               key={row.id ?? row.name}
+                              tabIndex={0}
+                              aria-selected={isSelected}
                               onClick={() =>
                                 handleSelectRow(isSelected ? null : row)
                               }
+                              onKeyDown={(
+                                e: KeyboardEvent<HTMLTableRowElement>,
+                              ) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault()
+                                  handleSelectRow(isSelected ? null : row)
+                                }
+                              }}
                               className={`divider-bottom cursor-pointer last:border-b-0 ${
                                 isSelected
                                   ? 'bg-selected'

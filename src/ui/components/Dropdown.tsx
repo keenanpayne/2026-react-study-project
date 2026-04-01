@@ -31,10 +31,7 @@ export default function Dropdown(props: DropdownProps) {
   const className = props.className ? props.className : ''
 
   return (
-    <div
-      className={`${baseClass} ${alignClass} ${nestedClass} ${className}`}
-      tabIndex={0}
-    >
+    <div className={`${baseClass} ${alignClass} ${nestedClass} ${className}`}>
       {props.children}
     </div>
   )

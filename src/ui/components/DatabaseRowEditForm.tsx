@@ -1,3 +1,4 @@
+import { type FormEvent } from 'react'
 import { X } from 'lucide-react'
 import { type MockWorkbenchFileTreeNode } from '~/data/MockWorkbenchCodebase'
 import Button from './Button'
@@ -13,8 +14,13 @@ type DatabaseRowEditFormProps = {
 export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
   if (!props.selectedRow.children) return null
 
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    props.onSave()
+  }
+
   return (
-    <div className="panel-card rounded-lg">
+    <form className="panel-card rounded-lg" onSubmit={handleSubmit}>
       <div className="section-header flex items-center justify-between rounded-t-lg px-4 py-3">
         <h2 className="text-text-secondary text-sm font-medium">
           Edit Row: {props.selectedRow.name}
@@ -26,6 +32,8 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
           size="sm"
           radius="md"
           iconOnly
+          type="button"
+          aria-label="Close"
         >
           <X size={16} />
         </Button>
@@ -62,20 +70,16 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
             variant="danger"
             radius="md"
             size="lg"
+            type="button"
           >
             Cancel
           </Button>
 
-          <Button
-            onClick={props.onSave}
-            variant="success"
-            radius="md"
-            size="lg"
-          >
+          <Button variant="success" radius="md" size="lg" type="submit">
             Save
           </Button>
         </div>
       </div>
-    </div>
+    </form>
   )
 }

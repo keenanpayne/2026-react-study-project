@@ -91,8 +91,9 @@ export default function WorkbenchFile(props: WorkbenchFileProps) {
 
   return (
     <li>
-      <div
-        className={`flex cursor-pointer items-center gap-1.5 py-1 pr-1.5 text-sm transition-colors ${props.selected ? 'bg-selected' : 'text-text-muted hover:bg-hover-item hover:text-text-heading'}`}
+      <button
+        type="button"
+        className={`flex w-full cursor-pointer items-center gap-1.5 py-1 pr-1.5 text-left text-sm transition-colors ${props.selected ? 'bg-selected' : 'text-text-muted hover:bg-hover-item hover:text-text-heading'}`}
         style={{ paddingLeft: `${0.375 + depth * 0.625}rem` }}
         onClick={() => {
           if (props.hasChildren) props.onToggle?.()
@@ -111,7 +112,7 @@ export default function WorkbenchFile(props: WorkbenchFileProps) {
             className={`shrink-0 transition-transform ${props.open ? 'rotate-90' : ''}`}
           />
         )}
-      </div>
+      </button>
 
       {props.children}
     </li>

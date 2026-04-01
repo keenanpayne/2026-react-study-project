@@ -102,7 +102,7 @@ export default function DropdownModels() {
 
   return (
     <Dropdown align="top" className="min-w-50">
-      <DropdownList>
+      <DropdownList role="listbox">
         <DropdownLabel label="Select a Model" />
 
         {MODEL_ROWS.map((row) => (

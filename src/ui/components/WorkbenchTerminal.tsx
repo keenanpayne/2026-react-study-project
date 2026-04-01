@@ -17,21 +17,45 @@ export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
       <header
         className={`section-header p-1.5 ${!isExpanded ? 'rounded-b-xl' : ''}`}
       >
-        <nav className="flex items-center gap-2">
-          <Button size="lg" radius="pill" variant="selected">
-            <Zap size={18} strokeWidth={1.5} className="fill-fill-subtle" />
-            Bolt
-          </Button>
+        <div className="flex items-center gap-2">
+          <div
+            role="tablist"
+            aria-label="Terminal output"
+            className="flex items-center gap-2"
+          >
+            <Button
+              size="lg"
+              radius="pill"
+              variant="selected"
+              role="tab"
+              aria-selected={true}
+            >
+              <Zap size={18} strokeWidth={1.5} className="fill-fill-subtle" />
+              Bolt
+            </Button>
 
-          <Button size="lg" radius="pill" variant="ghost">
-            <Rocket size={18} strokeWidth={1.5} />
-            Publish Output
-          </Button>
+            <Button
+              size="lg"
+              radius="pill"
+              variant="ghost"
+              role="tab"
+              aria-selected={false}
+            >
+              <Rocket size={18} strokeWidth={1.5} />
+              Publish Output
+            </Button>
 
-          <Button size="lg" radius="pill" variant="ghost">
-            <SquareTerminal size={18} strokeWidth={1.5} />
-            Terminal
-          </Button>
+            <Button
+              size="lg"
+              radius="pill"
+              variant="ghost"
+              role="tab"
+              aria-selected={false}
+            >
+              <SquareTerminal size={18} strokeWidth={1.5} />
+              Terminal
+            </Button>
+          </div>
 
           <CollapseToggle
             isExpanded={isExpanded}
@@ -39,16 +63,16 @@ export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
             direction="vertical"
             className="ml-auto"
           />
-        </nav>
+        </div>
       </header>
 
       <div
-        className={`overflow-hidden rounded-b-xl transition-[max-height,opacity] duration-200 ease-out ${isExpanded ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'}`}
+        className={`rounded-b-xl transition-[max-height,opacity] duration-200 ease-out ${isExpanded ? 'max-h-[200px] overflow-x-hidden overflow-y-auto opacity-100' : 'max-h-0 overflow-hidden opacity-0'}`}
       >
         <File
           file={props.file}
           options={DIFF_TERMINAL_OPTIONS}
-          className="overflow-scroll rounded-b-xl px-1.5 py-0.5 text-xs leading-tight"
+          className="rounded-b-xl px-1.5 py-0.5 text-xs leading-tight"
         />
       </div>
     </section>

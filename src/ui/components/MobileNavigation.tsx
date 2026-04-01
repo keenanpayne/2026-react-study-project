@@ -121,6 +121,7 @@ export default function MobileNavigation({
             className={`${baseClass} ${isActive ? activeClass : inactiveClass}`}
             variant="plain"
             size="flat"
+            aria-current={isActive ? 'page' : undefined}
           >
             {item.icon}
             <span className={labelClass}>{item.label}</span>

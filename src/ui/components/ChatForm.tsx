@@ -56,7 +56,11 @@ export default function ChatForm(props: ChatFormProps) {
           className="w-full resize-none px-1.5 py-1 text-base outline-none group-focus-within/form:h-20 focus:outline-none focus-visible:outline-none sm:h-20 sm:text-sm"
         />
 
-        <nav className="hidden items-center justify-between gap-3 py-1.5 group-focus-within/form:flex sm:flex">
+        <div
+          role="toolbar"
+          aria-label="Message options"
+          className="hidden items-center justify-between gap-3 py-1.5 group-focus-within/form:flex sm:flex"
+        >
           <div className="flex items-center gap-3">
             <DropdownTrigger
               size="flat"
@@ -123,7 +127,7 @@ export default function ChatForm(props: ChatFormProps) {
               />
             </Button>
           </div>
-        </nav>
+        </div>
       </div>
     </form>
   )

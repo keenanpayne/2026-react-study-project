@@ -50,6 +50,7 @@ export default function App() {
         )}
       </Dialog>
 
+      <h1 className="sr-only">Bolt</h1>
       <main className="h-full overflow-hidden pb-15 md:grid md:grid-cols-12 md:pb-0 lg:grid-cols-[450px_1fr]">
         <section
           className={`relative h-full min-h-0 flex-col md:col-span-6 lg:col-auto ${isMobileChat ? 'flex' : 'hidden md:flex'}`}
@@ -69,7 +70,8 @@ export default function App() {
           <ChatForm tokens={MockUserBoltTokens} />
         </section>
 
-        <div
+        <section
+          aria-label="Workbench"
           className={`mx-3 h-full min-h-0 flex-col overflow-scroll md:col-span-6 md:ml-0 lg:col-auto ${isMobileChat ? 'hidden md:flex' : 'flex'}`}
         >
           <WorkbenchHeader
@@ -94,7 +96,7 @@ export default function App() {
             isVisible={activePane === 'database'}
             list={MockWorkbenchDatabaseTables}
           />
-        </div>
+        </section>
       </main>
 
       <MobileNavigation
