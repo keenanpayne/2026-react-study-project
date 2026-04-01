@@ -3,7 +3,7 @@ import Dropdown from './Dropdown'
 import DropdownItem from './DropdownItem'
 import DropdownList from './DropdownList'
 import DropdownSeparator from './DropdownSeparator'
-import { useDropdownTriggerClose } from './dropdownTriggerCloseContext'
+import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 import DropdownLabel from './DropdownLabel'
 
 type ModelRow = {

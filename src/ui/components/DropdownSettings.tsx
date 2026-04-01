@@ -17,6 +17,7 @@ import DropdownItem from './DropdownItem'
 import DropdownLabel from './DropdownLabel'
 import DropdownList from './DropdownList'
 import DropdownSeparator from './DropdownSeparator'
+import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 
 type DropdownSettingsProps = {
   align?: 'left' | 'right'
@@ -25,12 +26,16 @@ type DropdownSettingsProps = {
 export default function DropdownSettings({
   align = 'left',
 }: DropdownSettingsProps) {
+  const closeCtx = useDropdownTriggerClose()
+  const handleSelect = () => closeCtx?.close()
+
   return (
     <Dropdown align={align} className="w-55">
       <DropdownList>
         <DropdownItem
           size="md"
           title="Analytics"
+          onSelect={handleSelect}
           icon={
             <ChartColumnIncreasing
               size={DROPDOWN_ICON_SIZE}
@@ -41,6 +46,7 @@ export default function DropdownSettings({
         <DropdownItem
           size="md"
           title="Authentication"
+          onSelect={handleSelect}
           icon={
             <BadgeCheck
               size={DROPDOWN_ICON_SIZE}
@@ -51,6 +57,7 @@ export default function DropdownSettings({
         <DropdownItem
           size="md"
           title="Knowledge"
+          onSelect={handleSelect}
           icon={
             <Lightbulb
               size={DROPDOWN_ICON_SIZE}
@@ -61,6 +68,7 @@ export default function DropdownSettings({
         <DropdownItem
           size="md"
           title="Server Functions"
+          onSelect={handleSelect}
           icon={
             <SquareFunction
               size={DROPDOWN_ICON_SIZE}
@@ -71,6 +79,7 @@ export default function DropdownSettings({
         <DropdownItem
           size="md"
           title="Secrets"
+          onSelect={handleSelect}
           icon={
             <Key
               size={DROPDOWN_ICON_SIZE}
@@ -81,6 +90,7 @@ export default function DropdownSettings({
         <DropdownItem
           size="md"
           title="Connectors"
+          onSelect={handleSelect}
           icon={
             <Component
               size={DROPDOWN_ICON_SIZE}
@@ -92,6 +102,7 @@ export default function DropdownSettings({
         <DropdownItem
           size="md"
           title="All project settings"
+          onSelect={handleSelect}
           icon={
             <Settings
               size={DROPDOWN_ICON_SIZE}
@@ -105,6 +116,7 @@ export default function DropdownSettings({
           size="md"
           title="Stripe"
           append="Add payments to your project"
+          onSelect={handleSelect}
           icon={
             <CircleDollarSign
               size={DROPDOWN_ICON_SIZE}
@@ -116,6 +128,7 @@ export default function DropdownSettings({
           size="md"
           title="Bolt Database"
           append="Manage database settings"
+          onSelect={handleSelect}
           icon={
             <Database
               size={DROPDOWN_ICON_SIZE}

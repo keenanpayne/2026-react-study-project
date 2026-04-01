@@ -1,4 +1,6 @@
+import type { KeyboardEvent } from 'react'
 import type { MockUserTeam } from '~/data/MockUser'
+import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 import Dropdown from './Dropdown'
 import DropdownList from './DropdownList'
 import DropdownSeparator from './DropdownSeparator'
@@ -7,14 +9,23 @@ import { UsersRound } from 'lucide-react'
 type TeamProps = {
   team: MockUserTeam
   create?: boolean
+  onActivate: () => void
 }
 
 function Team(props: TeamProps) {
+  const handleKeyDown = (e: KeyboardEvent<HTMLLIElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      props.onActivate()
+    }
+  }
+
   return (
     <li
-      key={props.team.id}
       className="hover:bg-hover-item mx-1.5 my-1.5 flex cursor-pointer items-center gap-2.5 rounded-md p-2 transition-colors"
       tabIndex={0}
+      onClick={props.onActivate}
+      onKeyDown={handleKeyDown}
     >
       {!props.create ? (
         props.team.icon && (
@@ -49,16 +60,23 @@ type DropdownTeamsProps = {
 }
 
 export default function DropdownTeams(props: DropdownTeamsProps) {
+  const closeCtx = useDropdownTriggerClose()
+  const handleActivate = () => closeCtx?.close()
+
   return (
     <Dropdown align="left" className="w-55">
       <DropdownList>
         {props.data.map((item: MockUserTeam) => (
-          <Team key={item.id} team={item} />
+          <Team key={item.id} team={item} onActivate={handleActivate} />
         ))}
 
         <DropdownSeparator />
 
-        <Team team={{ id: 0, title: 'Create a team' }} create={true} />
+        <Team
+          team={{ id: 0, title: 'Create a team' }}
+          create={true}
+          onActivate={handleActivate}
+        />
       </DropdownList>
     </Dropdown>
   )

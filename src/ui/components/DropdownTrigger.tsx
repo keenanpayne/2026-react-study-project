@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Button, { type ButtonProps } from './Button'
-import { DropdownTriggerCloseContext } from './dropdownTriggerCloseContext'
+import { DropdownTriggerCloseContext } from '~/context/dropdownTriggerCloseContext'
 import { cx } from '~/utils/cx'
 
 type DropdownTriggerProps = Extract<ButtonProps, { as?: 'button' }> & {

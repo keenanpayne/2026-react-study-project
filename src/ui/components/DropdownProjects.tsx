@@ -14,6 +14,7 @@ import {
   Lock,
 } from 'lucide-react'
 import type { MockUserProject } from '~/data/MockUser'
+import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 import Dropdown, {
   DROPDOWN_ICON_SIZE,
   DROPDOWN_ICON_STROKE_WIDTH,
@@ -54,6 +55,7 @@ type DropdownRecentProjectsProps = {
 }
 
 function DropdownRecentProjects(props: DropdownRecentProjectsProps) {
+  const closeCtx = useDropdownTriggerClose()
   const [query, setQuery] = useState('')
 
   const filtered = query
@@ -92,6 +94,7 @@ function DropdownRecentProjects(props: DropdownRecentProjectsProps) {
                     title={project.title}
                     prepend={isActive ? 'Active Project' : undefined}
                     className={isActive ? 'bg-selected' : undefined}
+                    onSelect={() => closeCtx?.close()}
                   />
                 )
               })}
@@ -104,12 +107,15 @@ function DropdownRecentProjects(props: DropdownRecentProjectsProps) {
 }
 
 function DropdownExport() {
+  const closeCtx = useDropdownTriggerClose()
+
   return (
     <Dropdown className="w-50" nested>
       <DropdownList>
         <DropdownItem
           size="md"
           title="Download"
+          onSelect={() => closeCtx?.close()}
           icon={
             <FileArchive
               size={DROPDOWN_ICON_SIZE}
@@ -120,6 +126,7 @@ function DropdownExport() {
         <DropdownItem
           size="md"
           title="Open in StackBlitz"
+          onSelect={() => closeCtx?.close()}
           icon={
             <Zap
               size={DROPDOWN_ICON_SIZE}
@@ -133,6 +140,8 @@ function DropdownExport() {
 }
 
 function DownloadVisibility() {
+  const closeCtx = useDropdownTriggerClose()
+
   return (
     <Dropdown className="w-52" nested>
       <DropdownList>
@@ -140,6 +149,7 @@ function DownloadVisibility() {
           size="md"
           title="Public"
           append="Everyone can view"
+          onSelect={() => closeCtx?.close()}
           icon={
             <Earth
               size={DROPDOWN_ICON_SIZE}
@@ -151,6 +161,7 @@ function DownloadVisibility() {
           size="md"
           title="Secret"
           append="Accessible via shared URL"
+          onSelect={() => closeCtx?.close()}
           icon={
             <EyeOff
               size={DROPDOWN_ICON_SIZE}
@@ -162,6 +173,7 @@ function DownloadVisibility() {
           size="md"
           title="Private"
           append="Only owner can access"
+          onSelect={() => closeCtx?.close()}
           icon={
             <Lock
               size={DROPDOWN_ICON_SIZE}
@@ -180,6 +192,9 @@ type DropdownProjectsProps = {
 }
 
 export default function DropdownProjects(props: DropdownProjectsProps) {
+  const closeCtx = useDropdownTriggerClose()
+  const handleSelect = () => closeCtx?.close()
+
   return (
     <Dropdown align="left" className="w-60">
       <DropdownList>
@@ -202,6 +217,7 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
         <DropdownItem
           size="md"
           title="Version history"
+          onSelect={handleSelect}
           icon={
             <History
               size={DROPDOWN_ICON_SIZE}
@@ -212,6 +228,7 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
         <DropdownItem
           size="md"
           title="Rename..."
+          onSelect={handleSelect}
           icon={
             <PencilLine
               size={DROPDOWN_ICON_SIZE}
@@ -222,6 +239,7 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
         <DropdownItem
           size="md"
           title="Duplicate"
+          onSelect={handleSelect}
           icon={
             <Copy
               size={DROPDOWN_ICON_SIZE}
@@ -255,6 +273,7 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
           size="md"
           title="Delete"
           className="text-danger hover:bg-danger-bg"
+          onSelect={handleSelect}
           icon={
             <Trash
               size={DROPDOWN_ICON_SIZE}

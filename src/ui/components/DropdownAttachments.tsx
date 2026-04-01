@@ -13,7 +13,7 @@ import Dropdown, {
 } from './Dropdown'
 import DropdownItem from './DropdownItem'
 import DropdownList from './DropdownList'
-import { useDropdownTriggerClose } from './dropdownTriggerCloseContext'
+import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 
 const ATTACHMENT_ITEMS: { label: string; Icon: LucideIcon }[] = [
   { label: 'Attach file', Icon: FilePlus },
