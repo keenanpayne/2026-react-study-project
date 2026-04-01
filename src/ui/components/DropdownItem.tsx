@@ -122,7 +122,9 @@ export default function DropdownItem(props: DropdownItemProps) {
           />
 
           {isSubOpen && (
-            <div className="w-full md:contents">{props.dropdown}</div>
+            <div className="my-1.5 w-full md:my-0 md:contents">
+              {props.dropdown}
+            </div>
           )}
         </>
       )}
