@@ -23,7 +23,7 @@ export default function Dropdown(props: DropdownProps) {
     : 'border-border-default bg-surface-raised absolute z-30 rounded-lg border text-left shadow-xs'
 
   const nestedClass = props.nested
-    ? 'max-md:w-full md:left-[105%] md:-top-1'
+    ? 'max-md:w-full md:left-full md:ml-2 md:top-0'
     : ''
 
   const className = props.className ? props.className : ''

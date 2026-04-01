@@ -18,10 +18,13 @@ type DropdownItemProps = {
   dropdown?: ReactNode
 }
 
+const CLOSE_DELAY_MS = 50
+
 export default function DropdownItem(props: DropdownItemProps) {
   const [isSubOpen, setIsSubOpen] = useState(false)
   const itemRef = useRef<HTMLLIElement>(null)
   const openedViaClick = useRef(false)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const size =
     props.size === 'sm'
@@ -35,6 +38,21 @@ export default function DropdownItem(props: DropdownItemProps) {
   const className = props.className ? props.className : ''
   const classNames = `group/dropdown-item cursor-pointer flex flex-wrap items-center justify-between rounded-md hover:bg-hover-item transition-colors ${size} ${dropdownClass} ${className}`
   const prependAppendClass = 'text-xs text-text-muted block w-full'
+
+  const cancelClose = () => {
+    if (closeTimer.current !== null) {
+      clearTimeout(closeTimer.current)
+      closeTimer.current = null
+    }
+  }
+
+  const scheduleClose = () => {
+    cancelClose()
+    closeTimer.current = setTimeout(() => {
+      closeTimer.current = null
+      setIsSubOpen(false)
+    }, CLOSE_DELAY_MS)
+  }
 
   const handleBlur = (e: FocusEvent) => {
     if (itemRef.current && !itemRef.current.contains(e.relatedTarget as Node)) {
@@ -80,17 +98,29 @@ export default function DropdownItem(props: DropdownItemProps) {
     }
   }, [isSubOpen])
 
+  useEffect(() => {
+    if (!isSubOpen) cancelClose()
+    return cancelClose
+  }, [isSubOpen])
+
   return (
     <li
       ref={props.dropdown ? itemRef : undefined}
       className={classNames}
       tabIndex={0}
       onClick={props.dropdown ? handleClick : undefined}
-      onMouseEnter={props.dropdown ? () => setIsSubOpen(true) : undefined}
+      onMouseEnter={
+        props.dropdown
+          ? () => {
+              cancelClose()
+              setIsSubOpen(true)
+            }
+          : undefined
+      }
       onMouseLeave={
         props.dropdown
           ? () => {
-              if (!openedViaClick.current) setIsSubOpen(false)
+              if (!openedViaClick.current) scheduleClose()
             }
           : undefined
       }
