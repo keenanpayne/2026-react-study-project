@@ -6,16 +6,22 @@ import {
   type ReactNode,
   type FocusEvent,
   type MouseEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
 } from 'react'
 
 type DropdownItemProps = {
-  title: string
+  title: ReactNode
   prepend?: string
   append?: string
   size: 'sm' | 'md' | 'lg'
   icon?: ReactNode
   className?: string
   dropdown?: ReactNode
+  onSelect?: () => void
+  selected?: boolean
+  disabled?: boolean
+  role?: string
+  trailing?: ReactNode
 }
 
 const CLOSE_DELAY_MS = 50
@@ -36,7 +42,11 @@ export default function DropdownItem(props: DropdownItemProps) {
           : ''
   const dropdownClass = props.dropdown ? 'relative' : ''
   const className = props.className ? props.className : ''
-  const classNames = `group/dropdown-item cursor-pointer flex flex-wrap items-center justify-between rounded-md hover:bg-hover-item transition-colors ${size} ${dropdownClass} ${className}`
+  const selectedClass = props.selected
+    ? 'bg-selected hover:bg-selected-hover'
+    : ''
+  const disabledClass = props.disabled ? 'opacity-55' : ''
+  const classNames = `group/dropdown-item cursor-pointer flex flex-wrap items-center justify-between rounded-md hover:bg-hover-item transition-colors ${size} ${dropdownClass} ${selectedClass} ${disabledClass} ${className}`
   const prependAppendClass = 'text-xs text-text-muted block w-full'
 
   const cancelClose = () => {
@@ -69,6 +79,21 @@ export default function DropdownItem(props: DropdownItemProps) {
     } else {
       setIsSubOpen(true)
       openedViaClick.current = true
+    }
+  }
+
+  const handleSelectClick = () => {
+    if (!props.disabled && props.onSelect) props.onSelect()
+  }
+
+  const handleSelectKeyDown = (e: ReactKeyboardEvent) => {
+    if (
+      (e.key === 'Enter' || e.key === ' ') &&
+      !props.disabled &&
+      props.onSelect
+    ) {
+      e.preventDefault()
+      props.onSelect()
     }
   }
 
@@ -108,7 +133,11 @@ export default function DropdownItem(props: DropdownItemProps) {
       ref={props.dropdown ? itemRef : undefined}
       className={classNames}
       tabIndex={0}
-      onClick={props.dropdown ? handleClick : undefined}
+      role={props.role}
+      aria-selected={props.selected}
+      aria-disabled={props.disabled}
+      onClick={props.dropdown ? handleClick : handleSelectClick}
+      onKeyDown={props.dropdown ? undefined : handleSelectKeyDown}
       onMouseEnter={
         props.dropdown
           ? () => {
@@ -142,6 +171,8 @@ export default function DropdownItem(props: DropdownItemProps) {
           )}
         </span>
       </p>
+
+      {props.trailing}
 
       {props.dropdown && (
         <>

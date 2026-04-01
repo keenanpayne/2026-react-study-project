@@ -21,8 +21,8 @@ export default function Dropdown(props: DropdownProps) {
           : ''
 
   const baseClass = props.nested
-    ? 'bg-surface-raised z-30 text-left md:border-border-default md:absolute md:rounded-lg md:border md:shadow-xs'
-    : 'border-border-default bg-surface-raised absolute z-30 rounded-lg border text-left shadow-xs'
+    ? 'bg-surface z-30 text-left md:border-border-default md:absolute md:rounded-lg md:border md:shadow-xs'
+    : 'border-border-default bg-surface absolute z-30 rounded-lg border text-left shadow-xs'
 
   const nestedClass = props.nested
     ? 'max-md:w-full md:left-full md:ml-2 md:top-0'
