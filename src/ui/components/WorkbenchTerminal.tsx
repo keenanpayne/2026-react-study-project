@@ -21,7 +21,7 @@ export default function WorkbenchTerminal({ file }: WorkbenchTerminalProps) {
           <div
             role="group"
             aria-label="Terminal output"
-            className="flex items-center gap-2"
+            className="flex items-center gap-1 md:gap-2"
           >
             <Button
               size="lg"

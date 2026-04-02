@@ -182,14 +182,14 @@ export default function WorkbenchLeftSidebar({
   return (
     <aside
       className={cx(
-        'border-border-default relative min-w-0 border-r border-b transition-[flex-grow] duration-150 ease-out @md:border-b-0',
+        'border-border-default relative min-w-0 border-b transition-[flex-grow] duration-150 ease-out @md:border-r @md:border-b-0',
         panelExpanded
           ? 'overflow-auto @md:flex-5 @lg:flex-4 @2xl:flex-3'
           : 'h-10 flex-none overflow-hidden @md:h-auto @md:min-w-10 @md:flex-0',
       )}
     >
       <header
-        className={`section-header sticky top-0 left-0 z-10 h-10 rounded-tl-xl px-1 py-1`}
+        className={`section-header sticky top-0 left-0 z-10 h-10 rounded-t-xl px-1 py-1 @md:rounded-tl-xl`}
       >
         <nav
           aria-label="File browser"

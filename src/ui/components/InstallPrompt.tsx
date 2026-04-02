@@ -20,7 +20,7 @@ export default function InstallPrompt() {
     <div
       role="alertdialog"
       aria-label="Install application"
-      className="border-border-default bg-surface-raised fixed right-4 bottom-45 left-4 z-100 flex items-center justify-between gap-5 rounded-lg border px-4 py-3 shadow-xl md:right-4 md:bottom-4 md:left-auto md:max-w-sm"
+      className="border-border-default bg-surface-raised fixed top-13 right-4 left-4 z-100 flex items-center justify-between gap-5 rounded-lg border px-4 py-3 shadow-xl md:top-auto md:right-4 md:bottom-4 md:left-auto md:max-w-sm"
     >
       <div className="flex items-center gap-3">
         <BoltLogo className="h-5 shrink-0" wordmark />

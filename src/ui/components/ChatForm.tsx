@@ -92,7 +92,7 @@ export default function ChatForm({
       }}
       className="group/form bg-surface mb-3 shrink-0 px-4 pb-3 md:mb-0"
     >
-      <aside className="border-border-default mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-focus-within/form:flex md:flex md:flex-row md:gap-0">
+      <div className="border-border-default mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-focus-within/form:flex md:flex md:flex-row md:gap-0">
         <span aria-live="polite">
           {formatTokens(tokens)} daily tokens remaining.
         </span>
@@ -101,10 +101,11 @@ export default function ChatForm({
           size="flat"
           variant="plain"
           className="text-accent hover:underline"
+          onMouseDown={(e) => e.preventDefault()}
         >
           {upsellMessage}
         </Button>
-      </aside>
+      </div>
 
       <div className="relative w-full rounded-xl border border-transparent bg-[linear-gradient(var(--color-surface-raised),var(--color-surface-raised)),linear-gradient(to_bottom_right,var(--color-blue-400),var(--color-blue-100))] [background-clip:padding-box,border-box] bg-origin-border p-3 shadow-md transition-shadow focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)] md:pb-0 md:shadow-sm md:group-focus-within/form:pb-0 md:focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)]">
         <label htmlFor="command" className="sr-only">
@@ -125,6 +126,7 @@ export default function ChatForm({
           role="toolbar"
           aria-label="Message options"
           className="hidden items-center justify-between gap-3 py-1.5 group-focus-within/form:flex md:flex"
+          onMouseDown={(e) => e.preventDefault()}
         >
           <div className="flex items-center gap-3">
             <DropdownTrigger
