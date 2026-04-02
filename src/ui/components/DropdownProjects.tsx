@@ -14,7 +14,7 @@ import {
   Lock,
   type LucideIcon,
 } from 'lucide-react'
-import type { MockUserProject } from '~/types/user'
+import type { UserProject } from '~/types/user'
 import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 import Dropdown, {
   DROPDOWN_ICON_SIZE,
@@ -34,8 +34,8 @@ function getSectionLabel(date: Date): string {
   return date.toLocaleString('default', { month: 'long', year: 'numeric' })
 }
 
-function groupProjectsBySection(items: MockUserProject[]) {
-  const groups: { label: string; projects: MockUserProject[] }[] = []
+function groupProjectsBySection(items: UserProject[]) {
+  const groups: { label: string; projects: UserProject[] }[] = []
 
   for (const project of items) {
     const label = getSectionLabel(project.updated_at)
@@ -52,8 +52,8 @@ function groupProjectsBySection(items: MockUserProject[]) {
 }
 
 type DropdownRecentProjectsProps = {
-  projects: MockUserProject[]
-  currentProject: MockUserProject
+  projects: UserProject[]
+  currentProject: UserProject
 }
 
 function DropdownRecentProjects({
@@ -174,7 +174,7 @@ const VISIBILITY_ROWS: {
   },
 ]
 
-function DownloadVisibility() {
+function DropdownVisibility() {
   const closeCtx = useDropdownTriggerClose()
   const handleSelect = () => closeCtx?.close()
 
@@ -214,8 +214,8 @@ type ProjectMenuRow = {
 }
 
 type DropdownProjectsProps = {
-  projects: MockUserProject[]
-  currentProject: MockUserProject
+  projects: UserProject[]
+  currentProject: UserProject
 }
 
 export default function DropdownProjects({
@@ -251,7 +251,7 @@ export default function DropdownProjects({
         id: 'visibility',
         title: 'Visibility',
         icon: Eye,
-        dropdown: <DownloadVisibility />,
+        dropdown: <DropdownVisibility />,
       },
       {
         id: 'delete',

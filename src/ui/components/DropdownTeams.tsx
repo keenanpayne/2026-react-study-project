@@ -1,4 +1,4 @@
-import type { MockUserTeam } from '~/types/user'
+import type { UserTeam } from '~/types/user'
 import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 import Dropdown from './Dropdown'
 import DropdownItem from './DropdownItem'
@@ -7,7 +7,7 @@ import DropdownSeparator from './DropdownSeparator'
 import { UsersRound } from 'lucide-react'
 
 type DropdownTeamsProps = {
-  data: MockUserTeam[]
+  data: UserTeam[]
 }
 
 export default function DropdownTeams({ data }: DropdownTeamsProps) {

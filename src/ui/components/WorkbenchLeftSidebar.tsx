@@ -9,71 +9,12 @@ import { SearchCode, type LucideIcon } from 'lucide-react'
 import Pagination from './Pagination'
 import { useCollapsible } from '~/hooks/useCollapsible'
 import { cx } from '~/utils/cx'
-
-function computeInitialExpanded(
-  nodes: TreeNode[],
-  parentPath: string,
-): Set<string> {
-  const expanded = new Set<string>()
-
-  for (const node of nodes) {
-    const path = parentPath ? `${parentPath}/${node.name}` : node.name
-
-    if (node.children?.length) {
-      const childExpanded = computeInitialExpanded(node.children, path)
-
-      const hasSelectedChild = node.children.some((c) => c.selected)
-      const shouldExpand =
-        node.open || hasSelectedChild || childExpanded.size > 0
-
-      if (shouldExpand) {
-        expanded.add(path)
-        childExpanded.forEach((p) => expanded.add(p))
-      }
-    }
-  }
-
-  return expanded
-}
-
-function filterTree(nodes: TreeNode[], query: string): TreeNode[] {
-  const lowerQuery = query.toLowerCase()
-
-  return nodes.reduce<TreeNode[]>((acc, node) => {
-    const nameMatches = node.name.toLowerCase().includes(lowerQuery)
-
-    if (node.children?.length) {
-      if (nameMatches) {
-        acc.push(node)
-      } else {
-        const filteredChildren = filterTree(node.children, query)
-
-        if (filteredChildren.length > 0) {
-          acc.push({ ...node, children: filteredChildren })
-        }
-      }
-    } else if (nameMatches) {
-      acc.push(node)
-    }
-
-    return acc
-  }, [])
-}
-
-function collectAllPaths(nodes: TreeNode[], parentPath: string): Set<string> {
-  const paths = new Set<string>()
-
-  for (const node of nodes) {
-    const path = parentPath ? `${parentPath}/${node.name}` : node.name
-
-    if (node.children?.length) {
-      paths.add(path)
-      collectAllPaths(node.children, path).forEach((p) => paths.add(p))
-    }
-  }
-
-  return paths
-}
+import {
+  computeInitialExpanded,
+  filterTree,
+  collectAllPaths,
+  joinTreePath,
+} from '~/utils/tree'
 
 type PaginationConfig = {
   depths: number[]
@@ -199,7 +140,7 @@ export default function WorkbenchLeftSidebar({
     parentPath: string,
   ): ReactNode {
     return items.map((node) => {
-      const path = parentPath ? `${parentPath}/${node.name}` : node.name
+      const path = joinTreePath(parentPath, node.name)
       const hasChildren = !!node.children?.length
       const isExpandable = hasChildren && node.expandable !== false
       const isExpanded = searchExpanded

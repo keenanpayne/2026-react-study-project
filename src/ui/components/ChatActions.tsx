@@ -7,20 +7,22 @@ import {
 } from 'lucide-react'
 import CodeString from './CodeString'
 import ChatAction from './ChatAction'
-import { MockChatActions, type MockChatActionIconType } from '~/data/mockChat'
+import type { ChatActionData, ChatActionIconType } from '~/types/chat'
 
 type ChatActionsProps = {
+  actions: ChatActionData[]
   count: number
   actionsExpanded: boolean
   actionOnClick: () => void
 }
 
-const ICON_MAP: Record<MockChatActionIconType, LucideIcon> = {
+const ICON_MAP: Record<ChatActionIconType, LucideIcon> = {
   terminal: SquareTerminal,
   read: Eye,
 }
 
 export default function ChatActions({
+  actions,
   count,
   actionsExpanded,
   actionOnClick,
@@ -42,7 +44,7 @@ export default function ChatActions({
       </summary>
 
       <ul className="space-y-3 pt-5">
-        {MockChatActions.map((action) => {
+        {actions.map((action) => {
           const Icon = ICON_MAP[action.iconType]
           return (
             <ChatAction

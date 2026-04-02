@@ -2,19 +2,27 @@ import { Ellipsis } from 'lucide-react'
 import ChatResponse from './ChatResponse'
 import DropdownChat from './DropdownChat'
 import DropdownTrigger from './DropdownTrigger'
-import { MockChatUserMessage } from '~/data/mockChat'
 import BoltLogo from './BoltLogo'
+import type { ChatActionData, ChatResponseData } from '~/types/chat'
 
 type ChatMessageProps = {
+  message: string
+  response: ChatResponseData
+  actions: ChatActionData[]
   onOpenActionDetails: () => void
 }
 
-export default function ChatMessage({ onOpenActionDetails }: ChatMessageProps) {
+export default function ChatMessage({
+  message,
+  response,
+  actions,
+  onOpenActionDetails,
+}: ChatMessageProps) {
   return (
     <>
       <article aria-label="Your message" className="p-5">
         <p className="border-border-default bg-surface-muted rounded-lg border p-3 text-sm leading-relaxed">
-          {MockChatUserMessage}
+          {message}
         </p>
       </article>
 
@@ -36,6 +44,8 @@ export default function ChatMessage({ onOpenActionDetails }: ChatMessageProps) {
         </div>
 
         <ChatResponse
+          response={response}
+          actions={actions}
           actionsExpanded={false}
           actionOnClick={onOpenActionDetails}
         />

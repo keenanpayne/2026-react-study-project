@@ -13,12 +13,12 @@ import DropdownSettings from './DropdownSettings'
 import DropdownUser from './DropdownUser'
 import DropdownTrigger from './DropdownTrigger'
 import type { WorkbenchPane } from '~/types/navigation'
-import type { MockUserTeam } from '~/types/user'
+import type { UserTeam } from '~/types/user'
 
 type WorkbenchHeaderProps = {
   activePane: WorkbenchPane
   onPaneChange: (pane: WorkbenchPane) => void
-  teams: MockUserTeam[]
+  teams: UserTeam[]
 }
 
 export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
@@ -40,7 +40,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
       <div className="flex flex-wrap items-center gap-1.5">
         <nav
           aria-label="Workbench panes"
-          className="space-between border-border-default hidden h-8 w-auto shrink-0 items-center gap-1 rounded-xl border px-0.5 py-1.5 md:flex"
+          className="border-border-default hidden h-8 w-auto shrink-0 items-center gap-1 rounded-xl border px-0.5 py-1.5 md:flex"
         >
           <Button
             size="sm"

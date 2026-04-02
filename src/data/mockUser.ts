@@ -1,6 +1,6 @@
-import type { MockUserProject, MockUserTeam } from '~/types/user'
+import type { UserProject, UserTeam } from '~/types/user'
 
-export const MockUserProjects: MockUserProject[] = [
+export const MockUserProjects: UserProject[] = [
   {
     id: 1,
     title: 'Multi-Platform Social Scheduler',
@@ -24,9 +24,9 @@ export const MockUserProjects: MockUserProject[] = [
   },
 ]
 
-export const MockUserCurrentProject: MockUserProject = MockUserProjects[0]
+export const MockUserCurrentProject: UserProject = MockUserProjects[0]
 
-export const MockUserTeams: MockUserTeam[] = [
+export const MockUserTeams: UserTeam[] = [
   {
     id: 1,
     title: 'Keenan Payne',

@@ -1,13 +1,6 @@
-export type MockChatActionIconType = 'terminal' | 'read'
+import type { ChatActionData, ChatResponseData } from '~/types/chat'
 
-export type MockChatActionData = {
-  id: number
-  title: string
-  codeRef?: string
-  iconType: MockChatActionIconType
-}
-
-export const MockChatActions: MockChatActionData[] = [
+export const MockChatActions: ChatActionData[] = [
   { id: 1, title: 'Get current working directory', iconType: 'terminal' },
   { id: 2, title: 'Listed files in project root', iconType: 'terminal' },
   { id: 3, title: 'Read', iconType: 'read' },
@@ -21,40 +14,9 @@ export const MockChatActions: MockChatActionData[] = [
 export const MockChatUserMessage =
   "Let's build a social media scheduling application that will handle content creation/editing/scheduling for Twitter, Bluesky, Mastodon, Threads, and LinkedIn."
 
-export type MockChatQuestion = {
-  id: number
-  label: string
-  text: string
-}
-
-export type MockChatPlanSection = {
-  id: number
-  title: string
-  items: string[]
-}
-
-export type MockChatResponseData = {
-  openingText: string
-  actionsCount: number
-  followUpText: string
-  questionsIntro: string
-  questions: MockChatQuestion[]
-  planTitle: string
-  planSections: MockChatPlanSection[]
-  summaryTitle: string
-  summaryText: string
-  closingText: string
-  plan: {
-    title: string
-    version: string
-    createdAt: Date
-  }
-}
-
-export const MockChatResponse: MockChatResponseData = {
+export const MockChatResponse: ChatResponseData = {
   openingText:
     "I'll analyze the current codebase and create a comprehensive plan for building a social media scheduling application. Let me start by exploring the project structure.",
-  actionsCount: 9,
   followUpText:
     'Perfect! I now have a clear understanding of the project structure. Let me create a comprehensive plan for building a social media scheduling application.',
   questionsIntro:

@@ -1,14 +1,9 @@
-export type MockWorkbenchFileTreeItemType =
-  | 'directory'
-  | 'file'
-  | 'table'
-  | 'row'
-  | 'column'
+export type FileTreeItemType = 'directory' | 'file' | 'table' | 'row' | 'column'
 
 export type TreeNode = {
   id?: number
   name: string
-  type?: MockWorkbenchFileTreeItemType
+  type?: FileTreeItemType
   value?: string | number | null
   open?: boolean
   selected?: boolean

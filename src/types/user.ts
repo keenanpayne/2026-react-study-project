@@ -1,4 +1,4 @@
-export type MockUserProject = {
+export type UserProject = {
   id: number
   title: string
   private: boolean
@@ -6,7 +6,7 @@ export type MockUserProject = {
   updated_at: Date
 }
 
-export type MockUserTeam = {
+export type UserTeam = {
   id: number
   title: string
   type?: 'Personal' | 'Pro' | 'Team' | 'Enterprise'

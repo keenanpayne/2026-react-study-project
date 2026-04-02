@@ -20,6 +20,11 @@ import {
   MockUserProjects,
   MockUserTeams,
 } from './data/mockUser'
+import {
+  MockChatActions,
+  MockChatResponse,
+  MockChatUserMessage,
+} from './data/mockChat'
 import { useMobileNavigation } from './hooks/useMobileNavigation'
 import InstallPrompt from './ui/components/InstallPrompt'
 
@@ -45,6 +50,8 @@ export default function App() {
       >
         {isActionDialogOpen && (
           <ChatResponse
+            response={MockChatResponse}
+            actions={MockChatActions}
             actionsExpanded={true}
             actionOnClick={() => setIsActionDialogOpen(false)}
           />
@@ -77,6 +84,9 @@ export default function App() {
 
           <div className="min-h-0 flex-1 overflow-auto">
             <ChatMessage
+              message={MockChatUserMessage}
+              response={MockChatResponse}
+              actions={MockChatActions}
               onOpenActionDetails={() => setIsActionDialogOpen(true)}
             />
           </div>

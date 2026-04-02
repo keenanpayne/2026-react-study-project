@@ -1,5 +1,5 @@
 import { ChevronsUpDown, Lock } from 'lucide-react'
-import type { MockUserProject, MockUserTeam } from '~/types/user'
+import type { UserProject, UserTeam } from '~/types/user'
 import DropdownProjects from './DropdownProjects'
 import DropdownTeams from './DropdownTeams'
 import Button from './Button'
@@ -15,9 +15,9 @@ function Separator() {
 }
 
 type ChatHeaderProps = {
-  teams: MockUserTeam[]
-  projects: MockUserProject[]
-  currentProject: MockUserProject
+  teams: UserTeam[]
+  projects: UserProject[]
+  currentProject: UserProject
 }
 
 export default function ChatHeader({

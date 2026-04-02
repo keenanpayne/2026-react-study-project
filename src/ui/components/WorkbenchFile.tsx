@@ -8,7 +8,7 @@ import {
   TableProperties,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
-import type { MockWorkbenchFileTreeItemType } from '~/types/workbench'
+import type { FileTreeItemType } from '~/types/workbench'
 import { cx } from '~/utils/cx'
 
 const ICON_SIZE = 14
@@ -16,7 +16,7 @@ const ICON_STROKE_WIDTH = 1.5
 const ICON_CLASS = 'shrink-0'
 
 const ICON_BY_TYPE: Record<
-  MockWorkbenchFileTreeItemType,
+  FileTreeItemType,
   typeof FileIcon | [typeof FolderClosed, typeof FolderOpen]
 > = {
   directory: [FolderClosed, FolderOpen],
@@ -30,7 +30,7 @@ function WorkbenchFileIcon({
   type,
   open,
 }: {
-  type?: MockWorkbenchFileTreeItemType
+  type?: FileTreeItemType
   open?: boolean
 }) {
   if (!type) return null
@@ -50,7 +50,7 @@ function WorkbenchFileIcon({
 
 type WorkbenchFileProps = {
   name: string
-  type?: MockWorkbenchFileTreeItemType
+  type?: FileTreeItemType
   children?: ReactNode
   depth?: number
   open?: boolean

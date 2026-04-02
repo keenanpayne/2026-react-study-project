@@ -7,17 +7,7 @@ import WorkbenchLeftSidebar from './WorkbenchLeftSidebar'
 import DatabaseTable from './DatabaseTable'
 import DatabaseRowEditForm from './DatabaseRowEditForm'
 import type { TreeNode } from '~/types/workbench'
-
-function buildEditedValues(row: TreeNode | null): Record<string, string> {
-  if (!row?.children) return {}
-
-  const values: Record<string, string> = {}
-  for (const col of row.children) {
-    values[col.name] =
-      col.value !== null && col.value !== undefined ? String(col.value) : ''
-  }
-  return values
-}
+import { buildEditedValues } from '~/utils/database'
 
 type WorkbenchDatabaseProps = {
   list: TreeNode[]
@@ -79,9 +69,7 @@ export default function WorkbenchDatabase({
                     <span className="font-bold">{selectedNode.name}</span>
                   </p>
                   <p className="text-text-muted text-sm">
-                    {selectedNode
-                      ? `${selectedNode.children?.length ?? 0} ${selectedNode.type === 'table' ? 'rows' : 'columns'}`
-                      : 'View and manage database tables and records. Ask Bolt to create or modify tables.'}
+                    {`${selectedNode.children?.length ?? 0} ${selectedNode.type === 'table' ? 'rows' : 'columns'}`}
                   </p>
                 </div>
               ) : (

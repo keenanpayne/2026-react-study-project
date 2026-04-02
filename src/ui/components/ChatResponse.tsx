@@ -1,32 +1,37 @@
 import ChatPlan from './ChatPlan'
 import ChatActions from './ChatActions'
-import { MockChatResponse } from '~/data/mockChat'
+import type { ChatActionData, ChatResponseData } from '~/types/chat'
 
 type ChatResponseProps = {
+  response: ChatResponseData
+  actions: ChatActionData[]
   actionsExpanded: boolean
   actionOnClick: () => void
 }
 
 export default function ChatResponse({
+  response,
+  actions,
   actionsExpanded,
   actionOnClick,
 }: ChatResponseProps) {
   return (
     <>
-      <p>{MockChatResponse.openingText}</p>
+      <p>{response.openingText}</p>
 
       <ChatActions
-        count={MockChatResponse.actionsCount}
+        actions={actions}
+        count={actions.length}
         actionsExpanded={actionsExpanded}
         actionOnClick={actionOnClick}
       />
 
-      <p>{MockChatResponse.followUpText}</p>
+      <p>{response.followUpText}</p>
 
-      <p>{MockChatResponse.questionsIntro}</p>
+      <p>{response.questionsIntro}</p>
 
       <ol className="list-outside list-decimal space-y-3 pl-6">
-        {MockChatResponse.questions.map((q) => (
+        {response.questions.map((q) => (
           <li key={q.id}>
             <strong>{q.label}</strong> {q.text}
           </li>
@@ -35,10 +40,10 @@ export default function ChatResponse({
 
       <hr className="border-border-default my-3 border-2" />
 
-      <h2 className="text-lg font-semibold">{MockChatResponse.planTitle}</h2>
+      <h2 className="text-lg font-semibold">{response.planTitle}</h2>
 
       <ol className="space-y-5">
-        {MockChatResponse.planSections.map((section) => (
+        {response.planSections.map((section) => (
           <li key={section.id}>
             <h3 className="font-semibold">
               {section.id}. {section.title}
@@ -55,16 +60,16 @@ export default function ChatResponse({
 
       <hr className="border-border-default my-3 border-2" />
 
-      <h2 className="text-lg font-semibold">{MockChatResponse.summaryTitle}</h2>
+      <h2 className="text-lg font-semibold">{response.summaryTitle}</h2>
 
-      <p>{MockChatResponse.summaryText}</p>
+      <p>{response.summaryText}</p>
 
-      <p>{MockChatResponse.closingText}</p>
+      <p>{response.closingText}</p>
 
       <ChatPlan
-        title={MockChatResponse.plan.title}
-        version={MockChatResponse.plan.version}
-        createdAt={MockChatResponse.plan.createdAt}
+        title={response.plan.title}
+        version={response.plan.version}
+        createdAt={response.plan.createdAt}
       />
     </>
   )
