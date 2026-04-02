@@ -2,11 +2,9 @@
 
 As I anticipate my technical interview at Bolt, I decided to practice building the Bolt.new user interface from scratch. The purpose of doing this was to ensure my design and React development skills are sharp before my interviews.
 
-Roughly ~65% of the code is hand-written, as many technical interviews rely on ingrained knowledge and memory, and limit the use of search and LLMs. The foundational layers, including types, utility functions, primitive components, the custom dropdown system, and the state architecture, were designed and written by hand. AI was used for execution within that structure.
+Roughly ~65% of the code is hand-written. The foundational layers, including types, utility functions, primitive components, the custom dropdown system, and the state architecture, were designed and written by hand. AI was used for execution within that structure.
 
-As the project's foundation was laid by hand (i.e., core abstractions and design patterns), iterating with AI became easier and, honestly, much more tempting.
-
-I used AI coding assistance for Q&A, generating/formatting mock data, and executing straightforward but comprehensive refactors that were easily verifiable (e.g., ensuring HTML semantics were correct; auditing accessibility concerns, etc.).
+As the project's foundation was laid by hand (i.e., core abstractions and design patterns), iterating with AI became easier and, honestly, much more tempting. I used AI coding assistance for Q&A, generating/formatting mock data, and executing straightforward but comprehensive refactors that were easily verifiable (e.g., ensuring HTML semantics were correct; auditing accessibility concerns, etc.).
 
 While I worked, my design ideas exceeded my ability to build by hand, given the time constraints. I felt more interested in expressing those ideas than in sticking to handwritten purity. Adopting AI for UI coding assistance in the back half of this project helped me rapidly build and iterate.
 
@@ -42,7 +40,9 @@ Many minor UX improvements have been made on mobile to ensure a usable experienc
 
 I took the liberty of deviating from some of the Bolt interface styles to ensure my implementation conforms with [WCAG AA](https://www.w3.org/WAI/WCAG2AA-Conformance) accessibility standards.
 
-I put extra effort to ensure the entire interface is accessible via keyboard navigation.
+I put extra effort to ensure the entire interface is accessible via keyboard navigation. When switching between chat and workbench views on mobile, `useMobileNavigation` uses `requestAnimationFrame` to move focus to the heading of the newly visible section, preventing focus from being lost when the DOM toggles visibility.
+
+The stylesheet also respects `prefers-reduced-motion: reduce` (disabling all animation and transition durations) and `forced-colors: active` (ensuring focus rings use system colors). These go beyond WCAG AA and ensure the interface works correctly with platform-level accessibility settings.
 
 ### Colors
 
@@ -73,6 +73,10 @@ One exception I made was for the Dialog component, which I used Base UI for. Dia
 
 `Button` uses [cva](https://cva.style/docs) (Class Variance Authority) to encode its variant matrix as a typed data structure rather than ad-hoc conditional strings. This makes variants predictable, type-safe, and easy to extend without introducing regressions across other variants.
 
+### Polymorphic Button Types
+
+`Button` accepts an `as` prop (`"button"` or `"a"`) backed by a discriminated union type. When `as="a"`, TypeScript requires `href` and exposes anchor-specific attributes; when `as="button"` (the default), `href` is forbidden and button-specific attributes are available. This keeps the API type-safe without runtime guards while allowing the same visual component to render as either element.
+
 ### Dropdown Context Pattern
 
 Rather than threading a `close` callback through every nested dropdown item, `DropdownTrigger` provides a `DropdownTriggerCloseContext` that any descendant can consume. This inverts control: the trigger owns the close behavior, and consumers opt in when they need it. This keeps the prop surface of individual dropdown items clean and makes the system straightforward to extend.
@@ -81,11 +85,21 @@ Rather than threading a `close` callback through every nested dropdown item, `Dr
 
 `WorkbenchCodebase` and `WorkbenchDatabase` are kept mounted and toggled via CSS rather than conditionally rendered. Unmounting a pane on every switch would reset scroll position, discard form state, and force the `@pierre/diffs` diff viewer to re-initialize, all of which would create a noticeably degraded user experience. Keeping them mounted preserves that state at the cost of slightly higher memory usage, which is an acceptable trade-off for a prototype workbench-style interface.
 
+### Responsive Layout Strategy
+
+The root layout uses a 12-column CSS grid at `md` breakpoints that shifts to `grid-cols-[450px_1fr]` at `lg`, giving the chat column a fixed width while the workbench fills the remaining space. On mobile, the grid collapses entirely, and `useMobileNavigation` switches between the chat and workbench views via a bottom navigation bar.
+
+Inside the workbench, `WorkbenchContents` uses CSS container queries (`@container`) so child layouts respond to their container width rather than the viewport. This means the workbench layout adapts correctly regardless of whether the chat column is present or collapsed.
+
 ### Semantic Design Tokens
 
-`index.css` uses Tailwind v4's `@theme` directive to define semantic CSS custom properties (`--color-surface`, `--color-text-heading`, `--color-focus-ring`, etc.) backed by the CSS `light-dark()` function. This means dark mode support is resolved at the token level rather than the component level.
+`index.css` uses Tailwind v4's `@theme` directive to define semantic CSS custom properties (e.g., `--color-surface`, `--color-text-heading`, `--color-focus-ring`, etc.) backed by the CSS `light-dark()` function. This means dark mode support is resolved at the token level rather than the component level.
 
 Any new component that uses the semantic tokens gets correct light and dark mode styles without needing to apply dark-mode variant classes.
+
+### Custom Utility Layer
+
+Tailwind v4's `@utility` directive is used to define reusable utility classes (e.g., `icon-interactive`, `input-base`, `panel-card`, `section-header`, etc.) that sit between raw Tailwind utilities and component-level styles. These encode common patterns (e.g., focus rings, border treatments, transition properties, etc.) without introducing a full CSS module layer or duplicating the same class strings across components.
 
 ### Type System
 
@@ -97,16 +111,16 @@ When a real API layer is introduced, these types serve as the integration bounda
 
 ### Add AI Harnesses
 
-Different harnesses can be added to this project depending on how AI-assisted coding agents will be iterating on it. This may come in the form of rules, skills, AGENTS.md , inline JSDOC comments, documentation, etc.
+Different harnesses can be added to this project depending on how AI-assisted coding agents will be iterating on it. This may come in the form of rules, skills, AGENTS.md, inline JSDOC comments, documentation, etc.
 
 Harnesses should be scoped appropriately, with global conventions belonging in root-level rules, and subsystem-specific conventions belonging in directory-level rules or inline documentation.
 
 The AI harnesses should work at four levels:
 
 1. **Discovery:** Help agents find the right files, types, patterns, and best practices.
-2. **Decision:** Help agents choose the right approach when making decisions.
-3. **Execution:** Help agents execute changes correctly and efficiently.
-4. **Verification:** Help agents verify the correctness of the changes.
+2. **Decision:** Help agents choose the right approach.
+3. **Execution:** Help agents make changes correctly.
+4. **Verification:** Help agents verify the correctness.
 
 We should always enforce the following:
 
@@ -158,7 +172,7 @@ Class variance authority (CVA) is currently only used for the `Button` component
 
 ## Omitted Implementation Details
 
-I scoped this prototype to the core workbench interface. The following features exist in the production Bolt interface but were intentionally omitted
+I scoped this prototype to the core workbench flow. The following features exist in the production Bolt interface but were intentionally omitted:
 
 - Settings dialog
 - Comprehensive database UI (e.g., logs, security audit, advanced)
