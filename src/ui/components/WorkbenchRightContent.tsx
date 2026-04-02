@@ -3,10 +3,12 @@ import CollapseToggle from './CollapseToggle'
 import { useCollapsible } from '~/hooks/useCollapsible'
 
 type WorkbenchRightContentProps = {
+  title?: ReactNode
   children?: ReactNode
 }
 
 export default function WorkbenchRightContent({
+  title,
   children,
 }: WorkbenchRightContentProps) {
   const { isExpanded, toggle } = useCollapsible()
@@ -16,14 +18,23 @@ export default function WorkbenchRightContent({
       className={`min-w-0 rounded-tr-xl transition-[flex-grow] duration-150 ease-out ${isExpanded ? 'overflow-scroll @md:flex-7 @lg:flex-8 @2xl:flex-9' : '@md:border-border-default h-10 flex-none overflow-hidden @md:ml-auto @md:h-auto @md:min-w-10 @md:flex-0 @md:border-l'}`}
     >
       <header
-        className={`section-header flex h-10 items-center justify-end px-1 py-1`}
+        className={`section-header flex flex-1 items-center gap-2 px-1 py-1 ${isExpanded ? 'h-10 flex-row' : 'h-full flex-row justify-center @md:flex-col'}`}
       >
+        {title && (
+          <h2
+            className={`min-w-0 text-sm font-medium ${isExpanded ? 'flex-1 pl-2' : 'flex-1 @md:[text-orientation:mixed] @md:[writing-mode:vertical-rl]'}`}
+          >
+            {title}
+          </h2>
+        )}
+
         <CollapseToggle
           isExpanded={isExpanded}
           onToggle={toggle}
           direction="horizontal-right"
           controls="right-content-panel"
           label="content panel"
+          className={isExpanded ? '' : '@md:order-first'}
         />
       </header>
 

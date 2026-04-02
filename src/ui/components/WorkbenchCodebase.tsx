@@ -32,7 +32,15 @@ export default function WorkbenchCodebase({
             listIcon={FolderTree}
           />
 
-          <WorkbenchRightContent>
+          <WorkbenchRightContent
+            title={
+              <>
+                <span className="px-1 font-mono antialiased">
+                  src / App.tsx
+                </span>
+              </>
+            }
+          >
             <File file={file} options={DIFF_FILE_OPTIONS} />
           </WorkbenchRightContent>
         </div>

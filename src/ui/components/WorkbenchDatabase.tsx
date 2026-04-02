@@ -70,28 +70,27 @@ export default function WorkbenchDatabase({
             truncateNames={true}
           />
 
-          <WorkbenchRightContent>
+          <WorkbenchRightContent
+            title={
+              selectedNode ? (
+                <div className="flex flex-1 flex-row gap-3">
+                  <p>
+                    Table:{' '}
+                    <span className="font-bold">{selectedNode.name}</span>
+                  </p>
+                  <p className="text-text-muted text-sm">
+                    {selectedNode
+                      ? `${selectedNode.children?.length ?? 0} ${selectedNode.type === 'table' ? 'rows' : 'columns'}`
+                      : 'View and manage database tables and records. Ask Bolt to create or modify tables.'}
+                  </p>
+                </div>
+              ) : (
+                'Tables'
+              )
+            }
+          >
             <div className="flex flex-col gap-3">
-              <header className="divider-bottom flex flex-col gap-0.5 px-5 py-2">
-                <h2 className="font-medium">
-                  {selectedNode ? (
-                    <>
-                      Table:{' '}
-                      <span className="font-bold">{selectedNode.name}</span>
-                    </>
-                  ) : (
-                    'Tables'
-                  )}
-                </h2>
-
-                <p className="text-sm">
-                  {selectedNode
-                    ? `${selectedNode.children?.length ?? 0} ${selectedNode.type === 'table' ? 'rows' : 'columns'}`
-                    : 'View and manage database tables and records. Ask Bolt to create or modify tables.'}
-                </p>
-              </header>
-
-              <div className="px-4 py-2">
+              <div className="px-4 py-3">
                 {selectedNode?.children ? (
                   <DatabaseTable
                     node={selectedNode}
