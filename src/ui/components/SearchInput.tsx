@@ -1,4 +1,4 @@
-import { useEffect, useRef, type KeyboardEvent, type ReactNode } from 'react'
+import { useCallback, type KeyboardEvent, type ReactNode } from 'react'
 import { Search } from 'lucide-react'
 
 type SearchInputProps = {
@@ -26,11 +26,12 @@ export default function SearchInput({
   iconSize,
   iconStrokeWidth,
 }: SearchInputProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (focusOnMount) inputRef.current?.focus()
-  }, [focusOnMount])
+  const inputRef = useCallback(
+    (node: HTMLInputElement | null) => {
+      if (focusOnMount && node) node.focus()
+    },
+    [focusOnMount],
+  )
 
   return (
     <div
