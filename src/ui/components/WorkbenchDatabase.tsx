@@ -66,6 +66,7 @@ export default function WorkbenchDatabase({
             selectedNode={selectedNode}
             selectedRow={selectedRow}
             onSelect={handleSelectNode}
+            pagination={{ depths: [1], pageSize: 10 }}
           />
 
           <WorkbenchRightContent>

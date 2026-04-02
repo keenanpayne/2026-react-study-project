@@ -6,6 +6,7 @@ import Button from './Button'
 import CollapseToggle from './CollapseToggle'
 import SearchInput from './SearchInput'
 import { SearchCode, type LucideIcon } from 'lucide-react'
+import Pagination from './Pagination'
 import { useCollapsible } from '~/hooks/useCollapsible'
 import { cx } from '~/utils/cx'
 
@@ -74,6 +75,11 @@ function collectAllPaths(nodes: TreeNode[], parentPath: string): Set<string> {
   return paths
 }
 
+type PaginationConfig = {
+  depths: number[]
+  pageSize: number
+}
+
 type WorkbenchLeftSidebarProps = {
   list: TreeNode[]
   listLabel: string
@@ -81,6 +87,7 @@ type WorkbenchLeftSidebarProps = {
   selectedNode?: TreeNode | null
   selectedRow?: TreeNode | null
   onSelect?: (node: TreeNode) => void
+  pagination?: PaginationConfig
 }
 
 export default function WorkbenchLeftSidebar({
@@ -90,6 +97,7 @@ export default function WorkbenchLeftSidebar({
   selectedNode,
   selectedRow,
   onSelect,
+  pagination,
 }: WorkbenchLeftSidebarProps) {
   const { isExpanded: panelExpanded, toggle: togglePanel } = useCollapsible()
   const [expanded, setExpanded] = useState<Set<string>>(() =>
@@ -97,6 +105,12 @@ export default function WorkbenchLeftSidebar({
   )
   const [searchActive, setSearchActive] = useState(false)
   const [query, setQuery] = useState('')
+  const [pageMap, setPageMap] = useState<Record<string, number>>({})
+
+  function updateQuery(newQuery: string) {
+    setQuery(newQuery)
+    setPageMap({})
+  }
 
   const filteredList = useMemo(
     () => (query ? filterTree(list, query) : list),
@@ -124,7 +138,7 @@ export default function WorkbenchLeftSidebar({
 
   function closeSearch() {
     setSearchActive(false)
-    setQuery('')
+    updateQuery('')
   }
 
   function handleSearchKeyDown(e: KeyboardEvent<HTMLInputElement>) {
@@ -137,6 +151,44 @@ export default function WorkbenchLeftSidebar({
     if (!query) {
       closeSearch()
     }
+  }
+
+  function renderChildList(
+    children: TreeNode[],
+    depth: number,
+    parentPath: string,
+  ): ReactNode {
+    const shouldPaginate =
+      pagination?.depths.includes(depth) &&
+      children.length > pagination.pageSize
+
+    const page = pageMap[parentPath] ?? 0
+    const pageSize = pagination?.pageSize ?? children.length
+    const totalPages = shouldPaginate
+      ? Math.ceil(children.length / pageSize)
+      : 1
+    const displayItems = shouldPaginate
+      ? children.slice(page * pageSize, (page + 1) * pageSize)
+      : children
+
+    return (
+      <>
+        {shouldPaginate && (
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            depth={depth}
+            label={parentPath || listLabel}
+            onPageChange={(p) =>
+              setPageMap((prev) => ({ ...prev, [parentPath]: p }))
+            }
+          />
+        )}
+        <WorkbenchFileTree>
+          {renderItems(displayItems, depth, parentPath)}
+        </WorkbenchFileTree>
+      </>
+    )
   }
 
   function renderItems(
@@ -166,11 +218,9 @@ export default function WorkbenchLeftSidebar({
           onToggle={() => toggle(path)}
           onClick={() => onSelect?.(node)}
         >
-          {isExpandable && isExpanded ? (
-            <WorkbenchFileTree>
-              {renderItems(node.children!, depth + 1, path)}
-            </WorkbenchFileTree>
-          ) : undefined}
+          {isExpandable && isExpanded
+            ? renderChildList(node.children!, depth + 1, path)
+            : undefined}
         </WorkbenchFile>
       )
     })
@@ -202,7 +252,7 @@ export default function WorkbenchLeftSidebar({
               {searchActive ? (
                 <SearchInput
                   value={query}
-                  onChange={setQuery}
+                  onChange={updateQuery}
                   placeholder="Search"
                   focusOnMount
                   onKeyDown={handleSearchKeyDown}
@@ -251,9 +301,7 @@ export default function WorkbenchLeftSidebar({
             No items match
           </p>
         ) : (
-          <WorkbenchFileTree>
-            {renderItems(filteredList, 0, '')}
-          </WorkbenchFileTree>
+          renderChildList(filteredList, 0, '')
         )}
       </div>
     </aside>
