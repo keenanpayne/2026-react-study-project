@@ -26,7 +26,8 @@ export default function SearchInput(props: SearchInputProps) {
   return (
     <div
       className={`flex items-center gap-2 rounded-md focus-within:shadow-[0_0_0_2px_var(--color-focus-ring)] ${props.className ?? ''}`}
-      onClick={(e) => e.stopPropagation()}
+      role="search"
+      onPointerDown={(e) => e.stopPropagation()}
     >
       {props.icon ? (
         props.icon
@@ -34,6 +35,7 @@ export default function SearchInput(props: SearchInputProps) {
         <Search
           size={props.iconSize ?? 16}
           strokeWidth={props.iconStrokeWidth ?? 1}
+          aria-hidden="true"
         />
       )}
       <input

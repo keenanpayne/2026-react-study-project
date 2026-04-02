@@ -79,7 +79,9 @@ function DropdownRecentProjects(props: DropdownRecentProjectsProps) {
       />
 
       {sections.length === 0 ? (
-        <p className="text-text-muted px-3 py-2 text-sm">No projects found</p>
+        <p role="status" className="text-text-muted px-3 py-2 text-sm">
+          No projects found
+        </p>
       ) : (
         <DropdownList>
           {sections.map(({ label, projects: sectionProjects }) => (
@@ -131,6 +133,7 @@ function DropdownExport() {
                 <Icon
                   size={DROPDOWN_ICON_SIZE}
                   strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+                  aria-hidden="true"
                 />
               }
             />
@@ -187,6 +190,7 @@ function DownloadVisibility() {
                 <Icon
                   size={DROPDOWN_ICON_SIZE}
                   strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+                  aria-hidden="true"
                 />
               }
             />
@@ -269,6 +273,7 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
                 <Icon
                   size={DROPDOWN_ICON_SIZE}
                   strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+                  aria-hidden="true"
                 />
               }
             />

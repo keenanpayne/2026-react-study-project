@@ -12,6 +12,7 @@ type ChatActionsProps = {
 const iconConfig = {
   size: 18,
   strokeWidth: 1,
+  'aria-hidden': true as const,
   className: 'icon-interactive group-hover/button:stroke-icon-hover',
 }
 
@@ -25,13 +26,14 @@ export default function ChatActions(props: ChatActionsProps) {
     <details className="group/details py-3" open={props.actionsExpanded}>
       <summary className="mb-0 flex cursor-pointer items-center gap-2">
         <span className="flex flex-1 items-center gap-2">
-          <CircleEllipsis size={16} strokeWidth={1.5} /> {props.count} actions
-          taken
+          <CircleEllipsis size={16} strokeWidth={1.5} aria-hidden="true" />{' '}
+          {props.count} actions taken
         </span>
 
         <ChevronDown
           size={20}
           strokeWidth={1.5}
+          aria-hidden="true"
           className="transition-transform duration-300 group-open/details:rotate-180"
         />
       </summary>

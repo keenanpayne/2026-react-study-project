@@ -184,16 +184,23 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
 
   return (
     <aside
-      className={`border-border-default relative min-w-0 border-r border-b transition-[flex-grow] duration-200 ease-out @md:border-b-0 ${panelExpanded ? 'overflow-auto @md:flex-5 @lg:flex-4 @2xl:flex-3' : 'h-10 flex-none overflow-hidden @md:h-auto @md:min-w-10 @md:flex-0'}`}
+      className={`border-border-default relative min-w-0 border-r border-b transition-[flex-grow] duration-150 ease-out @md:border-b-0 ${panelExpanded ? 'overflow-auto @md:flex-5 @lg:flex-4 @2xl:flex-3' : 'h-10 flex-none overflow-hidden @md:h-auto @md:min-w-10 @md:flex-0'}`}
     >
       <header
         className={`section-header sticky top-0 left-0 z-10 h-10 rounded-tl-xl px-1 py-1`}
       >
-        <nav className="flex items-center justify-between gap-1.5">
+        <nav
+          aria-label="File browser"
+          className="flex items-center justify-between gap-1.5"
+        >
           {panelExpanded && (
             <div className="flex items-center gap-1.5">
               <Button size="md" radius="lg" variant="selected">
-                <props.listIcon size={18} strokeWidth={1.5} />
+                <props.listIcon
+                  size={18}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                />
                 <span className="font-medium">{props.listLabel}</span>
               </Button>
 
@@ -202,11 +209,17 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
                   value={query}
                   onChange={setQuery}
                   placeholder="Search"
-                  autoFocus
+                  autoFocus // eslint-disable-line jsx-a11y/no-autofocus -- intentional: user just clicked Search
                   onKeyDown={handleSearchKeyDown}
                   onBlur={handleSearchBlur}
                   className="h-8 min-w-0 flex-1 px-2 text-sm font-medium placeholder:font-medium"
-                  icon={<SearchCode size={22} strokeWidth={1.5} />}
+                  icon={
+                    <SearchCode
+                      size={22}
+                      strokeWidth={1.5}
+                      aria-hidden="true"
+                    />
+                  }
                 />
               ) : (
                 <Button
@@ -214,7 +227,7 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
                   radius="lg"
                   onClick={() => setSearchActive(true)}
                 >
-                  <SearchCode size={18} strokeWidth={1.5} />
+                  <SearchCode size={18} strokeWidth={1.5} aria-hidden="true" />
                   <span className="font-medium">Search</span>
                 </Button>
               )}
@@ -225,15 +238,20 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
             isExpanded={panelExpanded}
             onToggle={togglePanel}
             direction="horizontal"
+            controls="sidebar-panel"
+            label="file browser"
           />
         </nav>
       </header>
 
       <div
-        className={`overflow-hidden transition-opacity duration-200 ease-out ${panelExpanded ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+        id="sidebar-panel"
+        className={`overflow-hidden transition-opacity duration-150 ease-out ${panelExpanded ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
       >
         {query && filteredList.length === 0 ? (
-          <p className="text-text-muted px-3 py-2 text-sm">No files match</p>
+          <p role="status" className="text-text-muted px-3 py-2 text-sm">
+            No files match
+          </p>
         ) : (
           <WorkbenchFileTree>
             {renderItems(filteredList, 0, '')}

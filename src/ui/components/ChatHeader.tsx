@@ -23,7 +23,10 @@ type ChatHeaderProps = {
 export default function ChatHeader(props: ChatHeaderProps) {
   return (
     <header className="bg-surface sticky top-0 left-0 z-10 px-2.5 py-1.5">
-      <nav className="flex items-center gap-0.5 sm:gap-1 md:gap-1.5">
+      <nav
+        aria-label="Main navigation"
+        className="flex items-center gap-0.5 sm:gap-1 md:gap-1.5"
+      >
         <Button
           size="md"
           radius="md"
@@ -53,6 +56,7 @@ export default function ChatHeader(props: ChatHeaderProps) {
           <ChevronsUpDown
             size={16}
             strokeWidth={2}
+            aria-hidden="true"
             className="stroke-icon-muted"
           />
         </DropdownTrigger>
@@ -73,7 +77,12 @@ export default function ChatHeader(props: ChatHeaderProps) {
           <span className="text-xs font-medium md:text-sm">
             {props.currentProject.title}
           </span>
-          {props.currentProject.private && <Lock strokeWidth={1.5} size={14} />}
+          {props.currentProject.private && (
+            <>
+              <Lock strokeWidth={1.5} size={14} aria-hidden="true" />
+              <span className="sr-only">(private)</span>
+            </>
+          )}
         </DropdownTrigger>
       </nav>
     </header>

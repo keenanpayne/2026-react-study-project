@@ -38,17 +38,22 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
   return (
     <header className="py-1.5">
       <div className="flex flex-wrap items-center gap-1.5">
-        <nav className="space-between border-border-default hidden h-8 w-auto shrink-0 items-center gap-1 rounded-xl border px-0.5 py-1.5 md:flex">
+        <nav
+          aria-label="Workbench panes"
+          className="space-between border-border-default hidden h-8 w-auto shrink-0 items-center gap-1 rounded-xl border px-0.5 py-1.5 md:flex"
+        >
           <Button
             size="sm"
             variant={activePane === 'preview' ? 'selected' : 'ghost'}
             className={toggleButtonClass}
             onClick={() => onPaneChange('preview')}
             aria-label="Preview"
+            aria-pressed={activePane === 'preview'}
           >
             <Eye
               size={15}
               strokeWidth={1.5}
+              aria-hidden="true"
               className={
                 activePane === 'preview' ? activeIconClass : inactiveIconClass
               }
@@ -61,10 +66,12 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             className={toggleButtonClass}
             onClick={() => onPaneChange('codebase')}
             aria-label="Code"
+            aria-pressed={activePane === 'codebase'}
           >
             <Code
               size={15}
               strokeWidth={1.5}
+              aria-hidden="true"
               className={
                 activePane === 'codebase' ? activeIconClass : inactiveIconClass
               }
@@ -77,10 +84,12 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             className={toggleButtonClass}
             onClick={() => onPaneChange('database')}
             aria-label="Database"
+            aria-pressed={activePane === 'database'}
           >
             <Database
               size={15}
               strokeWidth={1.5}
+              aria-hidden="true"
               className={
                 activePane === 'database' ? activeIconClass : inactiveIconClass
               }
@@ -100,6 +109,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             <Settings
               size={16}
               strokeWidth={1.5}
+              aria-hidden="true"
               className="fill-fill-subtle stroke-icon-muted group-hover/button:fill-fill-subtle-hover group-hover/button:stroke-text-heading transition-colors"
             />
           </DropdownTrigger>
@@ -114,17 +124,23 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
               id="url"
               type="text"
               value="/"
+              readOnly
+              aria-readonly="true"
               className="text-text-heading mx-1 flex-1 px-1 text-sm outline-none focus:outline-none focus-visible:outline-none"
               onChange={() => null}
             />
 
-            <nav className="flex items-center justify-end">
+            <nav
+              aria-label="Preview actions"
+              className="flex items-center justify-end"
+            >
               <Button size="sm" radius="sm" className="group/button p-1.5">
                 <span className="sr-only">Reload preview</span>
 
                 <RotateCw
                   size={14}
                   strokeWidth={1.5}
+                  aria-hidden="true"
                   className="icon-interactive group-hover/button:stroke-icon-hover"
                 />
               </Button>
@@ -135,6 +151,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
                 <ExternalLink
                   size={14}
                   strokeWidth={1.5}
+                  aria-hidden="true"
                   className="icon-interactive group-hover/button:stroke-icon-hover"
                 />
               </Button>
@@ -145,6 +162,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
                 <MonitorSmartphone
                   size={14}
                   strokeWidth={1.5}
+                  aria-hidden="true"
                   className="icon-interactive group-hover/button:stroke-icon-hover"
                 />
               </Button>
@@ -154,6 +172,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
                 <Scan
                   size={14}
                   strokeWidth={1.5}
+                  aria-hidden="true"
                   className="icon-interactive group-hover/button:stroke-icon-hover"
                 />
               </Button>
@@ -162,8 +181,17 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
         )}
 
         {activePane === 'database' && (
-          <nav className="order-2 mr-auto ml-auto flex flex-1 items-center justify-center gap-1.5 sm:order-1">
-            <Button size="lg" radius="pill" variant="selected">
+          <div
+            role="group"
+            aria-label="Database sections"
+            className="order-2 mr-auto ml-auto flex flex-1 items-center justify-center gap-1.5 sm:order-1"
+          >
+            <Button
+              size="lg"
+              radius="pill"
+              variant="selected"
+              aria-current="true"
+            >
               Database
             </Button>
 
@@ -178,7 +206,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             <Button size="lg" radius="pill" variant="ghost">
               Advanced
             </Button>
-          </nav>
+          </div>
         )}
 
         <div className="order-1 mr-auto ml-auto flex shrink-0 items-center gap-3 sm:order-2 sm:mr-0">
@@ -204,7 +232,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             radius="md"
             className="shrink-0"
             wrapperClassName="shrink-0"
-            dropdown={<DropdownUser />}
+            dropdown={<DropdownUser align="right" />}
           >
             <img
               src={activeTeam.icon}

@@ -24,8 +24,10 @@ function Team(props: TeamProps) {
 
   return (
     <li
+      role="menuitem"
       className={`hover:bg-hover-item mx-1.5 my-1.5 flex cursor-pointer items-center gap-2.5 rounded-md p-2 transition-colors ${active ? 'bg-selected hover:bg-selected-hover' : ''}`}
       tabIndex={0}
+      aria-current={active ? 'true' : undefined}
       onClick={props.onActivate}
       onKeyDown={handleKeyDown}
     >
@@ -42,6 +44,7 @@ function Team(props: TeamProps) {
         <UsersRound
           className="icon-circle bg-surface-emphasis h-8 w-8 p-1"
           strokeWidth={1.5}
+          aria-hidden="true"
         />
       )}
 

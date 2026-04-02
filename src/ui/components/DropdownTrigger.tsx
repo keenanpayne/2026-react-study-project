@@ -6,11 +6,18 @@ import { cx } from '~/utils/cx'
 type DropdownTriggerProps = Extract<ButtonProps, { as?: 'button' }> & {
   dropdown: ReactNode
   wrapperClassName?: string
+  popupType?: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid' | 'true'
 }
 
 export default function DropdownTrigger(props: DropdownTriggerProps) {
-  const { dropdown, wrapperClassName, onClick, children, ...buttonProps } =
-    props
+  const {
+    dropdown,
+    wrapperClassName,
+    popupType = 'menu',
+    onClick,
+    children,
+    ...buttonProps
+  } = props
   const [isOpen, setIsOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
 
@@ -54,7 +61,7 @@ export default function DropdownTrigger(props: DropdownTriggerProps) {
       >
         <Button
           aria-expanded={isOpen}
-          aria-haspopup="menu"
+          aria-haspopup={popupType}
           data-dropdown-trigger="true"
           variant={isOpen ? 'selected' : 'ghost'}
           onClick={(event) => {

@@ -6,7 +6,7 @@ import type {
 import { cva, type VariantProps } from 'class-variance-authority'
 
 const buttonStyles = cva(
-  'inline-flex cursor-pointer items-center text-left transition-colors disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex cursor-pointer items-center text-left transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
   {
     variants: {
       size: {
@@ -37,9 +37,24 @@ const buttonStyles = cva(
       },
     },
     compoundVariants: [
-      { iconOnly: true, size: 'sm', class: 'justify-center p-1.5 gap-0' },
-      { iconOnly: true, size: 'md', class: 'justify-center p-2 gap-0' },
-      { iconOnly: true, size: 'lg', class: 'justify-center p-2.5 gap-0' },
+      {
+        iconOnly: true,
+        size: 'sm',
+        class:
+          'justify-center p-1.5 gap-0 min-h-8 min-w-8 md:min-h-0 md:min-w-0',
+      },
+      {
+        iconOnly: true,
+        size: 'md',
+        class:
+          'justify-center p-2 gap-0 min-h-11 min-w-11 md:min-h-0 md:min-w-0',
+      },
+      {
+        iconOnly: true,
+        size: 'lg',
+        class:
+          'justify-center p-2.5 gap-0 min-h-11 min-w-11 md:min-h-0 md:min-w-0',
+      },
     ],
     defaultVariants: {
       size: 'md',

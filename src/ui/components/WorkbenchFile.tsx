@@ -28,6 +28,7 @@ function WorkbenchFileIcon(props: WorkbenchFileIconProps) {
         size={iconSize}
         strokeWidth={iconStrokeWidth}
         className={iconClassName}
+        aria-hidden="true"
       />
     )
   if (props.type === 'directory' && props.open)
@@ -36,6 +37,7 @@ function WorkbenchFileIcon(props: WorkbenchFileIconProps) {
         size={iconSize}
         strokeWidth={iconStrokeWidth}
         className={iconClassName}
+        aria-hidden="true"
       />
     )
   if (props.type === 'file')
@@ -44,6 +46,7 @@ function WorkbenchFileIcon(props: WorkbenchFileIconProps) {
         size={iconSize}
         strokeWidth={iconStrokeWidth}
         className={iconClassName}
+        aria-hidden="true"
       />
     )
   if (props.type === 'table')
@@ -52,6 +55,7 @@ function WorkbenchFileIcon(props: WorkbenchFileIconProps) {
         size={iconSize}
         strokeWidth={iconStrokeWidth}
         className={iconClassName}
+        aria-hidden="true"
       />
     )
   if (props.type === 'row')
@@ -60,6 +64,7 @@ function WorkbenchFileIcon(props: WorkbenchFileIconProps) {
         size={iconSize}
         strokeWidth={iconStrokeWidth}
         className={iconClassName}
+        aria-hidden="true"
       />
     )
   if (props.type === 'column')
@@ -68,6 +73,7 @@ function WorkbenchFileIcon(props: WorkbenchFileIconProps) {
         size={iconSize}
         strokeWidth={iconStrokeWidth}
         className={iconClassName}
+        aria-hidden="true"
       />
     )
 
@@ -95,6 +101,7 @@ export default function WorkbenchFile(props: WorkbenchFileProps) {
         type="button"
         className={`flex w-full cursor-pointer items-center gap-1.5 py-1 pr-1.5 text-left text-sm transition-colors ${props.selected ? 'bg-selected' : 'text-text-muted hover:bg-hover-item hover:text-text-heading'}`}
         style={{ paddingLeft: `${0.375 + depth * 0.625}rem` }}
+        aria-expanded={props.hasChildren ? props.open : undefined}
         onClick={() => {
           if (props.hasChildren) props.onToggle?.()
           props.onClick?.()
@@ -109,6 +116,7 @@ export default function WorkbenchFile(props: WorkbenchFileProps) {
           <ChevronRight
             size={14}
             strokeWidth={1}
+            aria-hidden="true"
             className={`shrink-0 transition-transform ${props.open ? 'rotate-90' : ''}`}
           />
         )}

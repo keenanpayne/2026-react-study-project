@@ -9,6 +9,7 @@ import {
 import Dropdown, {
   DROPDOWN_ICON_SIZE,
   DROPDOWN_ICON_STROKE_WIDTH,
+  type DropdownAlign,
 } from './Dropdown'
 import DropdownItem from './DropdownItem'
 import DropdownList from './DropdownList'
@@ -39,12 +40,16 @@ const USER_ENTRIES = [
   { kind: 'item', id: 'sign-out', title: 'Sign out', icon: LogOut },
 ] satisfies readonly UserEntry[]
 
-export default function DropdownUser() {
+type DropdownUserProps = {
+  align?: DropdownAlign
+}
+
+export default function DropdownUser({ align }: DropdownUserProps) {
   const closeCtx = useDropdownTriggerClose()
   const handleSelect = () => closeCtx?.close()
 
   return (
-    <Dropdown align="right" className="w-50">
+    <Dropdown align={align} className="w-50">
       <DropdownList>
         {USER_ENTRIES.map((entry) => {
           if (entry.kind === 'separator') {
@@ -61,6 +66,7 @@ export default function DropdownUser() {
                 <Icon
                   size={DROPDOWN_ICON_SIZE}
                   strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+                  aria-hidden="true"
                 />
               }
             />

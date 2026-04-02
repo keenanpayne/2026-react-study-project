@@ -3,8 +3,10 @@ import type { ReactNode } from 'react'
 export const DROPDOWN_ICON_SIZE = 16
 export const DROPDOWN_ICON_STROKE_WIDTH = 1
 
+export type DropdownAlign = 'left' | 'right' | 'top' | 'bottom'
+
 type DropdownProps = {
-  align?: 'left' | 'right' | 'top'
+  align?: DropdownAlign
   nested?: boolean
   children: ReactNode
   className?: string
@@ -17,8 +19,10 @@ export default function Dropdown(props: DropdownProps) {
       : props.align === 'right'
         ? 'right-0 top-[calc(100%+4px)]'
         : props.align === 'top'
-          ? 'bottom-[calc(100%+4px)] left-0'
-          : ''
+          ? 'bottom-[calc(100%+4px)] right-0 md:left-0 md:right-auto'
+          : props.align === 'bottom'
+            ? 'top-[calc(100%+4px)] left-0'
+            : ''
 
   const baseClass = props.nested
     ? 'bg-surface z-30 text-left md:border-border-default md:absolute md:rounded-lg md:border md:shadow-xs'

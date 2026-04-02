@@ -43,36 +43,66 @@ export default function MobileNavigation({
       id: 'chat',
       label: 'Chat',
       view: 'chat',
-      icon: <MessageSquare size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+      icon: (
+        <MessageSquare
+          size={ICON_SIZE}
+          strokeWidth={ICON_STROKE_WIDTH}
+          aria-hidden="true"
+        />
+      ),
     },
     {
       id: 'preview',
       label: 'Preview',
       view: 'preview',
-      icon: <Eye size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+      icon: (
+        <Eye
+          size={ICON_SIZE}
+          strokeWidth={ICON_STROKE_WIDTH}
+          aria-hidden="true"
+        />
+      ),
     },
     {
       id: 'codebase',
       label: 'Code',
       view: 'codebase',
-      icon: <Code size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+      icon: (
+        <Code
+          size={ICON_SIZE}
+          strokeWidth={ICON_STROKE_WIDTH}
+          aria-hidden="true"
+        />
+      ),
     },
     {
       id: 'database',
       label: 'Database',
       view: 'database',
-      icon: <Database size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+      icon: (
+        <Database
+          size={ICON_SIZE}
+          strokeWidth={ICON_STROKE_WIDTH}
+          aria-hidden="true"
+        />
+      ),
     },
     {
       id: 'settings',
       label: 'Settings',
-      dropdown: <DropdownSettings align="right" />,
-      icon: <Settings size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+      dropdown: <DropdownSettings align="top" />,
+      icon: (
+        <Settings
+          size={ICON_SIZE}
+          strokeWidth={ICON_STROKE_WIDTH}
+          aria-hidden="true"
+        />
+      ),
     },
     {
       id: 'user',
       label: 'Profile',
-      dropdown: <DropdownUser />,
+      dropdown: <DropdownUser align="top" />,
       icon: (
         <img
           src={activeTeam.icon}
@@ -83,13 +113,17 @@ export default function MobileNavigation({
     },
   ]
 
-  const baseClass = 'flex flex-col items-center gap-1 text-xs transition-colors'
+  const baseClass =
+    'flex flex-col items-center gap-1 text-xs transition-colors min-h-11 min-w-11 justify-center'
   const activeClass = 'text-nav-active'
   const inactiveClass = 'text-text-muted'
   const labelClass = 'h-0 xs:h-auto opacity-0 xs:opacity-100'
 
   return (
-    <nav className="border-border-default bg-surface fixed inset-x-0 bottom-0 z-40 flex items-center justify-evenly border-t px-1.5 py-3 sm:px-3 md:hidden">
+    <nav
+      aria-label="Mobile navigation"
+      className="border-border-default bg-surface fixed inset-x-0 bottom-0 z-40 flex items-center justify-between border-t p-3 sm:justify-evenly md:hidden"
+    >
       {navItems.map((item) => {
         if (item.dropdown) {
           return (
@@ -100,11 +134,14 @@ export default function MobileNavigation({
               <DropdownTrigger
                 size="flat"
                 variant="plain"
-                className={`${baseClass} ${inactiveClass}`}
+                className={`${baseClass} ${inactiveClass} aria-expanded:text-nav-active`}
                 dropdown={item.dropdown}
+                aria-label={item.label}
               >
                 {item.icon}
-                <span className={labelClass}>{item.label}</span>
+                <span className={labelClass} aria-hidden="true">
+                  {item.label}
+                </span>
               </DropdownTrigger>
             </div>
           )
@@ -121,10 +158,13 @@ export default function MobileNavigation({
             className={`${baseClass} ${isActive ? activeClass : inactiveClass}`}
             variant="plain"
             size="flat"
+            aria-label={item.label}
             aria-current={isActive ? 'page' : undefined}
           >
             {item.icon}
-            <span className={labelClass}>{item.label}</span>
+            <span className={labelClass} aria-hidden="true">
+              {item.label}
+            </span>
           </Button>
         )
       })}

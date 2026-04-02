@@ -13,6 +13,8 @@ type CollapseToggleProps = {
   onToggle: () => void
   direction: 'horizontal' | 'horizontal-right' | 'vertical'
   className?: string
+  controls?: string
+  label?: string
 }
 
 const iconMap = {
@@ -26,8 +28,12 @@ export default function CollapseToggle({
   onToggle,
   direction,
   className,
+  controls,
+  label,
 }: CollapseToggleProps) {
   const Icon = iconMap[direction][isExpanded ? 'expanded' : 'collapsed']
+  const action = isExpanded ? 'Collapse' : 'Expand'
+  const ariaLabel = label ? `${action} ${label}` : action
 
   return (
     <Button
@@ -36,11 +42,12 @@ export default function CollapseToggle({
       variant="ghost"
       iconOnly
       onClick={onToggle}
-      aria-label={isExpanded ? 'Collapse' : 'Expand'}
+      aria-label={ariaLabel}
       aria-expanded={isExpanded}
-      className={className}
+      aria-controls={controls}
+      className={`shrink-0 ${className}`}
     >
-      <Icon size={18} strokeWidth={1} />
+      <Icon size={18} strokeWidth={1} aria-hidden="true" />
     </Button>
   )
 }

@@ -101,6 +101,7 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
                           {selectedNode.children[0].children?.map((col) => (
                             <th
                               key={col.id ?? col.name}
+                              scope="col"
                               className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
                             >
                               {col.name}

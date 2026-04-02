@@ -36,8 +36,8 @@
     var(--color-zinc-200)
   );
   --color-text-muted: light-dark(var(--color-gray-500), var(--color-zinc-400));
-  --color-text-faint: light-dark(var(--color-gray-400), var(--color-zinc-500));
-  --color-text-subtle: light-dark(var(--color-gray-300), var(--color-zinc-600));
+  --color-text-faint: light-dark(var(--color-gray-500), var(--color-zinc-400));
+  --color-text-subtle: light-dark(var(--color-gray-400), var(--color-zinc-500));
   --color-text-heading: light-dark(
     var(--color-gray-800),
     var(--color-gray-300)
@@ -76,18 +76,18 @@
   --color-nav-active: light-dark(var(--color-sky-600), var(--color-sky-400));
 
   /* Danger / Destructive */
-  --color-danger: light-dark(var(--color-red-600), var(--color-red-400));
-  --color-danger-hover: light-dark(var(--color-red-700), var(--color-red-300));
+  --color-danger: light-dark(var(--color-red-600), var(--color-red-500));
+  --color-danger-hover: light-dark(var(--color-red-700), var(--color-red-400));
   --color-danger-bg: light-dark(
     var(--color-red-50),
     oklch(from var(--color-red-900) l c h / 0.3)
   );
 
   /* Success */
-  --color-success: light-dark(var(--color-green-600), var(--color-green-400));
+  --color-success: light-dark(var(--color-green-600), var(--color-green-500));
   --color-success-hover: light-dark(
     var(--color-green-700),
-    var(--color-green-300)
+    var(--color-green-400)
   );
   --color-success-bg: light-dark(
     var(--color-green-50),
@@ -209,4 +209,23 @@ html {
 body,
 #root {
   height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (forced-colors: active) {
+  *:focus,
+  *:focus-visible {
+    outline: 2px solid ButtonText !important;
+    box-shadow: none !important;
+  }
 }

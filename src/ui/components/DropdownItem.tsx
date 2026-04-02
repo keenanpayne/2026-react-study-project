@@ -97,6 +97,31 @@ export default function DropdownItem(props: DropdownItemProps) {
     }
   }
 
+  const focusFirstSubmenuItem = () => {
+    requestAnimationFrame(() => {
+      const first = itemRef.current?.querySelector<HTMLElement>(
+        '[role="menuitem"], [role="option"]',
+      )
+      first?.focus()
+    })
+  }
+
+  const handleSubmenuKeyDown = (e: ReactKeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') {
+      e.preventDefault()
+      e.stopPropagation()
+      setIsSubOpen(true)
+      openedViaClick.current = true
+      focusFirstSubmenuItem()
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      e.stopPropagation()
+      setIsSubOpen(false)
+      openedViaClick.current = false
+      itemRef.current?.focus()
+    }
+  }
+
   useEffect(() => {
     if (!isSubOpen) return
 
@@ -129,15 +154,17 @@ export default function DropdownItem(props: DropdownItemProps) {
   }, [isSubOpen])
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- role is always interactive (menuitem/option)
     <li
       ref={props.dropdown ? itemRef : undefined}
       className={classNames}
       tabIndex={0}
       role={props.role ?? 'menuitem'}
-      aria-selected={props.selected}
+      aria-selected={props.role === 'option' ? props.selected : undefined}
+      aria-checked={props.role === 'option' ? undefined : props.selected}
       aria-disabled={props.disabled}
       onClick={props.dropdown ? handleClick : handleSelectClick}
-      onKeyDown={props.dropdown ? undefined : handleSelectKeyDown}
+      onKeyDown={props.dropdown ? handleSubmenuKeyDown : handleSelectKeyDown}
       onMouseEnter={
         props.dropdown
           ? () => {
@@ -179,6 +206,7 @@ export default function DropdownItem(props: DropdownItemProps) {
           <ChevronRight
             size={16}
             strokeWidth={1.5}
+            aria-hidden="true"
             className="icon-interactive group-hover/dropdown-item:stroke-icon-hover max-md:rotate-90"
           />
 

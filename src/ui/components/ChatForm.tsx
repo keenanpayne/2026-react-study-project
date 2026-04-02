@@ -36,7 +36,9 @@ export default function ChatForm(props: ChatFormProps) {
   return (
     <form className="group/form bg-surface mb-3 shrink-0 px-4 pb-3 md:mb-0">
       <aside className="border-border-default mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-focus-within/form:flex sm:flex sm:flex-row sm:gap-0">
-        <span>{formatTokens(props.tokens)} daily tokens remaining.</span>
+        <span aria-live="polite">
+          {formatTokens(props.tokens)} daily tokens remaining.
+        </span>
 
         <Button size="flat" className="text-accent hover:underline">
           Switch to Pro for 33x more usage
@@ -70,6 +72,7 @@ export default function ChatForm(props: ChatFormProps) {
               <span className="sr-only">Upload</span>
               <Plus
                 size={28}
+                aria-hidden="true"
                 className="icon-circle bg-surface-emphasis group-hover/button:bg-hover-strong p-1.25"
               />
             </DropdownTrigger>
@@ -78,6 +81,7 @@ export default function ChatForm(props: ChatFormProps) {
               size="md"
               radius="xl"
               className="group/trigger shrink-0"
+              popupType="listbox"
               dropdown={<DropdownModels />}
             >
               <img
@@ -91,6 +95,7 @@ export default function ChatForm(props: ChatFormProps) {
               <ChevronsUpDown
                 size={14}
                 strokeWidth={1}
+                aria-hidden="true"
                 className="stroke-icon-default"
               />
             </DropdownTrigger>
@@ -101,6 +106,7 @@ export default function ChatForm(props: ChatFormProps) {
               <MousePointerClick
                 size={18}
                 strokeWidth={1.5}
+                aria-hidden="true"
                 className="stroke-icon-default"
               />
               <span className="text-text-secondary text-xs">Select</span>
@@ -110,6 +116,7 @@ export default function ChatForm(props: ChatFormProps) {
               <Lightbulb
                 size={18}
                 strokeWidth={1.5}
+                aria-hidden="true"
                 className="stroke-icon-default"
               />
               <span className="text-text-secondary text-xs">Plan</span>
@@ -123,6 +130,7 @@ export default function ChatForm(props: ChatFormProps) {
               <span className="sr-only">Send Message</span>
               <ArrowUp
                 size={28}
+                aria-hidden="true"
                 className="icon-circle bg-accent-bg group-hover/button:bg-accent-bg-hover stroke-white p-1.25"
               />
             </Button>

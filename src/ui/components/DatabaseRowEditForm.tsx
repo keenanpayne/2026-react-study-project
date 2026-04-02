@@ -1,4 +1,4 @@
-import { type FormEvent } from 'react'
+import { useId, type FormEvent } from 'react'
 import { X } from 'lucide-react'
 import { type MockWorkbenchFileTreeNode } from '~/data/MockWorkbenchCodebase'
 import Button from './Button'
@@ -12,6 +12,8 @@ type DatabaseRowEditFormProps = {
 }
 
 export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
+  const formId = useId()
+
   if (!props.selectedRow.children) return null
 
   const handleSubmit = (e: FormEvent) => {
@@ -35,7 +37,7 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
           type="button"
           aria-label="Close"
         >
-          <X size={16} />
+          <X size={16} aria-hidden="true" />
         </Button>
       </div>
 
@@ -43,11 +45,13 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
         {props.selectedRow.children.map((col) => {
           const isNumeric = typeof col.value === 'number'
 
+          const fieldId = `${formId}-${col.name}`
+
           return (
             <div key={col.name} className="flex flex-col gap-1">
               <label
                 className="text-text-muted text-xs font-medium"
-                htmlFor={col.name}
+                htmlFor={fieldId}
               >
                 {col.name}
               </label>
@@ -57,7 +61,7 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
                 value={props.editedValues[col.name] ?? ''}
                 onChange={(e) => props.onValueChange(col.name, e.target.value)}
                 name={col.name}
-                id={col.name}
+                id={fieldId}
                 className="input-base"
               />
             </div>

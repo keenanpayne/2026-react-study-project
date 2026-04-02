@@ -13,6 +13,7 @@ import {
 import Dropdown, {
   DROPDOWN_ICON_SIZE,
   DROPDOWN_ICON_STROKE_WIDTH,
+  type DropdownAlign,
 } from './Dropdown'
 import DropdownItem from './DropdownItem'
 import DropdownLabel from './DropdownLabel'
@@ -79,7 +80,7 @@ const SETTINGS_ENTRIES = [
 ] satisfies readonly SettingsEntry[]
 
 type DropdownSettingsProps = {
-  align?: 'left' | 'right'
+  align?: DropdownAlign
 }
 
 export default function DropdownSettings({
@@ -110,6 +111,7 @@ export default function DropdownSettings({
                 <Icon
                   size={DROPDOWN_ICON_SIZE}
                   strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+                  aria-hidden="true"
                 />
               }
             />

@@ -26,7 +26,7 @@ export default function ChatAction(props: ChatActionProps) {
           className={`text-accent flex items-center gap-1 text-xs opacity-0 transition-opacity ${props.actionsExpanded ? '' : 'group-hover/button:opacity-100'}`}
         >
           Open
-          <ChevronRight size={14} strokeWidth={1.5} />
+          <ChevronRight size={14} strokeWidth={1.5} aria-hidden="true" />
         </span>
       </Button>
     </li>

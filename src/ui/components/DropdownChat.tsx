@@ -9,7 +9,7 @@ export default function DropdownChat() {
   const closeCtx = useDropdownTriggerClose()
 
   return (
-    <Dropdown align="right" className="min-w-35">
+    <Dropdown align="right" className="min-w-32">
       <DropdownList>
         <DropdownItem
           size="sm"
@@ -19,6 +19,7 @@ export default function DropdownChat() {
             <TriangleAlert
               size={DROPDOWN_ICON_SIZE}
               strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+              aria-hidden="true"
             />
           }
         />

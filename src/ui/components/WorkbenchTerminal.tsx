@@ -19,7 +19,7 @@ export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
       >
         <div className="flex items-center gap-2">
           <div
-            role="tablist"
+            role="group"
             aria-label="Terminal output"
             className="flex items-center gap-2"
           >
@@ -27,10 +27,14 @@ export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
               size="lg"
               radius="pill"
               variant="selected"
-              role="tab"
-              aria-selected={true}
+              aria-current="true"
             >
-              <Zap size={18} strokeWidth={1.5} className="fill-fill-subtle" />
+              <Zap
+                size={18}
+                strokeWidth={1.5}
+                className="fill-fill-subtle"
+                aria-hidden="true"
+              />
               Bolt
             </Button>
 
@@ -38,10 +42,10 @@ export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
               size="lg"
               radius="pill"
               variant="ghost"
-              role="tab"
-              aria-selected={false}
+              aria-disabled="true"
+              className="cursor-default"
             >
-              <Rocket size={18} strokeWidth={1.5} />
+              <Rocket size={18} strokeWidth={1.5} aria-hidden="true" />
               Publish Output
             </Button>
 
@@ -49,10 +53,10 @@ export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
               size="lg"
               radius="pill"
               variant="ghost"
-              role="tab"
-              aria-selected={false}
+              aria-disabled="true"
+              className="cursor-default"
             >
-              <SquareTerminal size={18} strokeWidth={1.5} />
+              <SquareTerminal size={18} strokeWidth={1.5} aria-hidden="true" />
               Terminal
             </Button>
           </div>
@@ -61,13 +65,16 @@ export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
             isExpanded={isExpanded}
             onToggle={toggle}
             direction="vertical"
+            controls="terminal-panel"
+            label="terminal"
             className="ml-auto"
           />
         </div>
       </header>
 
       <div
-        className={`rounded-b-xl transition-[max-height,opacity] duration-200 ease-out ${isExpanded ? 'max-h-[200px] overflow-x-hidden overflow-y-auto opacity-100' : 'max-h-0 overflow-hidden opacity-0'}`}
+        id="terminal-panel"
+        className={`rounded-b-xl transition-[max-height,opacity] duration-150 ease-out ${isExpanded ? 'max-h-[200px] overflow-x-hidden overflow-y-auto opacity-100' : 'max-h-0 overflow-hidden opacity-0'}`}
       >
         <File
           file={props.file}
