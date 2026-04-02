@@ -5,6 +5,12 @@ import {
   type DropdownItemSize,
 } from '~/utils/dropdown.utils'
 
+type DropdownItemRole =
+  | 'menuitem'
+  | 'menuitemcheckbox'
+  | 'menuitemradio'
+  | 'option'
+
 type DropdownItemProps = {
   title: ReactNode
   prepend?: string
@@ -15,8 +21,9 @@ type DropdownItemProps = {
   onSelect?: () => void
   selected?: boolean
   disabled?: boolean
-  role?: string
+  role?: DropdownItemRole
   trailing?: ReactNode
+  tabIndex?: number
 }
 
 export default function DropdownItem({
@@ -29,9 +36,14 @@ export default function DropdownItem({
   onSelect,
   selected,
   disabled,
-  role = 'menuitem',
+  role: roleProp = 'menuitem',
   trailing,
+  tabIndex = -1,
 }: DropdownItemProps) {
+  const resolvedRole =
+    roleProp === 'menuitem' && selected != null ? 'menuitemcheckbox' : roleProp
+  const isOption = resolvedRole === 'option'
+
   const handleClick = () => {
     if (!disabled && onSelect) onSelect()
   }
@@ -52,10 +64,10 @@ export default function DropdownItem({
         disabled,
         className,
       })}
-      tabIndex={0}
-      role={role}
-      aria-selected={role === 'option' ? selected : undefined}
-      aria-checked={role === 'option' ? undefined : selected}
+      tabIndex={tabIndex}
+      role={resolvedRole}
+      aria-selected={isOption ? selected : undefined}
+      aria-checked={!isOption ? selected : undefined}
       aria-disabled={disabled}
       onClick={handleClick}
       onKeyDown={handleKeyDown}

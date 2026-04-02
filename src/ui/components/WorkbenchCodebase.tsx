@@ -12,6 +12,11 @@ type WorkbenchCodebaseProps = {
   file: FileContents
   list: TreeNode[]
   terminal: FileContents
+  /**
+   * Controls CSS visibility rather than mount/unmount. All panes stay mounted
+   * to preserve scroll position, form state, and editor content across tab
+   * switches. Hidden panes use `display: none` via the Tailwind `hidden` class.
+   */
   isVisible: boolean
 }
 

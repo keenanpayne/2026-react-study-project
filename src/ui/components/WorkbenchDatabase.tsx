@@ -9,6 +9,7 @@ import DatabaseRowEditForm from './DatabaseRowEditForm'
 import type { TreeNode } from '~/types/workbench'
 import type { PaginationConfig } from './WorkbenchLeftSidebar'
 import { buildEditedValues } from '~/utils/database'
+import { joinTreePath } from '~/utils/tree'
 
 const DB_PAGINATION: PaginationConfig = {
   depths: [1],
@@ -17,6 +18,12 @@ const DB_PAGINATION: PaginationConfig = {
 
 type WorkbenchDatabaseProps = {
   list: TreeNode[]
+  /**
+   * Controls CSS visibility rather than mount/unmount. All panes stay mounted
+   * to preserve scroll position, selected table/row state, and edit form
+   * content across tab switches. Hidden panes use `display: none` via the
+   * Tailwind `hidden` class.
+   */
   isVisible: boolean
 }
 
@@ -25,28 +32,42 @@ export default function WorkbenchDatabase({
   isVisible,
 }: WorkbenchDatabaseProps) {
   const [selectedNode, setSelectedNode] = useState<TreeNode | null>(null)
+  const [selectedNodePath, setSelectedNodePath] = useState<string | null>(null)
   const [selectedRow, setSelectedRow] = useState<TreeNode | null>(null)
+  const [selectedRowPath, setSelectedRowPath] = useState<string | null>(null)
   const [editedValues, setEditedValues] = useState<Record<string, string>>({})
 
-  function handleSelectNode(node: TreeNode | null) {
-    if (node?.type === 'row') {
+  function handleSelectNode(node: TreeNode | null, path?: string) {
+    if (node?.type === 'row' && path) {
       const parentTable = list.find((table) =>
         table.children?.some((r) => r === node),
       )
       if (parentTable) {
+        const parentPath = path.substring(0, path.lastIndexOf('/'))
         setSelectedNode(parentTable)
-        handleSelectRow(node)
+        setSelectedNodePath(parentPath || parentTable.name)
+        handleSelectRow(node, path)
         return
       }
     }
 
     setSelectedNode(node)
+    setSelectedNodePath(path ?? null)
     setSelectedRow(null)
+    setSelectedRowPath(null)
     setEditedValues({})
   }
 
-  function handleSelectRow(row: TreeNode | null) {
+  function handleSelectRow(row: TreeNode | null, rowPath?: string) {
     setSelectedRow(row)
+    setSelectedRowPath(
+      row
+        ? (rowPath ??
+            (selectedNodePath
+              ? joinTreePath(selectedNodePath, row.name)
+              : null))
+        : null,
+    )
     setEditedValues(buildEditedValues(row))
   }
 
@@ -58,8 +79,8 @@ export default function WorkbenchDatabase({
             list={list}
             listLabel="Tables"
             listIcon={Database}
-            selectedNode={selectedNode}
-            selectedRow={selectedRow}
+            selectedNodePath={selectedNodePath}
+            selectedRowPath={selectedRowPath}
             onSelect={handleSelectNode}
             pagination={DB_PAGINATION}
             truncateNames={true}

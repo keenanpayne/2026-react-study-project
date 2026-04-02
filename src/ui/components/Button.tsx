@@ -97,11 +97,10 @@ export default function Button({
   iconOnly,
   ...rest
 }: ButtonProps) {
-  const resolvedVariant = variant ?? (size === 'flat' ? 'plain' : 'ghost')
   const buttonClassName = buttonStyles({
     size,
     radius,
-    variant: resolvedVariant,
+    variant: variant ?? 'ghost',
     iconOnly,
     className,
   })

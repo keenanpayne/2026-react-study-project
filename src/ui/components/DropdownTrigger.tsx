@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -27,6 +28,7 @@ export default function DropdownTrigger(props: DropdownTriggerProps) {
   } = props
   const [isOpen, setIsOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
+  const panelId = useId()
 
   const close = useCallback(() => setIsOpen(false), [])
   const contextValue = useMemo(() => ({ close }), [close])
@@ -70,6 +72,7 @@ export default function DropdownTrigger(props: DropdownTriggerProps) {
         <Button
           aria-expanded={isOpen}
           aria-haspopup={popupType}
+          aria-controls={isOpen ? panelId : undefined}
           data-dropdown-trigger="true"
           variant={isOpen ? 'selected' : 'ghost'}
           onClick={(event) => {
@@ -81,7 +84,7 @@ export default function DropdownTrigger(props: DropdownTriggerProps) {
           {children}
         </Button>
 
-        {isOpen ? dropdown : null}
+        {isOpen ? <div id={panelId}>{dropdown}</div> : null}
       </div>
     </DropdownTriggerCloseContext.Provider>
   )

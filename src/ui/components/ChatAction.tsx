@@ -19,6 +19,7 @@ export default function ChatAction({
     <li>
       <Button
         size="flat"
+        variant="plain"
         className="group/button flex w-full items-center justify-between gap-2"
         onClick={actionOnClick}
       >

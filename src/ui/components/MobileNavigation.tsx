@@ -137,12 +137,9 @@ export default function MobileNavigation({
                 variant="plain"
                 className={`${baseClass} ${inactiveClass} aria-expanded:text-nav-active`}
                 dropdown={item.dropdown}
-                aria-label={item.label}
               >
                 {item.icon}
-                <span className={labelClass} aria-hidden="true">
-                  {item.label}
-                </span>
+                <span className={labelClass}>{item.label}</span>
               </DropdownTrigger>
             </div>
           )
@@ -159,13 +156,10 @@ export default function MobileNavigation({
             className={`${baseClass} ${isActive ? activeClass : inactiveClass}`}
             variant="plain"
             size="flat"
-            aria-label={item.label}
             aria-current={isActive ? 'page' : undefined}
           >
             {item.icon}
-            <span className={labelClass} aria-hidden="true">
-              {item.label}
-            </span>
+            <span className={labelClass}>{item.label}</span>
           </Button>
         )
       })}

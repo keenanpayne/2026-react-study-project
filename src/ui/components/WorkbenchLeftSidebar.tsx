@@ -25,9 +25,9 @@ type WorkbenchLeftSidebarProps = {
   list: TreeNode[]
   listLabel: string
   listIcon: LucideIcon
-  selectedNode?: TreeNode | null
-  selectedRow?: TreeNode | null
-  onSelect?: (node: TreeNode) => void
+  selectedNodePath?: string | null
+  selectedRowPath?: string | null
+  onSelect?: (node: TreeNode, path: string) => void
   pagination?: PaginationConfig
   truncateNames?: boolean
 }
@@ -36,19 +36,26 @@ export default function WorkbenchLeftSidebar({
   list,
   listLabel,
   listIcon: ListIcon,
-  selectedNode,
-  selectedRow,
+  selectedNodePath,
+  selectedRowPath,
   onSelect,
   pagination,
   truncateNames,
 }: WorkbenchLeftSidebarProps) {
   const { isExpanded: panelExpanded, toggle: togglePanel } = useCollapsible()
+  const [prevList, setPrevList] = useState(list)
   const [expanded, setExpanded] = useState<Set<string>>(() =>
     computeInitialExpanded(list, ''),
   )
   const [searchActive, setSearchActive] = useState(false)
   const [query, setQuery] = useState('')
   const [pageMap, setPageMap] = useState<Record<string, number>>({})
+
+  if (prevList !== list) {
+    setPrevList(list)
+    setExpanded(computeInitialExpanded(list, ''))
+    setPageMap({})
+  }
 
   function updateQuery(newQuery: string) {
     setQuery(newQuery)
@@ -154,13 +161,15 @@ export default function WorkbenchLeftSidebar({
           type={node.type}
           open={isExpanded}
           selected={
-            node.selected || node === selectedNode || node === selectedRow
+            node.selected ||
+            path === selectedNodePath ||
+            path === selectedRowPath
           }
           depth={depth}
           hasChildren={isExpandable}
           truncate={truncateNames}
           onToggle={() => toggle(path)}
-          onClick={() => onSelect?.(node)}
+          onClick={() => onSelect?.(node, path)}
         >
           {isExpandable && isExpanded
             ? renderChildList(node.children!, depth + 1, path)

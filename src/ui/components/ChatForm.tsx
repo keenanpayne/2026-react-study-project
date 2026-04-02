@@ -97,7 +97,11 @@ export default function ChatForm({
           {formatTokens(tokens)} daily tokens remaining.
         </span>
 
-        <Button size="flat" className="text-accent hover:underline">
+        <Button
+          size="flat"
+          variant="plain"
+          className="text-accent hover:underline"
+        >
           {upsellMessage}
         </Button>
       </aside>
@@ -125,6 +129,7 @@ export default function ChatForm({
           <div className="flex items-center gap-3">
             <DropdownTrigger
               size="flat"
+              variant="plain"
               className="group/button shrink-0 rounded-full"
               dropdown={<DropdownAttachments />}
             >
@@ -181,6 +186,7 @@ export default function ChatForm({
 
             <Button
               size="flat"
+              variant="plain"
               className="group/button shrink-0"
               type="submit"
               disabled={!canSend}

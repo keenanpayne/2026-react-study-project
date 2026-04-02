@@ -1,5 +1,8 @@
 import { cx } from '~/utils/cx'
 
+export const DROPDOWN_ITEM_SELECTOR =
+  '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"]'
+
 export type DropdownItemSize = 'sm' | 'md' | 'lg'
 
 export const SIZE_CLASSES: Record<DropdownItemSize, string> = {

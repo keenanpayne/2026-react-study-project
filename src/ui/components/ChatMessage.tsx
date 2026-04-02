@@ -30,17 +30,15 @@ export default function ChatMessage({
         aria-label="Assistant response"
         className="flex flex-col gap-3 px-5 pb-6 text-sm leading-relaxed"
       >
-        <div
-          role="toolbar"
-          aria-label="Message actions"
-          className="flex items-center justify-between"
-        >
+        <div className="flex items-center justify-between">
           <BoltLogo className="h-3.5" />
 
-          <DropdownTrigger size="sm" radius="md" dropdown={<DropdownChat />}>
-            <span className="sr-only">Open chat menu</span>
-            <Ellipsis aria-hidden="true" />
-          </DropdownTrigger>
+          <div role="toolbar" aria-label="Message actions">
+            <DropdownTrigger size="sm" radius="md" dropdown={<DropdownChat />}>
+              <span className="sr-only">Open chat menu</span>
+              <Ellipsis aria-hidden="true" />
+            </DropdownTrigger>
+          </div>
         </div>
 
         <ChatResponse

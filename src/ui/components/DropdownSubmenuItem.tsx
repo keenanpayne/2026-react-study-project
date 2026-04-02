@@ -10,6 +10,7 @@ import {
 } from 'react'
 import DropdownItemBase from './DropdownItemBase'
 import {
+  DROPDOWN_ITEM_SELECTOR,
   getDropdownItemClassName,
   type DropdownItemSize,
 } from '~/utils/dropdown.utils'
@@ -24,6 +25,7 @@ type DropdownSubmenuItemProps = {
   dropdown: ReactNode
   selected?: boolean
   disabled?: boolean
+  tabIndex?: number
 }
 
 const CLOSE_DELAY_MS = 50
@@ -38,6 +40,7 @@ export default function DropdownSubmenuItem({
   dropdown,
   selected,
   disabled,
+  tabIndex = -1,
 }: DropdownSubmenuItemProps) {
   const [isSubOpen, setIsSubOpen] = useState(false)
   const itemRef = useRef<HTMLLIElement>(null)
@@ -80,7 +83,7 @@ export default function DropdownSubmenuItem({
   const focusFirstSubmenuItem = () => {
     requestAnimationFrame(() => {
       const first = itemRef.current?.querySelector<HTMLElement>(
-        '[role="menuitem"], [role="option"]',
+        DROPDOWN_ITEM_SELECTOR,
       )
       first?.focus()
     })
@@ -143,7 +146,7 @@ export default function DropdownSubmenuItem({
         className,
         hasSubmenu: true,
       })}
-      tabIndex={0}
+      tabIndex={tabIndex}
       role="menuitem"
       aria-disabled={disabled}
       aria-expanded={isSubOpen}
@@ -157,7 +160,6 @@ export default function DropdownSubmenuItem({
       onMouseLeave={() => {
         if (!openedViaClick.current) scheduleClose()
       }}
-      onFocus={() => setIsSubOpen(true)}
       onBlur={handleBlur}
     >
       <DropdownItemBase
