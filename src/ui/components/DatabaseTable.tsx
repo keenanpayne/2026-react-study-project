@@ -17,6 +17,8 @@ export default function DatabaseTable({
     return <p className="text-text-muted text-sm">No rows in this table.</p>
   }
 
+  const displayRows = selectedRow ? [selectedRow] : node.children
+
   return (
     <div className="panel-card overflow-x-auto rounded-lg">
       <table className="w-full text-sm">
@@ -35,7 +37,7 @@ export default function DatabaseTable({
         </thead>
 
         <tbody>
-          {node.children.map((row) => {
+          {displayRows.map((row) => {
             const isSelected = selectedRow === row
 
             return (

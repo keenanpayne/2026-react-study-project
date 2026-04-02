@@ -103,8 +103,8 @@ export default function WorkbenchDatabase({
               )
             }
           >
-            <div className="flex flex-col gap-3">
-              <div className="px-4 py-3">
+            <div className="flex flex-col">
+              <div className="p-3">
                 {selectedNode?.children ? (
                   <DatabaseTable
                     node={selectedNode}
@@ -115,7 +115,7 @@ export default function WorkbenchDatabase({
               </div>
 
               {selectedRow?.children && (
-                <div className="px-4 pb-4">
+                <div className="px-3 pb-3">
                   <DatabaseRowEditForm
                     selectedRow={selectedRow}
                     editedValues={editedValues}
