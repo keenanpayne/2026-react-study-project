@@ -31,7 +31,7 @@ export default function ChatHeader({
     <header className="bg-surface sticky top-0 left-0 z-10 px-2.5 py-1.5">
       <nav
         aria-label="Main navigation"
-        className="flex items-center gap-0.5 sm:gap-1 md:gap-1.5"
+        className="flex items-center gap-1 sm:gap-1.5"
       >
         <Button
           size="md"

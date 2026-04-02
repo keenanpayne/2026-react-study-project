@@ -49,7 +49,7 @@ export default function DropdownTeams({ data }: DropdownTeamsProps) {
         <DropdownSeparator />
 
         <DropdownItem
-          size="md"
+          size="lg"
           onSelect={handleActivate}
           icon={
             <UsersRound
