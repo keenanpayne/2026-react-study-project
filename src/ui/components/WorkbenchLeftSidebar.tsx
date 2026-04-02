@@ -88,6 +88,7 @@ type WorkbenchLeftSidebarProps = {
   selectedRow?: TreeNode | null
   onSelect?: (node: TreeNode) => void
   pagination?: PaginationConfig
+  truncateNames?: boolean
 }
 
 export default function WorkbenchLeftSidebar({
@@ -98,6 +99,7 @@ export default function WorkbenchLeftSidebar({
   selectedRow,
   onSelect,
   pagination,
+  truncateNames,
 }: WorkbenchLeftSidebarProps) {
   const { isExpanded: panelExpanded, toggle: togglePanel } = useCollapsible()
   const [expanded, setExpanded] = useState<Set<string>>(() =>
@@ -215,6 +217,7 @@ export default function WorkbenchLeftSidebar({
           }
           depth={depth}
           hasChildren={isExpandable}
+          truncate={truncateNames}
           onToggle={() => toggle(path)}
           onClick={() => onSelect?.(node)}
         >

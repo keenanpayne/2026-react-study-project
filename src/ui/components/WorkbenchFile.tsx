@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import type { ReactNode } from 'react'
 import type { MockWorkbenchFileTreeItemType } from '~/types/workbench'
+import { cx } from '~/utils/cx'
 
 const ICON_SIZE = 14
 const ICON_STROKE_WIDTH = 1.5
@@ -55,6 +56,7 @@ type WorkbenchFileProps = {
   open?: boolean
   selected?: boolean
   hasChildren?: boolean
+  truncate?: boolean
   onToggle?: () => void
   onClick?: () => void
 }
@@ -67,6 +69,7 @@ export default function WorkbenchFile({
   open,
   selected,
   hasChildren,
+  truncate,
   onToggle,
   onClick,
 }: WorkbenchFileProps) {
@@ -82,9 +85,16 @@ export default function WorkbenchFile({
           onClick?.()
         }}
       >
-        <span className="flex flex-1 items-center gap-1.5">
+        <span
+          className={cx(
+            'flex flex-1 items-center gap-1.5',
+            truncate && 'min-w-0',
+          )}
+        >
           <WorkbenchFileIcon type={type} open={open} />
-          <span className="select-none">{name}</span>
+          <span className={cx('select-none', truncate && 'truncate')}>
+            {name}
+          </span>
         </span>
 
         {hasChildren && (
