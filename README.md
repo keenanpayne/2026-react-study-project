@@ -4,13 +4,16 @@ As I anticipate my technical interview at Bolt, I decided to practice building t
 
 Roughly ~65% of the code is hand-written. The foundational layers, including types, utility functions, primitive components, the custom dropdown system, and the state architecture, were designed and written by hand. AI was used for execution within that structure.
 
-As the project's foundation was laid by hand (i.e., core abstractions and design patterns), iterating with AI became easier and, honestly, much more tempting. I used AI coding assistance for Q&A, generating/formatting mock data, and executing straightforward but comprehensive refactors that were easily verifiable (e.g., ensuring HTML semantics were correct; auditing accessibility concerns, etc.).
+As the project's foundation was laid by hand (i.e., core abstractions and design patterns), iterating with AI became easier and, honestly, much more tempting. I used AI coding assistance for Q&A, generating/formatting mock data, and executing straightforward but comprehensive refactors that were easily verifiable (e.g., ensuring HTML semantics were correct; auditing accessibility concerns, etc.)
 
 While I worked, my design ideas exceeded my ability to build by hand, given the time constraints. I felt more interested in expressing those ideas than in sticking to handwritten purity. Adopting AI for UI coding assistance in the back half of this project helped me rapidly build and iterate.
 
 In total, I spent approximately 25 hours on this project.
 
 I believe that what I'm sharing is a genuine expression of my 18 years of design and development experience, and I'm happy to share it with you all.
+
+Sincerely,
+Keenan
 
 ## Design Decisions
 
@@ -46,7 +49,7 @@ The stylesheet also respects `prefers-reduced-motion: reduce` (disabling all ani
 
 ### Colors
 
-Associating colors with actions (e.g., save, cancel) helps users understand the intent of each action at a glance. I reserved red for destructive actions (e.g., cancel) and green for primary non-destructive actions (e.g., save).
+Associating colors with actions (e.g., save, cancel) helps users understand the intent of each action at a glance. I reserved red for destructive actions and green for primary non-destructive actions.
 
 Associating colors with states helps users understand the application's state at a glance. I used blue to indicate all currently selected interface elements.
 
@@ -83,7 +86,9 @@ Rather than threading a `close` callback through every nested dropdown item, `Dr
 
 ### Pane Visibility Strategy
 
-`WorkbenchCodebase` and `WorkbenchDatabase` are kept mounted and toggled via CSS rather than conditionally rendered. Unmounting a pane on every switch would reset scroll position, discard form state, and force the `@pierre/diffs` diff viewer to re-initialize, all of which would create a noticeably degraded user experience. Keeping them mounted preserves that state at the cost of slightly higher memory usage, which is an acceptable trade-off for a prototype workbench-style interface.
+`WorkbenchCodebase` and `WorkbenchDatabase` are kept mounted and toggled via CSS rather than conditionally rendered. Unmounting a pane on every switch would reset scroll position, discard form state, and force the `@pierre/diffs` diff viewer to re-initialize, all of which would create a noticeably degraded user experience.
+
+Keeping them mounted preserves that state at the cost of slightly higher memory usage, which is an acceptable trade-off for a prototype workbench-style interface.
 
 ### Responsive Layout Strategy
 
@@ -124,7 +129,7 @@ The AI harnesses should work at four levels:
 
 We should always enforce the following:
 
-- Agents must use semantic color tokens defined in index.css and never default Tailwind color class names.
+- Agents must use semantic color tokens defined in `index.css` and never default Tailwind color class names.
 - Agents must conform to WCAG accessibility guidance for color contrast and keyboard navigation.
 - Agents must follow the four-layer component hierarchy (e.g., primitives, compound, feature, layout) documented in [Component Hierarchy](#component-hierarchy).
 - Agents must import and conform to the domain types defined in `src/types/`. Ad-hoc type definitions for data that already has a type are not permitted.
@@ -148,11 +153,15 @@ The mock data in `src/data/` already conforms to the typed domain contracts in `
 
 ### Testing with Vitest and Playwright
 
-Tests should cover three layers: unit tests for the utility functions in `src/utils/` (the tree traversal, database, and formatting functions are already pure and easily testable), component interaction tests for the custom Dropdown system and `ChatForm` where the interactions are non-trivial, and E2E tests via Playwright for critical user paths such as submitting a chat message, switching workbench panes, and keyboard navigation.
+Tests should cover three layers:
+
+- Unit tests for the utility functions in `src/utils/` (the tree traversal, database, and formatting functions are already pure and easily testable)
+- Component interaction tests for the custom Dropdown system and `ChatForm` where the interactions are non-trivial
+- E2E tests via Playwright for critical user paths such as submitting a chat message, switching workbench panes, and keyboard navigation
 
 ### URL Routing
 
-Navigation is currently managed entirely as UI state in `App`, which works well for a single-page workbench. When deeper linking becomes necessary, such as allowing users to share a link to a specific project or workbench pane, React Router can be layered in without restructuring the component tree, since `App` already owns navigation state cleanly.
+Navigation is currently managed entirely as UI state in `App`, which works well for a single-page workbench. When deeper linking becomes necessary, such as allowing users to share a link to a specific project or workbench pane, [React Router](https://reactrouter.com) can be layered in without restructuring the component tree, since `App` already owns navigation state cleanly.
 
 ### Improve Keyboard Navigation
 
