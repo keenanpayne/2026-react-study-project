@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useMemo, type ReactNode } from 'react'
 import { MessageSquare, Eye, Code, Database, Settings } from 'lucide-react'
 import DropdownTrigger from './DropdownTrigger'
 import DropdownSettings from './DropdownSettings'
@@ -32,84 +32,87 @@ export default function MobileNavigation({
 }: MobileNavigationProps) {
   const activeTeam = teams.find((team) => team.active)
 
+  const navItems = useMemo<NavItem[]>(() => {
+    if (!activeTeam) return []
+    return [
+      {
+        id: 'chat',
+        label: 'Chat',
+        view: 'chat',
+        icon: (
+          <MessageSquare
+            size={ICON_SIZE}
+            strokeWidth={ICON_STROKE_WIDTH}
+            aria-hidden="true"
+          />
+        ),
+      },
+      {
+        id: 'preview',
+        label: 'Preview',
+        view: 'preview',
+        icon: (
+          <Eye
+            size={ICON_SIZE}
+            strokeWidth={ICON_STROKE_WIDTH}
+            aria-hidden="true"
+          />
+        ),
+      },
+      {
+        id: 'codebase',
+        label: 'Code',
+        view: 'codebase',
+        icon: (
+          <Code
+            size={ICON_SIZE}
+            strokeWidth={ICON_STROKE_WIDTH}
+            aria-hidden="true"
+          />
+        ),
+      },
+      {
+        id: 'database',
+        label: 'Database',
+        view: 'database',
+        icon: (
+          <Database
+            size={ICON_SIZE}
+            strokeWidth={ICON_STROKE_WIDTH}
+            aria-hidden="true"
+          />
+        ),
+      },
+      {
+        id: 'settings',
+        label: 'Settings',
+        dropdown: <DropdownSettings align="top" />,
+        icon: (
+          <Settings
+            size={ICON_SIZE}
+            strokeWidth={ICON_STROKE_WIDTH}
+            aria-hidden="true"
+          />
+        ),
+      },
+      {
+        id: 'user',
+        label: 'Profile',
+        dropdown: <DropdownUser align="top" />,
+        icon: (
+          <img
+            src={activeTeam.icon}
+            alt={activeTeam.title}
+            className="avatar h-6 w-6"
+          />
+        ),
+      },
+    ]
+  }, [activeTeam])
+
   if (!activeTeam) {
     return null
   }
-
-  const navItems: NavItem[] = [
-    {
-      id: 'chat',
-      label: 'Chat',
-      view: 'chat',
-      icon: (
-        <MessageSquare
-          size={ICON_SIZE}
-          strokeWidth={ICON_STROKE_WIDTH}
-          aria-hidden="true"
-        />
-      ),
-    },
-    {
-      id: 'preview',
-      label: 'Preview',
-      view: 'preview',
-      icon: (
-        <Eye
-          size={ICON_SIZE}
-          strokeWidth={ICON_STROKE_WIDTH}
-          aria-hidden="true"
-        />
-      ),
-    },
-    {
-      id: 'codebase',
-      label: 'Code',
-      view: 'codebase',
-      icon: (
-        <Code
-          size={ICON_SIZE}
-          strokeWidth={ICON_STROKE_WIDTH}
-          aria-hidden="true"
-        />
-      ),
-    },
-    {
-      id: 'database',
-      label: 'Database',
-      view: 'database',
-      icon: (
-        <Database
-          size={ICON_SIZE}
-          strokeWidth={ICON_STROKE_WIDTH}
-          aria-hidden="true"
-        />
-      ),
-    },
-    {
-      id: 'settings',
-      label: 'Settings',
-      dropdown: <DropdownSettings align="top" />,
-      icon: (
-        <Settings
-          size={ICON_SIZE}
-          strokeWidth={ICON_STROKE_WIDTH}
-          aria-hidden="true"
-        />
-      ),
-    },
-    {
-      id: 'user',
-      label: 'Profile',
-      dropdown: <DropdownUser align="top" />,
-      icon: (
-        <img
-          src={activeTeam.icon}
-          alt={activeTeam.title}
-          className="avatar h-6 w-6"
-        />
-      ),
-    },
-  ]
 
   const baseClass =
     'flex flex-col items-center gap-1 text-xs transition-colors min-h-11 min-w-11 justify-center'

@@ -7,7 +7,13 @@ import WorkbenchLeftSidebar from './WorkbenchLeftSidebar'
 import DatabaseTable from './DatabaseTable'
 import DatabaseRowEditForm from './DatabaseRowEditForm'
 import type { TreeNode } from '~/types/workbench'
+import type { PaginationConfig } from './WorkbenchLeftSidebar'
 import { buildEditedValues } from '~/utils/database'
+
+const DB_PAGINATION: PaginationConfig = {
+  depths: [1],
+  pageSize: 10,
+}
 
 type WorkbenchDatabaseProps = {
   list: TreeNode[]
@@ -49,14 +55,13 @@ export default function WorkbenchDatabase({
       <WorkbenchContents>
         <div className="flex min-h-0 flex-1 flex-col @md:flex-row">
           <WorkbenchLeftSidebar
-            key={list.map((n) => n.name).join(':')}
             list={list}
             listLabel="Tables"
             listIcon={Database}
             selectedNode={selectedNode}
             selectedRow={selectedRow}
             onSelect={handleSelectNode}
-            pagination={{ depths: [1], pageSize: 10 }}
+            pagination={DB_PAGINATION}
             truncateNames={true}
           />
 

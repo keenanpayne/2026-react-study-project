@@ -26,7 +26,6 @@ export default function WorkbenchCodebase({
       <WorkbenchContents>
         <div className="flex min-h-0 flex-col @md:flex-1 @md:flex-row">
           <WorkbenchLeftSidebar
-            key={list.map((n) => n.name).join(':')}
             list={list}
             listLabel="Files"
             listIcon={FolderTree}

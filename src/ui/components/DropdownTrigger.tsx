@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react'
 import Button, { type ButtonProps } from './Button'
 import { DropdownTriggerCloseContext } from '~/context/dropdownTriggerCloseContext'
 import { cx } from '~/utils/cx'
@@ -21,7 +28,8 @@ export default function DropdownTrigger(props: DropdownTriggerProps) {
   const [isOpen, setIsOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
 
-  const close = () => setIsOpen(false)
+  const close = useCallback(() => setIsOpen(false), [])
+  const contextValue = useMemo(() => ({ close }), [close])
 
   useEffect(() => {
     if (!isOpen) return
@@ -54,7 +62,7 @@ export default function DropdownTrigger(props: DropdownTriggerProps) {
   }, [isOpen])
 
   return (
-    <DropdownTriggerCloseContext.Provider value={{ close }}>
+    <DropdownTriggerCloseContext.Provider value={contextValue}>
       <div
         ref={rootRef}
         className={cx('relative inline-flex', wrapperClassName)}

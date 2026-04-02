@@ -50,8 +50,8 @@ export default function ChatResponse({
             </h3>
 
             <ul className="mt-3 list-outside list-disc space-y-3 pl-6">
-              {section.items.map((item, idx) => (
-                <li key={idx}>{item}</li>
+              {section.items.map((item) => (
+                <li key={item}>{item}</li>
               ))}
             </ul>
           </li>

@@ -16,7 +16,7 @@ import {
   joinTreePath,
 } from '~/utils/tree'
 
-type PaginationConfig = {
+export type PaginationConfig = {
   depths: number[]
   pageSize: number
 }
