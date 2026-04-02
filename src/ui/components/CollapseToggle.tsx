@@ -7,6 +7,7 @@ import {
   PanelBottomOpen,
 } from 'lucide-react'
 import Button from './Button'
+import { cx } from '~/utils/cx'
 
 type CollapseToggleProps = {
   isExpanded: boolean
@@ -45,7 +46,7 @@ export default function CollapseToggle({
       aria-label={ariaLabel}
       aria-expanded={isExpanded}
       aria-controls={controls}
-      className={`shrink-0 ${className}`}
+      className={cx('shrink-0', className)}
     >
       <Icon size={18} strokeWidth={1} aria-hidden="true" />
     </Button>

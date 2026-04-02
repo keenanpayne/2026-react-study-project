@@ -9,9 +9,14 @@ type DialogProps = {
   children?: ReactNode
 }
 
-export default function Dialog(props: DialogProps) {
+export default function Dialog({
+  title,
+  open,
+  onOpenChange,
+  children,
+}: DialogProps) {
   return (
-    <BaseDialog.Root open={props.open} onOpenChange={props.onOpenChange}>
+    <BaseDialog.Root open={open} onOpenChange={onOpenChange}>
       <BaseDialog.Portal>
         <BaseDialog.Backdrop className="bg-surface-overlay fixed inset-0 z-20 min-h-dvh transition-all duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-[-webkit-touch-callout:none]:absolute" />
 
@@ -19,7 +24,7 @@ export default function Dialog(props: DialogProps) {
           className={`bg-surface-raised fixed top-1/2 left-1/2 z-30 flex max-h-[80dvh] w-full -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-xl transition-all duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0 md:max-w-xl`}
         >
           <BaseDialog.Title className="border-border-strong mb-1 flex items-center justify-between border-b px-6 py-4 text-xl font-semibold">
-            {props.title}
+            {title}
 
             <BaseDialog.Close className="cursor-pointer">
               <span className="sr-only">Close dialog</span>
@@ -28,7 +33,7 @@ export default function Dialog(props: DialogProps) {
           </BaseDialog.Title>
 
           <div className="flex flex-1 flex-col gap-3 overflow-y-auto px-6 py-4">
-            {props.children}
+            {children}
           </div>
         </BaseDialog.Popup>
       </BaseDialog.Portal>

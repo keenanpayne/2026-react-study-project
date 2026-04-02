@@ -1,5 +1,5 @@
 import { useState, useMemo, type ReactNode, type KeyboardEvent } from 'react'
-import type { MockWorkbenchFileTreeNode } from '~/data/mockFileTree'
+import type { TreeNode } from '~/types/workbench'
 import WorkbenchFileTree from './WorkbenchFileTree'
 import WorkbenchFile from './WorkbenchFile'
 import Button from './Button'
@@ -7,9 +7,10 @@ import CollapseToggle from './CollapseToggle'
 import SearchInput from './SearchInput'
 import { SearchCode, type LucideIcon } from 'lucide-react'
 import { useCollapsible } from '~/hooks/useCollapsible'
+import { cx } from '~/utils/cx'
 
 function computeInitialExpanded(
-  nodes: MockWorkbenchFileTreeNode[],
+  nodes: TreeNode[],
   parentPath: string,
 ): Set<string> {
   const expanded = new Set<string>()
@@ -34,13 +35,10 @@ function computeInitialExpanded(
   return expanded
 }
 
-function filterTree(
-  nodes: MockWorkbenchFileTreeNode[],
-  query: string,
-): MockWorkbenchFileTreeNode[] {
+function filterTree(nodes: TreeNode[], query: string): TreeNode[] {
   const lowerQuery = query.toLowerCase()
 
-  return nodes.reduce<MockWorkbenchFileTreeNode[]>((acc, node) => {
+  return nodes.reduce<TreeNode[]>((acc, node) => {
     const nameMatches = node.name.toLowerCase().includes(lowerQuery)
 
     if (node.children?.length) {
@@ -61,10 +59,7 @@ function filterTree(
   }, [])
 }
 
-function collectAllPaths(
-  nodes: MockWorkbenchFileTreeNode[],
-  parentPath: string,
-): Set<string> {
+function collectAllPaths(nodes: TreeNode[], parentPath: string): Set<string> {
   const paths = new Set<string>()
 
   for (const node of nodes) {
@@ -80,31 +75,32 @@ function collectAllPaths(
 }
 
 type WorkbenchLeftSidebarProps = {
-  list: MockWorkbenchFileTreeNode[]
+  list: TreeNode[]
   listLabel: string
   listIcon: LucideIcon
-  selectedNode?: MockWorkbenchFileTreeNode | null
-  selectedRow?: MockWorkbenchFileTreeNode | null
-  onSelect?: (node: MockWorkbenchFileTreeNode) => void
+  selectedNode?: TreeNode | null
+  selectedRow?: TreeNode | null
+  onSelect?: (node: TreeNode) => void
 }
 
-export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
+export default function WorkbenchLeftSidebar({
+  list,
+  listLabel,
+  listIcon: ListIcon,
+  selectedNode,
+  selectedRow,
+  onSelect,
+}: WorkbenchLeftSidebarProps) {
   const { isExpanded: panelExpanded, toggle: togglePanel } = useCollapsible()
-  const [prevList, setPrevList] = useState(props.list)
   const [expanded, setExpanded] = useState<Set<string>>(() =>
-    computeInitialExpanded(props.list, ''),
+    computeInitialExpanded(list, ''),
   )
   const [searchActive, setSearchActive] = useState(false)
   const [query, setQuery] = useState('')
 
-  if (prevList !== props.list) {
-    setPrevList(props.list)
-    setExpanded(computeInitialExpanded(props.list, ''))
-  }
-
   const filteredList = useMemo(
-    () => (query ? filterTree(props.list, query) : props.list),
-    [props.list, query],
+    () => (query ? filterTree(list, query) : list),
+    [list, query],
   )
 
   const searchExpanded = useMemo(
@@ -144,7 +140,7 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
   }
 
   function renderItems(
-    items: MockWorkbenchFileTreeNode[],
+    items: TreeNode[],
     depth: number,
     parentPath: string,
   ): ReactNode {
@@ -163,14 +159,12 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
           type={node.type}
           open={isExpanded}
           selected={
-            node.selected ||
-            node === props.selectedNode ||
-            node === props.selectedRow
+            node.selected || node === selectedNode || node === selectedRow
           }
           depth={depth}
           hasChildren={isExpandable}
           onToggle={() => toggle(path)}
-          onClick={() => props.onSelect?.(node)}
+          onClick={() => onSelect?.(node)}
         >
           {isExpandable && isExpanded ? (
             <WorkbenchFileTree>
@@ -184,7 +178,12 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
 
   return (
     <aside
-      className={`border-border-default relative min-w-0 border-r border-b transition-[flex-grow] duration-150 ease-out @md:border-b-0 ${panelExpanded ? 'overflow-auto @md:flex-5 @lg:flex-4 @2xl:flex-3' : 'h-10 flex-none overflow-hidden @md:h-auto @md:min-w-10 @md:flex-0'}`}
+      className={cx(
+        'border-border-default relative min-w-0 border-r border-b transition-[flex-grow] duration-150 ease-out @md:border-b-0',
+        panelExpanded
+          ? 'overflow-auto @md:flex-5 @lg:flex-4 @2xl:flex-3'
+          : 'h-10 flex-none overflow-hidden @md:h-auto @md:min-w-10 @md:flex-0',
+      )}
     >
       <header
         className={`section-header sticky top-0 left-0 z-10 h-10 rounded-tl-xl px-1 py-1`}
@@ -196,12 +195,8 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
           {panelExpanded && (
             <div className="flex items-center gap-1.5">
               <Button size="md" radius="lg" variant="selected">
-                <props.listIcon
-                  size={18}
-                  strokeWidth={1.5}
-                  aria-hidden="true"
-                />
-                <span className="font-medium">{props.listLabel}</span>
+                <ListIcon size={18} strokeWidth={1.5} aria-hidden="true" />
+                <span className="font-medium">{listLabel}</span>
               </Button>
 
               {searchActive ? (
@@ -246,11 +241,14 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
 
       <div
         id="sidebar-panel"
-        className={`overflow-hidden transition-opacity duration-150 ease-out ${panelExpanded ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+        className={cx(
+          'overflow-hidden transition-opacity duration-150 ease-out',
+          panelExpanded ? 'opacity-100' : 'pointer-events-none opacity-0',
+        )}
       >
         {query && filteredList.length === 0 ? (
           <p role="status" className="text-text-muted px-3 py-2 text-sm">
-            No files match
+            No items match
           </p>
         ) : (
           <WorkbenchFileTree>

@@ -9,17 +9,15 @@ type ChatMessageProps = {
   onOpenActionDetails: () => void
 }
 
-export default function ChatMessage(props: ChatMessageProps) {
+export default function ChatMessage({ onOpenActionDetails }: ChatMessageProps) {
   return (
     <>
-      {/* User Message */}
       <article aria-label="Your message" className="p-5">
         <p className="border-border-default bg-surface-muted rounded-lg border p-3 text-sm leading-relaxed">
           {MockChatUserMessage}
         </p>
       </article>
 
-      {/* Bolt Message */}
       <article
         aria-label="Assistant response"
         className="flex flex-col gap-3 px-5 pb-6 text-sm leading-relaxed"
@@ -39,7 +37,7 @@ export default function ChatMessage(props: ChatMessageProps) {
 
         <ChatResponse
           actionsExpanded={false}
-          actionOnClick={props.onOpenActionDetails}
+          actionOnClick={onOpenActionDetails}
         />
       </article>
     </>

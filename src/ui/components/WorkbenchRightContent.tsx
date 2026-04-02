@@ -6,9 +6,9 @@ type WorkbenchRightContentProps = {
   children?: ReactNode
 }
 
-export default function WorkbenchRightContent(
-  props: WorkbenchRightContentProps,
-) {
+export default function WorkbenchRightContent({
+  children,
+}: WorkbenchRightContentProps) {
   const { isExpanded, toggle } = useCollapsible()
 
   return (
@@ -31,7 +31,7 @@ export default function WorkbenchRightContent(
         id="right-content-panel"
         className={`overflow-hidden transition-opacity duration-150 ease-out ${isExpanded ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
       >
-        {props.children}
+        {children}
       </div>
     </div>
   )

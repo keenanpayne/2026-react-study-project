@@ -1,15 +1,14 @@
-import { useState, type KeyboardEvent } from 'react'
+import { useState } from 'react'
 import { Database } from 'lucide-react'
 import WorkbenchContainer from './WorkbenchContainer'
 import WorkbenchContents from './WorkbenchContents'
 import WorkbenchRightContent from './WorkbenchRightContent'
 import WorkbenchLeftSidebar from './WorkbenchLeftSidebar'
+import DatabaseTable from './DatabaseTable'
 import DatabaseRowEditForm from './DatabaseRowEditForm'
-import type { MockWorkbenchFileTreeNode } from '~/data/mockFileTree'
+import type { TreeNode } from '~/types/workbench'
 
-function buildEditedValues(
-  row: MockWorkbenchFileTreeNode | null,
-): Record<string, string> {
+function buildEditedValues(row: TreeNode | null): Record<string, string> {
   if (!row?.children) return {}
 
   const values: Record<string, string> = {}
@@ -21,26 +20,23 @@ function buildEditedValues(
 }
 
 type WorkbenchDatabaseProps = {
-  list: MockWorkbenchFileTreeNode[]
+  list: TreeNode[]
   isVisible: boolean
 }
 
-export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
-  const [selectedNode, setSelectedNode] =
-    useState<MockWorkbenchFileTreeNode | null>(null)
-  const [selectedRow, setSelectedRow] =
-    useState<MockWorkbenchFileTreeNode | null>(null)
+export default function WorkbenchDatabase({
+  list,
+  isVisible,
+}: WorkbenchDatabaseProps) {
+  const [selectedNode, setSelectedNode] = useState<TreeNode | null>(null)
+  const [selectedRow, setSelectedRow] = useState<TreeNode | null>(null)
   const [editedValues, setEditedValues] = useState<Record<string, string>>({})
 
-  function findParentTable(
-    row: MockWorkbenchFileTreeNode,
-  ): MockWorkbenchFileTreeNode | undefined {
-    return props.list.find((table) => table.children?.some((r) => r === row))
-  }
-
-  function handleSelectNode(node: MockWorkbenchFileTreeNode | null) {
+  function handleSelectNode(node: TreeNode | null) {
     if (node?.type === 'row') {
-      const parentTable = findParentTable(node)
+      const parentTable = list.find((table) =>
+        table.children?.some((r) => r === node),
+      )
       if (parentTable) {
         setSelectedNode(parentTable)
         handleSelectRow(node)
@@ -53,17 +49,18 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
     setEditedValues({})
   }
 
-  function handleSelectRow(row: MockWorkbenchFileTreeNode | null) {
+  function handleSelectRow(row: TreeNode | null) {
     setSelectedRow(row)
     setEditedValues(buildEditedValues(row))
   }
 
   return (
-    <WorkbenchContainer className={props.isVisible ? '' : 'hidden'}>
+    <WorkbenchContainer className={isVisible ? '' : 'hidden'}>
       <WorkbenchContents>
         <div className="flex min-h-0 flex-1 flex-col @md:flex-row">
           <WorkbenchLeftSidebar
-            list={props.list}
+            key={list.map((n) => n.name).join(':')}
+            list={list}
             listLabel="Tables"
             listIcon={Database}
             selectedNode={selectedNode}
@@ -93,73 +90,12 @@ export default function WorkbenchDatabase(props: WorkbenchDatabaseProps) {
               </header>
 
               <div className="px-4 py-2">
-                {selectedNode?.children && selectedNode.children.length > 0 ? (
-                  <div className="panel-card overflow-x-auto rounded-lg">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="section-header">
-                          {selectedNode.children[0].children?.map((col) => (
-                            <th
-                              key={col.id ?? col.name}
-                              scope="col"
-                              className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
-                            >
-                              {col.name}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {selectedNode.children.map((row) => {
-                          const isSelected = selectedRow === row
-                          return (
-                            <tr
-                              key={row.id ?? row.name}
-                              tabIndex={0}
-                              aria-selected={isSelected}
-                              onClick={() =>
-                                handleSelectRow(isSelected ? null : row)
-                              }
-                              onKeyDown={(
-                                e: KeyboardEvent<HTMLTableRowElement>,
-                              ) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                  e.preventDefault()
-                                  handleSelectRow(isSelected ? null : row)
-                                }
-                              }}
-                              className={`divider-bottom cursor-pointer last:border-b-0 ${
-                                isSelected
-                                  ? 'bg-selected'
-                                  : 'hover:bg-surface-raised'
-                              }`}
-                            >
-                              {row.children?.map((col) => (
-                                <td
-                                  key={col.id ?? col.name}
-                                  className="text-text-secondary px-4 py-2 whitespace-nowrap"
-                                >
-                                  {col.value !== null &&
-                                  col.value !== undefined ? (
-                                    String(col.value)
-                                  ) : (
-                                    <span className="text-text-faint">
-                                      NULL
-                                    </span>
-                                  )}
-                                </td>
-                              ))}
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : selectedNode ? (
-                  <p className="text-text-muted text-sm">
-                    No rows in this table.
-                  </p>
+                {selectedNode?.children ? (
+                  <DatabaseTable
+                    node={selectedNode}
+                    selectedRow={selectedRow}
+                    onSelectRow={handleSelectRow}
+                  />
                 ) : null}
               </div>
 

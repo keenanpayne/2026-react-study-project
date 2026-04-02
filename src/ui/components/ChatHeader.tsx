@@ -8,7 +8,7 @@ import BoltLogo from './BoltLogo'
 
 function Separator() {
   return (
-    <span className="text-text-subtle block h-[18px] text-xl leading-4 antialiased">
+    <span className="text-text-faint block h-[18px] text-xl leading-4 antialiased">
       /
     </span>
   )
@@ -20,7 +20,13 @@ type ChatHeaderProps = {
   currentProject: MockUserProject
 }
 
-export default function ChatHeader(props: ChatHeaderProps) {
+export default function ChatHeader({
+  teams,
+  projects,
+  currentProject,
+}: ChatHeaderProps) {
+  const activeTeam = teams.find((t) => t.active)
+
   return (
     <header className="bg-surface sticky top-0 left-0 z-10 px-2.5 py-1.5">
       <nav
@@ -44,12 +50,12 @@ export default function ChatHeader(props: ChatHeaderProps) {
           radius="md"
           className="h-9"
           wrapperClassName="shrink-0"
-          dropdown={<DropdownTeams data={props.teams} />}
+          dropdown={<DropdownTeams data={teams} />}
         >
-          {props.teams.find((team) => team.active)?.icon && (
+          {activeTeam?.icon && (
             <img
-              src={props.teams.find((team) => team.active)?.icon}
-              alt={props.teams.find((team) => team.active)?.title}
+              src={activeTeam.icon}
+              alt={activeTeam.title}
               className="avatar border-border-default h-6 w-6 border"
             />
           )}
@@ -69,15 +75,15 @@ export default function ChatHeader(props: ChatHeaderProps) {
           className="h-9"
           dropdown={
             <DropdownProjects
-              projects={props.projects}
-              currentProject={props.currentProject}
+              projects={projects}
+              currentProject={currentProject}
             />
           }
         >
           <span className="text-xs font-medium md:text-sm">
-            {props.currentProject.title}
+            {currentProject.title}
           </span>
-          {props.currentProject.private && (
+          {currentProject.private && (
             <>
               <Lock strokeWidth={1.5} size={14} aria-hidden="true" />
               <span className="sr-only">(private)</span>

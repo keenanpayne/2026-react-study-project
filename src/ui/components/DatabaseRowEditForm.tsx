@@ -1,35 +1,41 @@
 import { useId, type FormEvent } from 'react'
 import { X } from 'lucide-react'
-import type { MockWorkbenchFileTreeNode } from '~/data/mockFileTree'
+import type { TreeNode } from '~/types/workbench'
 import Button from './Button'
 
 type DatabaseRowEditFormProps = {
-  selectedRow: MockWorkbenchFileTreeNode
+  selectedRow: TreeNode
   editedValues: Record<string, string>
   onValueChange: (columnName: string, value: string) => void
   onClose: () => void
   onSave: () => void
 }
 
-export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
+export default function DatabaseRowEditForm({
+  selectedRow,
+  editedValues,
+  onValueChange,
+  onClose,
+  onSave,
+}: DatabaseRowEditFormProps) {
   const formId = useId()
 
-  if (!props.selectedRow.children) return null
+  if (!selectedRow.children) return null
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    props.onSave()
+    onSave()
   }
 
   return (
     <form className="panel-card rounded-lg" onSubmit={handleSubmit}>
       <div className="section-header flex items-center justify-between rounded-t-lg px-4 py-3">
         <h2 className="text-text-secondary text-sm font-medium">
-          Edit Row: {props.selectedRow.name}
+          Edit Row: {selectedRow.name}
         </h2>
 
         <Button
-          onClick={props.onClose}
+          onClick={onClose}
           variant="ghost"
           size="sm"
           radius="md"
@@ -42,9 +48,8 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
       </div>
 
       <div className="flex flex-col gap-3 p-4">
-        {props.selectedRow.children.map((col) => {
+        {selectedRow.children.map((col) => {
           const isNumeric = typeof col.value === 'number'
-
           const fieldId = `${formId}-${col.name}`
 
           return (
@@ -58,8 +63,8 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
 
               <input
                 type={isNumeric ? 'number' : 'text'}
-                value={props.editedValues[col.name] ?? ''}
-                onChange={(e) => props.onValueChange(col.name, e.target.value)}
+                value={editedValues[col.name] ?? ''}
+                onChange={(e) => onValueChange(col.name, e.target.value)}
                 name={col.name}
                 id={fieldId}
                 className="input-base"
@@ -70,7 +75,7 @@ export default function DatabaseRowEditForm(props: DatabaseRowEditFormProps) {
 
         <div className="flex items-center gap-2 pt-2">
           <Button
-            onClick={props.onClose}
+            onClick={onClose}
             variant="danger"
             radius="md"
             size="lg"

@@ -7,15 +7,18 @@ type ChatResponseProps = {
   actionOnClick: () => void
 }
 
-export default function ChatResponse(props: ChatResponseProps) {
+export default function ChatResponse({
+  actionsExpanded,
+  actionOnClick,
+}: ChatResponseProps) {
   return (
     <>
       <p>{MockChatResponse.openingText}</p>
 
       <ChatActions
         count={MockChatResponse.actionsCount}
-        actionsExpanded={props.actionsExpanded}
-        actionOnClick={props.actionOnClick}
+        actionsExpanded={actionsExpanded}
+        actionOnClick={actionOnClick}
       />
 
       <p>{MockChatResponse.followUpText}</p>

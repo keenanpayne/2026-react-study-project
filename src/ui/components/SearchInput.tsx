@@ -14,37 +14,48 @@ type SearchInputProps = {
   iconStrokeWidth?: number
 }
 
-export default function SearchInput(props: SearchInputProps) {
+export default function SearchInput({
+  value,
+  onChange,
+  placeholder,
+  focusOnMount,
+  onBlur,
+  onKeyDown,
+  className,
+  icon,
+  iconSize,
+  iconStrokeWidth,
+}: SearchInputProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (props.focusOnMount) inputRef.current?.focus()
-  }, [props.focusOnMount])
+    if (focusOnMount) inputRef.current?.focus()
+  }, [focusOnMount])
 
   return (
     <div
-      className={`flex items-center gap-2 rounded-md focus-within:shadow-[0_0_0_2px_var(--color-focus-ring)] ${props.className ?? ''}`}
+      className={`flex items-center gap-2 rounded-md focus-within:shadow-[0_0_0_2px_var(--color-focus-ring)] ${className ?? ''}`}
       role="search"
     >
-      {props.icon ? (
-        props.icon
+      {icon ? (
+        icon
       ) : (
         <Search
-          size={props.iconSize ?? 16}
-          strokeWidth={props.iconStrokeWidth ?? 1}
+          size={iconSize ?? 16}
+          strokeWidth={iconStrokeWidth ?? 1}
           aria-hidden="true"
         />
       )}
       <input
         ref={inputRef}
         type="search"
-        aria-label={props.placeholder ?? 'Search'}
-        placeholder={props.placeholder ?? 'Search'}
+        aria-label={placeholder ?? 'Search'}
+        placeholder={placeholder ?? 'Search'}
         className="w-full border-0 bg-transparent py-2 outline-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:outline-none"
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-        onBlur={props.onBlur}
-        onKeyDown={props.onKeyDown}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onBlur={onBlur}
+        onKeyDown={onKeyDown}
       />
     </div>
   )

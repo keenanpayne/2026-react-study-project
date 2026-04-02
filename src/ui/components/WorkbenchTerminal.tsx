@@ -9,7 +9,7 @@ type WorkbenchTerminalProps = {
   file: FileContents
 }
 
-export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
+export default function WorkbenchTerminal({ file }: WorkbenchTerminalProps) {
   const { isExpanded, toggle } = useCollapsible()
 
   return (
@@ -77,7 +77,7 @@ export default function WorkbenchTerminal(props: WorkbenchTerminalProps) {
         className={`rounded-b-xl transition-[max-height,opacity] duration-150 ease-out ${isExpanded ? 'max-h-[200px] overflow-x-hidden overflow-y-auto opacity-100' : 'max-h-0 overflow-hidden opacity-0'}`}
       >
         <File
-          file={props.file}
+          file={file}
           options={DIFF_TERMINAL_OPTIONS}
           className="rounded-b-xl px-1.5 py-0.5 text-xs leading-tight"
         />

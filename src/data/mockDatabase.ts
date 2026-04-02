@@ -1,36 +1,6 @@
-import type { MockWorkbenchFileTreeItemType } from '~/types/workbench'
+import type { TreeNode } from '~/types/workbench'
 
-export type MockWorkbenchDatabaseTable = {
-  id: number
-  type: MockWorkbenchFileTreeItemType
-  name: string
-  created_at: Date
-  updated_at: Date
-  children?: MockWorkbenchDatabaseRow[]
-  selected?: boolean
-}
-
-export type MockWorkbenchDatabaseRow = {
-  id: number
-  type: MockWorkbenchFileTreeItemType
-  name: string
-  created_at: Date
-  updated_at: Date
-  children?: MockWorkbenchDatabaseColumn[]
-  expandable?: boolean
-  selected?: boolean
-}
-
-export type MockWorkbenchDatabaseColumn = {
-  id: number
-  type: MockWorkbenchFileTreeItemType
-  name: string
-  value: string | number | null
-  created_at: Date
-  updated_at: Date
-}
-
-export const MockWorkbenchDatabaseTables: MockWorkbenchDatabaseTable[] = [
+export const MockWorkbenchDatabaseTables: TreeNode[] = [
   {
     id: 1,
     name: 'users',

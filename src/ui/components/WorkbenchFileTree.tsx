@@ -4,6 +4,8 @@ type WorkbenchFileTreeProps = {
   children: ReactNode
 }
 
-export default function WorkbenchFileTree(props: WorkbenchFileTreeProps) {
-  return <ul className="h-full text-left">{props.children}</ul>
+export default function WorkbenchFileTree({
+  children,
+}: WorkbenchFileTreeProps) {
+  return <ul className="h-full text-left">{children}</ul>
 }

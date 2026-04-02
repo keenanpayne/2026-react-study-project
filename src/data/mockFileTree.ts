@@ -1,17 +1,6 @@
-import type { MockWorkbenchFileTreeItemType } from '~/types/workbench'
+import type { TreeNode } from '~/types/workbench'
 
-export type MockWorkbenchFileTreeNode = {
-  id?: number
-  name: string
-  type?: MockWorkbenchFileTreeItemType
-  value?: string | number | null
-  open?: boolean
-  selected?: boolean
-  expandable?: boolean
-  children?: MockWorkbenchFileTreeNode[]
-}
-
-export const MockWorkbenchFileTree: MockWorkbenchFileTreeNode[] = [
+export const MockWorkbenchFileTree: TreeNode[] = [
   { name: '.bolt', type: 'directory' },
   {
     name: 'src',

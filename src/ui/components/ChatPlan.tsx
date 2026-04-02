@@ -7,17 +7,17 @@ type ChatPlanProps = {
   createdAt: Date
 }
 
-export default function ChatPlan(props: ChatPlanProps) {
+export default function ChatPlan({ title, version, createdAt }: ChatPlanProps) {
   return (
     <aside className="border-border-strong my-3 flex justify-between rounded-lg border px-3 py-2.5 md:max-w-[80%]">
       <header className="flex flex-col">
-        <p className="text-text-muted text-xs">{props.version}</p>
+        <p className="text-text-muted text-xs">{version}</p>
 
-        <h3 className="font-semibold">{props.title}</h3>
+        <h3 className="font-semibold">{title}</h3>
 
         <p className="text-text-muted mt-0.5 text-xs">
-          <time dateTime={props.createdAt.toISOString()}>
-            {props.createdAt.toLocaleString('en-US', {
+          <time dateTime={createdAt.toISOString()}>
+            {createdAt.toLocaleString('en-US', {
               month: 'short',
               day: 'numeric',
               year: 'numeric',

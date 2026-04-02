@@ -21,6 +21,7 @@ import Dropdown, {
   DROPDOWN_ICON_STROKE_WIDTH,
 } from './Dropdown'
 import DropdownItem from './DropdownItem'
+import DropdownSubmenuItem from './DropdownSubmenuItem'
 import DropdownLabel from './DropdownLabel'
 import DropdownList from './DropdownList'
 import SearchInput from './SearchInput'
@@ -55,15 +56,18 @@ type DropdownRecentProjectsProps = {
   currentProject: MockUserProject
 }
 
-function DropdownRecentProjects(props: DropdownRecentProjectsProps) {
+function DropdownRecentProjects({
+  projects,
+  currentProject,
+}: DropdownRecentProjectsProps) {
   const closeCtx = useDropdownTriggerClose()
   const [query, setQuery] = useState('')
 
   const filtered = query
-    ? props.projects.filter((p) =>
+    ? projects.filter((p) =>
         p.title.toLowerCase().includes(query.toLowerCase()),
       )
-    : props.projects
+    : projects
 
   const sections = groupProjectsBySection(filtered)
 
@@ -88,7 +92,7 @@ function DropdownRecentProjects(props: DropdownRecentProjectsProps) {
             <Fragment key={label}>
               <DropdownLabel label={label} />
               {sectionProjects.map((project) => {
-                const isActive = project.id === props.currentProject.id
+                const isActive = project.id === currentProject.id
 
                 return (
                   <DropdownItem
@@ -214,7 +218,10 @@ type DropdownProjectsProps = {
   currentProject: MockUserProject
 }
 
-export default function DropdownProjects(props: DropdownProjectsProps) {
+export default function DropdownProjects({
+  projects,
+  currentProject,
+}: DropdownProjectsProps) {
   const closeCtx = useDropdownTriggerClose()
   const handleSelect = () => closeCtx?.close()
 
@@ -226,8 +233,8 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
         icon: Folders,
         dropdown: (
           <DropdownRecentProjects
-            projects={props.projects}
-            currentProject={props.currentProject}
+            projects={projects}
+            currentProject={currentProject}
           />
         ),
       },
@@ -253,7 +260,7 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
         className: 'text-danger hover:bg-danger-bg',
       },
     ],
-    [props.projects, props.currentProject],
+    [projects, currentProject],
   )
 
   return (
@@ -261,21 +268,35 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
       <DropdownList>
         {menuRows.map((row) => {
           const Icon = row.icon
+          const iconElement = (
+            <Icon
+              size={DROPDOWN_ICON_SIZE}
+              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+              aria-hidden="true"
+            />
+          )
+
+          if (row.dropdown) {
+            return (
+              <DropdownSubmenuItem
+                key={row.id}
+                size="md"
+                title={row.title}
+                className={row.className}
+                dropdown={row.dropdown}
+                icon={iconElement}
+              />
+            )
+          }
+
           return (
             <DropdownItem
               key={row.id}
               size="md"
               title={row.title}
               className={row.className}
-              onSelect={row.dropdown ? undefined : handleSelect}
-              dropdown={row.dropdown}
-              icon={
-                <Icon
-                  size={DROPDOWN_ICON_SIZE}
-                  strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
-                  aria-hidden="true"
-                />
-              }
+              onSelect={handleSelect}
+              icon={iconElement}
             />
           )
         })}

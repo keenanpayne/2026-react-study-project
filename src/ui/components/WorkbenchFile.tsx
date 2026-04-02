@@ -10,74 +10,41 @@ import {
 import type { ReactNode } from 'react'
 import type { MockWorkbenchFileTreeItemType } from '~/types/workbench'
 
-interface WorkbenchFileIconProps {
-  type?: MockWorkbenchFileTreeItemType
-  open?: boolean
+const ICON_SIZE = 14
+const ICON_STROKE_WIDTH = 1.5
+const ICON_CLASS = 'shrink-0'
+
+const ICON_BY_TYPE: Record<
+  MockWorkbenchFileTreeItemType,
+  typeof FileIcon | [typeof FolderClosed, typeof FolderOpen]
+> = {
+  directory: [FolderClosed, FolderOpen],
+  file: FileIcon,
+  table: TableProperties,
+  row: Rows3,
+  column: Columns3,
 }
 
-function WorkbenchFileIcon(props: WorkbenchFileIconProps) {
-  const iconSize = 14
-  const iconStrokeWidth = 1.5
-  const iconClassName = 'shrink-0'
+function WorkbenchFileIcon({
+  type,
+  open,
+}: {
+  type?: MockWorkbenchFileTreeItemType
+  open?: boolean
+}) {
+  if (!type) return null
 
-  if (!props.type) return null
+  const entry = ICON_BY_TYPE[type]
+  const Icon = Array.isArray(entry) ? (open ? entry[1] : entry[0]) : entry
 
-  if (props.type === 'directory' && !props.open)
-    return (
-      <FolderClosed
-        size={iconSize}
-        strokeWidth={iconStrokeWidth}
-        className={iconClassName}
-        aria-hidden="true"
-      />
-    )
-  if (props.type === 'directory' && props.open)
-    return (
-      <FolderOpen
-        size={iconSize}
-        strokeWidth={iconStrokeWidth}
-        className={iconClassName}
-        aria-hidden="true"
-      />
-    )
-  if (props.type === 'file')
-    return (
-      <FileIcon
-        size={iconSize}
-        strokeWidth={iconStrokeWidth}
-        className={iconClassName}
-        aria-hidden="true"
-      />
-    )
-  if (props.type === 'table')
-    return (
-      <TableProperties
-        size={iconSize}
-        strokeWidth={iconStrokeWidth}
-        className={iconClassName}
-        aria-hidden="true"
-      />
-    )
-  if (props.type === 'row')
-    return (
-      <Rows3
-        size={iconSize}
-        strokeWidth={iconStrokeWidth}
-        className={iconClassName}
-        aria-hidden="true"
-      />
-    )
-  if (props.type === 'column')
-    return (
-      <Columns3
-        size={iconSize}
-        strokeWidth={iconStrokeWidth}
-        className={iconClassName}
-        aria-hidden="true"
-      />
-    )
-
-  return null
+  return (
+    <Icon
+      size={ICON_SIZE}
+      strokeWidth={ICON_STROKE_WIDTH}
+      className={ICON_CLASS}
+      aria-hidden="true"
+    />
+  )
 }
 
 type WorkbenchFileProps = {
@@ -92,37 +59,45 @@ type WorkbenchFileProps = {
   onClick?: () => void
 }
 
-export default function WorkbenchFile(props: WorkbenchFileProps) {
-  const depth = props.depth ?? 0
-
+export default function WorkbenchFile({
+  name,
+  type,
+  children,
+  depth = 0,
+  open,
+  selected,
+  hasChildren,
+  onToggle,
+  onClick,
+}: WorkbenchFileProps) {
   return (
     <li>
       <button
         type="button"
-        className={`flex w-full cursor-pointer items-center gap-1.5 py-1 pr-1.5 text-left text-sm transition-colors ${props.selected ? 'bg-selected' : 'text-text-muted hover:bg-hover-item hover:text-text-heading'}`}
+        className={`flex w-full cursor-pointer items-center gap-1.5 py-1 pr-1.5 text-left text-sm transition-colors ${selected ? 'bg-selected' : 'text-text-muted hover:bg-hover-item hover:text-text-heading'}`}
         style={{ paddingLeft: `${0.375 + depth * 0.625}rem` }}
-        aria-expanded={props.hasChildren ? props.open : undefined}
+        aria-expanded={hasChildren ? open : undefined}
         onClick={() => {
-          if (props.hasChildren) props.onToggle?.()
-          props.onClick?.()
+          if (hasChildren) onToggle?.()
+          onClick?.()
         }}
       >
         <span className="flex flex-1 items-center gap-1.5">
-          <WorkbenchFileIcon type={props.type} open={props.open} />
-          <span className="select-none">{props.name}</span>
+          <WorkbenchFileIcon type={type} open={open} />
+          <span className="select-none">{name}</span>
         </span>
 
-        {props.hasChildren && (
+        {hasChildren && (
           <ChevronRight
             size={14}
             strokeWidth={1}
             aria-hidden="true"
-            className={`shrink-0 transition-transform ${props.open ? 'rotate-90' : ''}`}
+            className={`shrink-0 transition-transform ${open ? 'rotate-90' : ''}`}
           />
         )}
       </button>
 
-      {props.children}
+      {children}
     </li>
   )
 }
