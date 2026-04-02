@@ -35,7 +35,7 @@ export default function ChatForm(props: ChatFormProps) {
 
   return (
     <form className="group/form bg-surface mb-3 shrink-0 px-4 pb-3 md:mb-0">
-      <aside className="border-border-default mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-focus-within/form:flex sm:flex sm:flex-row sm:gap-0">
+      <aside className="border-border-default mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-focus-within/form:flex md:flex md:flex-row md:gap-0">
         <span aria-live="polite">
           {formatTokens(props.tokens)} daily tokens remaining.
         </span>
@@ -45,7 +45,7 @@ export default function ChatForm(props: ChatFormProps) {
         </Button>
       </aside>
 
-      <div className="relative w-full rounded-xl border border-transparent bg-[linear-gradient(var(--color-surface-raised),var(--color-surface-raised)),linear-gradient(to_bottom_right,var(--color-blue-400),var(--color-blue-100))] [background-clip:padding-box,border-box] bg-origin-border p-3 shadow-md transition-shadow focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)] sm:pb-0 sm:shadow-sm sm:group-focus-within/form:pb-0 sm:focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)]">
+      <div className="relative w-full rounded-xl border border-transparent bg-[linear-gradient(var(--color-surface-raised),var(--color-surface-raised)),linear-gradient(to_bottom_right,var(--color-blue-400),var(--color-blue-100))] [background-clip:padding-box,border-box] bg-origin-border p-3 shadow-md transition-shadow focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)] md:pb-0 md:shadow-sm md:group-focus-within/form:pb-0 md:focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)]">
         <label htmlFor="command" className="sr-only">
           Command
         </label>
@@ -55,13 +55,13 @@ export default function ChatForm(props: ChatFormProps) {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="How can Bolt help you today? (or /command)"
-          className="w-full resize-none px-1.5 py-1 text-base outline-none group-focus-within/form:h-20 focus:outline-none focus-visible:outline-none sm:h-20 sm:text-sm"
+          className="w-full resize-none px-1.5 py-1 text-base outline-none group-focus-within/form:h-20 focus:outline-none focus-visible:outline-none md:h-20 md:text-sm"
         />
 
         <div
           role="toolbar"
           aria-label="Message options"
-          className="hidden items-center justify-between gap-3 py-1.5 group-focus-within/form:flex sm:flex"
+          className="hidden items-center justify-between gap-3 py-1.5 group-focus-within/form:flex md:flex"
         >
           <div className="flex items-center gap-3">
             <DropdownTrigger
@@ -101,7 +101,7 @@ export default function ChatForm(props: ChatFormProps) {
             </DropdownTrigger>
           </div>
 
-          <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
+          <div className="flex items-center gap-1.5 md:gap-3">
             <Button size="sm" radius="xl" className="shrink-0">
               <MousePointerClick
                 size={18}

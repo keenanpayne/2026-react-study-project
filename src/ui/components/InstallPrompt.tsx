@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useInstallPrompt } from '~/hooks/useInstallPrompt'
 import Button from './Button'
+import BoltLogo from './BoltLogo'
 
 export default function InstallPrompt() {
   const { isInstallable, promptInstall } = useInstallPrompt()
@@ -19,15 +20,17 @@ export default function InstallPrompt() {
     <div
       role="alertdialog"
       aria-label="Install application"
-      className="border-border-default bg-surface-raised fixed right-4 bottom-18 left-4 z-50 flex items-center justify-between gap-3 rounded-lg border px-4 py-3 shadow-xl md:right-4 md:bottom-4 md:left-auto md:max-w-sm"
+      className="border-border-default bg-surface-raised fixed right-4 bottom-45 left-4 z-100 flex items-center justify-between gap-5 rounded-lg border px-4 py-3 shadow-xl md:right-4 md:bottom-4 md:left-auto md:max-w-sm"
     >
-      <p className="text-text-secondary text-sm">
-        Install Bolt for quick access
-      </p>
+      <div className="flex items-center gap-3">
+        <BoltLogo className="h-5 shrink-0" wordmark />
 
-      <div className="flex shrink-0 gap-2">
+        <p className="font-medium">Install Bolt</p>
+      </div>
+
+      <div className="flex shrink-0 gap-1.5">
         <Button
-          variant="plain"
+          variant="subtle"
           onClick={handleDismiss}
           className="text-text-muted hover:text-text-secondary rounded-md px-3 py-1.5 text-sm transition-colors"
         >
