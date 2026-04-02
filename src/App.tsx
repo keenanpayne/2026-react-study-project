@@ -21,6 +21,7 @@ import {
   MockUserTeams,
 } from './data/mockUser'
 import { useMobileNavigation } from './hooks/useMobileNavigation'
+import InstallPrompt from './ui/components/InstallPrompt'
 
 export default function App() {
   const [isActionDialogOpen, setIsActionDialogOpen] = useState(false)
@@ -119,6 +120,8 @@ export default function App() {
         activeView={activeMobileView}
         onViewChange={handleMobileViewChange}
       />
+
+      <InstallPrompt />
     </>
   )
 }
