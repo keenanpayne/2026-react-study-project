@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import {
   Plus,
   ChevronsUpDown,
@@ -7,51 +7,89 @@ import {
   ArrowUp,
 } from 'lucide-react'
 import Button from './Button'
+import ToggleButton from './ToggleButton'
 import DropdownAttachments from './DropdownAttachments'
 import DropdownModels from './DropdownModels'
 import DropdownTrigger from './DropdownTrigger'
+import { formatTokens } from '~/utils/formatTokens'
 
-function formatTokens(tokens: number): string {
-  if (tokens >= 1000000) {
-    const value = Math.round(tokens / 100000) / 10
-    return `${value % 1 === 0 ? value.toFixed(0) : value}M`
-  } else if (tokens >= 1000) {
-    const value = Math.round(tokens / 100) / 10
-    if (value >= 1000) {
-      return `${(value / 1000) % 1 === 0 ? (value / 1000).toFixed(0) : value / 1000}M`
-    }
-    return `${value % 1 === 0 ? value.toFixed(0) : value}k`
-  }
-  return tokens.toString()
+type ModelInfo = {
+  id: string
+  label: string
+  logoSrc: string
 }
 
 type ChatFormProps = {
   tokens: number
+  selectedModel?: ModelInfo
+  upsellMessage?: string
+  onSubmit?: (message: string) => void
 }
 
-export default function ChatForm({ tokens }: ChatFormProps) {
+const DEFAULT_MODEL: ModelInfo = {
+  id: 'sonnet-4.5',
+  label: 'Sonnet 4.5',
+  logoSrc: '/anthropic.svg',
+}
+
+function getPlaceholder(selectActive: boolean, planActive: boolean): string {
+  const parts: string[] = []
+  if (planActive) parts.push('What do you want to plan?')
+  if (selectActive) parts.push('Select an element from the output on the right')
+  return parts.length > 0
+    ? parts.join('\n')
+    : 'How can Bolt help you today? (or /command)'
+}
+
+export default function ChatForm({
+  tokens,
+  selectedModel = DEFAULT_MODEL,
+  upsellMessage = 'Switch to Pro for 33x more usage',
+  onSubmit,
+}: ChatFormProps) {
   const [message, setMessage] = useState('')
   const [selectActive, setSelectActive] = useState(false)
   const [planActive, setPlanActive] = useState(false)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
   const canSend = message.trim().length > 0
 
-  const toggleIconActive =
-    'stroke-icon-active group-hover/button:stroke-icon-active transition-colors'
-  const toggleIconInactive =
-    'icon-interactive group-hover/button:stroke-icon-hover'
+  const handleSubmit = useCallback(() => {
+    const trimmed = message.trim()
+    if (!trimmed) return
+    onSubmit?.(trimmed)
+    setMessage('')
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+    }
+  }, [message, onSubmit])
 
-  const commandPlaceholder =
-    selectActive && planActive
-      ? 'What do you want to plan?\nSelect an element from the output on the right'
-      : selectActive
-        ? 'Select an element from the output on the right'
-        : planActive
-          ? 'What do you want to plan?'
-          : 'How can Bolt help you today? (or /command)'
+  const handleTextareaChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setMessage(e.target.value)
+      const el = e.target
+      el.style.height = 'auto'
+      el.style.height = `${Math.min(el.scrollHeight, 200)}px`
+    },
+    [],
+  )
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault()
+        if (canSend) handleSubmit()
+      }
+    },
+    [canSend, handleSubmit],
+  )
 
   return (
     <form
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={(e) => {
+        e.preventDefault()
+        handleSubmit()
+      }}
       className="group/form bg-surface mb-3 shrink-0 px-4 pb-3 md:mb-0"
     >
       <aside className="border-border-default mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-focus-within/form:flex md:flex md:flex-row md:gap-0">
@@ -60,7 +98,7 @@ export default function ChatForm({ tokens }: ChatFormProps) {
         </span>
 
         <Button size="flat" className="text-accent hover:underline">
-          Switch to Pro for 33x more usage
+          {upsellMessage}
         </Button>
       </aside>
 
@@ -70,11 +108,13 @@ export default function ChatForm({ tokens }: ChatFormProps) {
         </label>
 
         <textarea
+          ref={textareaRef}
           id="command"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder={commandPlaceholder}
-          className="w-full resize-none px-1.5 py-1 text-base outline-none group-focus-within/form:h-20 focus:outline-none focus-visible:outline-none md:h-20 md:text-sm"
+          onChange={handleTextareaChange}
+          onKeyDown={handleKeyDown}
+          placeholder={getPlaceholder(selectActive, planActive)}
+          className="w-full resize-none px-1.5 py-1 text-base outline-none group-focus-within/form:min-h-20 focus:outline-none focus-visible:outline-none md:min-h-20 md:text-sm"
         />
 
         <div
@@ -104,12 +144,14 @@ export default function ChatForm({ tokens }: ChatFormProps) {
               dropdown={<DropdownModels />}
             >
               <img
-                src="/anthropic.svg"
+                src={selectedModel.logoSrc}
                 alt=""
                 className="h-4 w-4 shrink-0 object-contain grayscale group-focus-within/trigger:grayscale-0 group-hover/trigger:grayscale-0 group-active/trigger:grayscale-0"
               />
 
-              <span className="text-text-secondary text-xs">Sonnet 4.5</span>
+              <span className="text-text-secondary text-xs">
+                {selectedModel.label}
+              </span>
 
               <ChevronsUpDown
                 size={14}
@@ -122,66 +164,25 @@ export default function ChatForm({ tokens }: ChatFormProps) {
 
           <div className="flex items-center gap-1.5 md:gap-3">
             <div className="flex items-center gap-1.5">
-              <Button
-                size="md"
-                radius="pill"
-                variant={selectActive ? 'selected' : 'ghost'}
-                className="group/button shrink-0"
-                type="button"
-                aria-label="Select"
-                aria-pressed={selectActive}
-                onClick={() => setSelectActive((v) => !v)}
-              >
-                <MousePointerClick
-                  size={18}
-                  strokeWidth={1.5}
-                  aria-hidden="true"
-                  className={
-                    selectActive ? toggleIconActive : toggleIconInactive
-                  }
-                />
-                <span
-                  className={
-                    selectActive
-                      ? 'text-text-selected text-xs'
-                      : 'text-text-secondary text-xs'
-                  }
-                >
-                  Select
-                </span>
-              </Button>
+              <ToggleButton
+                icon={MousePointerClick}
+                label="Select"
+                active={selectActive}
+                onToggle={() => setSelectActive((v) => !v)}
+              />
 
-              <Button
-                size="md"
-                radius="pill"
-                variant={planActive ? 'selected' : 'ghost'}
-                className="group/button shrink-0"
-                type="button"
-                aria-label="Plan"
-                aria-pressed={planActive}
-                onClick={() => setPlanActive((v) => !v)}
-              >
-                <Lightbulb
-                  size={18}
-                  strokeWidth={1.5}
-                  aria-hidden="true"
-                  className={planActive ? toggleIconActive : toggleIconInactive}
-                />
-                <span
-                  className={
-                    planActive
-                      ? 'text-text-selected text-xs'
-                      : 'text-text-secondary text-xs'
-                  }
-                >
-                  Plan
-                </span>
-              </Button>
+              <ToggleButton
+                icon={Lightbulb}
+                label="Plan"
+                active={planActive}
+                onToggle={() => setPlanActive((v) => !v)}
+              />
             </div>
 
             <Button
               size="flat"
               className="group/button shrink-0"
+              type="submit"
               disabled={!canSend}
             >
               <span className="sr-only">Send Message</span>
