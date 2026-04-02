@@ -31,7 +31,23 @@ type ChatFormProps = {
 
 export default function ChatForm({ tokens }: ChatFormProps) {
   const [message, setMessage] = useState('')
+  const [selectActive, setSelectActive] = useState(false)
+  const [planActive, setPlanActive] = useState(false)
   const canSend = message.trim().length > 0
+
+  const toggleIconActive =
+    'stroke-icon-active group-hover/button:stroke-icon-active transition-colors'
+  const toggleIconInactive =
+    'icon-interactive group-hover/button:stroke-icon-hover'
+
+  const commandPlaceholder =
+    selectActive && planActive
+      ? 'What do you want to plan?\nSelect an element from the output on the right'
+      : selectActive
+        ? 'Select an element from the output on the right'
+        : planActive
+          ? 'What do you want to plan?'
+          : 'How can Bolt help you today? (or /command)'
 
   return (
     <form
@@ -57,7 +73,7 @@ export default function ChatForm({ tokens }: ChatFormProps) {
           id="command"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="How can Bolt help you today? (or /command)"
+          placeholder={commandPlaceholder}
           className="w-full resize-none px-1.5 py-1 text-base outline-none group-focus-within/form:h-20 focus:outline-none focus-visible:outline-none md:h-20 md:text-sm"
         />
 
@@ -105,25 +121,63 @@ export default function ChatForm({ tokens }: ChatFormProps) {
           </div>
 
           <div className="flex items-center gap-1.5 md:gap-3">
-            <Button size="sm" radius="xl" className="shrink-0">
-              <MousePointerClick
-                size={18}
-                strokeWidth={1.5}
-                aria-hidden="true"
-                className="stroke-icon-default"
-              />
-              <span className="text-text-secondary text-xs">Select</span>
-            </Button>
+            <div className="flex items-center gap-1.5">
+              <Button
+                size="md"
+                radius="pill"
+                variant={selectActive ? 'selected' : 'ghost'}
+                className="group/button shrink-0"
+                type="button"
+                aria-label="Select"
+                aria-pressed={selectActive}
+                onClick={() => setSelectActive((v) => !v)}
+              >
+                <MousePointerClick
+                  size={18}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                  className={
+                    selectActive ? toggleIconActive : toggleIconInactive
+                  }
+                />
+                <span
+                  className={
+                    selectActive
+                      ? 'text-text-selected text-xs'
+                      : 'text-text-secondary text-xs'
+                  }
+                >
+                  Select
+                </span>
+              </Button>
 
-            <Button size="sm" radius="xl" className="shrink-0">
-              <Lightbulb
-                size={18}
-                strokeWidth={1.5}
-                aria-hidden="true"
-                className="stroke-icon-default"
-              />
-              <span className="text-text-secondary text-xs">Plan</span>
-            </Button>
+              <Button
+                size="md"
+                radius="pill"
+                variant={planActive ? 'selected' : 'ghost'}
+                className="group/button shrink-0"
+                type="button"
+                aria-label="Plan"
+                aria-pressed={planActive}
+                onClick={() => setPlanActive((v) => !v)}
+              >
+                <Lightbulb
+                  size={18}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                  className={planActive ? toggleIconActive : toggleIconInactive}
+                />
+                <span
+                  className={
+                    planActive
+                      ? 'text-text-selected text-xs'
+                      : 'text-text-secondary text-xs'
+                  }
+                >
+                  Plan
+                </span>
+              </Button>
+            </div>
 
             <Button
               size="flat"
