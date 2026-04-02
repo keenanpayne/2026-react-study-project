@@ -1,5 +1,5 @@
 import type { KeyboardEvent } from 'react'
-import type { MockUserTeam } from '~/data/MockUser'
+import type { MockUserTeam } from '~/types/user'
 import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 import Dropdown from './Dropdown'
 import DropdownList from './DropdownList'

@@ -1,5 +1,5 @@
 import { useState, useMemo, type ReactNode, type KeyboardEvent } from 'react'
-import type { MockWorkbenchFileTreeNode } from '~/data/MockWorkbenchCodebase'
+import type { MockWorkbenchFileTreeNode } from '~/data/mockFileTree'
 import WorkbenchFileTree from './WorkbenchFileTree'
 import WorkbenchFile from './WorkbenchFile'
 import Button from './Button'

@@ -1,8 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
-import type {
-  MobileView,
-  WorkbenchPane,
-} from '~/ui/components/MobileNavigation'
+import type { MobileView, WorkbenchPane } from '~/types/navigation'
 
 export function useMobileNavigation(initialPane: WorkbenchPane = 'preview') {
   const [activePane, setActivePane] = useState<WorkbenchPane>(initialPane)

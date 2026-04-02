@@ -1,6 +1,6 @@
 import ChatPlan from './ChatPlan'
 import ChatActions from './ChatActions'
-import { MockChatResponse } from '~/data/MockChat'
+import { MockChatResponse } from '~/data/mockChat'
 
 type ChatResponseProps = {
   actionsExpanded: boolean

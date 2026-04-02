@@ -5,7 +5,7 @@ import WorkbenchContents from './WorkbenchContents'
 import WorkbenchRightContent from './WorkbenchRightContent'
 import WorkbenchLeftSidebar from './WorkbenchLeftSidebar'
 import DatabaseRowEditForm from './DatabaseRowEditForm'
-import { type MockWorkbenchFileTreeNode } from '~/data/MockWorkbenchCodebase'
+import type { MockWorkbenchFileTreeNode } from '~/data/mockFileTree'
 
 function buildEditedValues(
   row: MockWorkbenchFileTreeNode | null,

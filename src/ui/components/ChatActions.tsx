@@ -1,7 +1,7 @@
 import { CircleEllipsis, ChevronDown, SquareTerminal, Eye } from 'lucide-react'
 import CodeString from './CodeString'
 import ChatAction from './ChatAction'
-import { MockChatActions } from '~/data/MockChat'
+import { MockChatActions } from '~/data/mockChat'
 
 type ChatActionsProps = {
   count: number

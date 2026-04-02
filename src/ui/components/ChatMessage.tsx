@@ -2,7 +2,7 @@ import { Ellipsis } from 'lucide-react'
 import ChatResponse from './ChatResponse'
 import DropdownChat from './DropdownChat'
 import DropdownTrigger from './DropdownTrigger'
-import { MockChatUserMessage } from '~/data/MockChat'
+import { MockChatUserMessage } from '~/data/mockChat'
 import BoltLogo from './BoltLogo'
 
 type ChatMessageProps = {

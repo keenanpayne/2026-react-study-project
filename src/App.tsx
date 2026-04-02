@@ -9,19 +9,17 @@ import WorkbenchPreview from './ui/components/WorkbenchPreview'
 import WorkbenchCodebase from './ui/components/WorkbenchCodebase'
 import WorkbenchDatabase from './ui/components/WorkbenchDatabase'
 import MobileNavigation from './ui/components/MobileNavigation'
-import MockWorkbenchPreview from './data/MockWorkbenchPreview'
-import {
-  MockWorkbenchDatabaseTables,
-  MockWorkbenchFile,
-  MockWorkbenchFileTree,
-  MockWorkbenchTerminal,
-} from './data/MockWorkbenchCodebase'
+import MockWorkbenchPreview from './ui/components/MockWorkbenchPreview'
+import { MockWorkbenchDatabaseTables } from './data/mockDatabase'
+import { MockWorkbenchFileTree } from './data/mockFileTree'
+import { MockWorkbenchFile } from './data/mockEditorFile'
+import { MockWorkbenchTerminal } from './data/mockTerminal'
 import {
   MockUserBoltTokens,
   MockUserCurrentProject,
   MockUserProjects,
   MockUserTeams,
-} from './data/MockUser'
+} from './data/mockUser'
 import { useMobileNavigation } from './hooks/useMobileNavigation'
 
 export default function App() {

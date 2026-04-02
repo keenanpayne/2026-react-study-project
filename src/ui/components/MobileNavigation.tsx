@@ -4,10 +4,8 @@ import DropdownTrigger from './DropdownTrigger'
 import DropdownSettings from './DropdownSettings'
 import DropdownUser from './DropdownUser'
 import Button from './Button'
-import type { MockUserTeam } from '~/data/MockUser'
-
-export type WorkbenchPane = 'preview' | 'codebase' | 'database'
-export type MobileView = 'chat' | WorkbenchPane
+import type { MockUserTeam } from '~/types/user'
+import type { MobileView } from '~/types/navigation'
 
 type MobileNavigationProps = {
   activeView: MobileView

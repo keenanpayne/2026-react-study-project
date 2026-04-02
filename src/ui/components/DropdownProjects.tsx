@@ -14,7 +14,7 @@ import {
   Lock,
   type LucideIcon,
 } from 'lucide-react'
-import type { MockUserProject } from '~/data/MockUser'
+import type { MockUserProject } from '~/types/user'
 import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 import Dropdown, {
   DROPDOWN_ICON_SIZE,

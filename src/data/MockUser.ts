@@ -1,11 +1,4 @@
-// Projects
-export type MockUserProject = {
-  id: number
-  title: string
-  private: boolean
-  created_at: Date
-  updated_at: Date
-}
+import type { MockUserProject, MockUserTeam } from '~/types/user'
 
 export const MockUserProjects: MockUserProject[] = [
   {
@@ -33,17 +26,6 @@ export const MockUserProjects: MockUserProject[] = [
 
 export const MockUserCurrentProject: MockUserProject = MockUserProjects[0]
 
-// Teams
-export type MockUserTeam = {
-  id: number
-  title: string
-  type?: 'Personal' | 'Pro' | 'Team' | 'Enterprise'
-  icon?: string
-  active?: boolean
-  created_at?: Date
-  updated_at?: Date
-}
-
 export const MockUserTeams: MockUserTeam[] = [
   {
     id: 1,
@@ -64,5 +46,4 @@ export const MockUserTeams: MockUserTeam[] = [
   },
 ]
 
-// Bolt Tokens
 export const MockUserBoltTokens = 300000

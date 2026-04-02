@@ -1,6 +1,6 @@
 import { useId, type FormEvent } from 'react'
 import { X } from 'lucide-react'
-import { type MockWorkbenchFileTreeNode } from '~/data/MockWorkbenchCodebase'
+import type { MockWorkbenchFileTreeNode } from '~/data/mockFileTree'
 import Button from './Button'
 
 type DatabaseRowEditFormProps = {

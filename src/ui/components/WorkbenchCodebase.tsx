@@ -1,5 +1,5 @@
 import { File, type FileContents } from '@pierre/diffs/react'
-import type { MockWorkbenchFileTreeNode } from '~/data/MockWorkbenchCodebase'
+import type { MockWorkbenchFileTreeNode } from '~/data/mockFileTree'
 import WorkbenchLeftSidebar from './WorkbenchLeftSidebar'
 import WorkbenchContainer from './WorkbenchContainer'
 import WorkbenchContents from './WorkbenchContents'

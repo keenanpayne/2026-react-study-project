@@ -12,8 +12,8 @@ import Button from './Button'
 import DropdownSettings from './DropdownSettings'
 import DropdownUser from './DropdownUser'
 import DropdownTrigger from './DropdownTrigger'
-import type { WorkbenchPane } from './MobileNavigation'
-import type { MockUserTeam } from '~/data/MockUser'
+import type { WorkbenchPane } from '~/types/navigation'
+import type { MockUserTeam } from '~/types/user'
 
 type WorkbenchHeaderProps = {
   activePane: WorkbenchPane

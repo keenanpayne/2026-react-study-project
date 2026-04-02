@@ -8,7 +8,7 @@ import {
   TableProperties,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
-import type { MockWorkbenchFileTreeItemType } from '~/data/MockWorkbenchCodebase'
+import type { MockWorkbenchFileTreeItemType } from '~/types/workbench'
 
 interface WorkbenchFileIconProps {
   type?: MockWorkbenchFileTreeItemType
