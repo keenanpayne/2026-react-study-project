@@ -209,7 +209,7 @@ export default function WorkbenchLeftSidebar(props: WorkbenchLeftSidebarProps) {
                   value={query}
                   onChange={setQuery}
                   placeholder="Search"
-                  autoFocus // eslint-disable-line jsx-a11y/no-autofocus -- intentional: user just clicked Search
+                  focusOnMount
                   onKeyDown={handleSearchKeyDown}
                   onBlur={handleSearchBlur}
                   className="h-8 min-w-0 flex-1 px-2 text-sm font-medium placeholder:font-medium"

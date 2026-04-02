@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import type {
   MobileView,
   WorkbenchPane,
@@ -7,24 +7,11 @@ import type {
 export function useMobileNavigation(initialPane: WorkbenchPane = 'preview') {
   const [activePane, setActivePane] = useState<WorkbenchPane>(initialPane)
   const [activeMobileView, setActiveMobileView] = useState<MobileView>('chat')
-  const isInitialRender = useRef(true)
   const chatRef = useRef<HTMLElement>(null)
   const workbenchRef = useRef<HTMLElement>(null)
 
-  const handleMobileViewChange = useCallback((view: MobileView) => {
-    setActiveMobileView(view)
-    if (view !== 'chat') {
-      setActivePane(view)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false
-      return
-    }
-
-    const targetRef = activeMobileView === 'chat' ? chatRef : workbenchRef
+  const focusViewHeading = useCallback((view: MobileView) => {
+    const targetRef = view === 'chat' ? chatRef : workbenchRef
     const el = targetRef.current
     if (el) {
       const heading = el.querySelector('h1, h2, h3, [tabindex="-1"]')
@@ -34,7 +21,18 @@ export function useMobileNavigation(initialPane: WorkbenchPane = 'preview') {
         el.focus({ preventScroll: true })
       }
     }
-  }, [activeMobileView])
+  }, [])
+
+  const handleMobileViewChange = useCallback(
+    (view: MobileView) => {
+      setActiveMobileView(view)
+      if (view !== 'chat') {
+        setActivePane(view)
+      }
+      requestAnimationFrame(() => focusViewHeading(view))
+    },
+    [focusViewHeading],
+  )
 
   return {
     activePane,

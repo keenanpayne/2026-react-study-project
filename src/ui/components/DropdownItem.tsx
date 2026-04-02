@@ -211,7 +211,12 @@ export default function DropdownItem(props: DropdownItemProps) {
           />
 
           {isSubOpen && (
-            <div className="my-1.5 w-full md:my-0 md:contents">
+            <div
+              role="presentation"
+              className="my-1.5 w-full md:my-0 md:contents"
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+            >
               {props.dropdown}
             </div>
           )}

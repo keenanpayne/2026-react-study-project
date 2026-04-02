@@ -1,11 +1,11 @@
-import { useRef, useEffect, type KeyboardEvent, type ReactNode } from 'react'
+import { useEffect, useRef, type KeyboardEvent, type ReactNode } from 'react'
 import { Search } from 'lucide-react'
 
 type SearchInputProps = {
   value: string
   onChange: (value: string) => void
   placeholder?: string
-  autoFocus?: boolean
+  focusOnMount?: boolean
   onBlur?: () => void
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void
   className?: string
@@ -18,16 +18,13 @@ export default function SearchInput(props: SearchInputProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (props.autoFocus) {
-      inputRef.current?.focus()
-    }
-  }, [props.autoFocus])
+    if (props.focusOnMount) inputRef.current?.focus()
+  }, [props.focusOnMount])
 
   return (
     <div
       className={`flex items-center gap-2 rounded-md focus-within:shadow-[0_0_0_2px_var(--color-focus-ring)] ${props.className ?? ''}`}
       role="search"
-      onPointerDown={(e) => e.stopPropagation()}
     >
       {props.icon ? (
         props.icon
