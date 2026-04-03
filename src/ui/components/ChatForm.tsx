@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Plus,
   ChevronsUpDown,
@@ -50,7 +50,22 @@ export default function ChatForm({
   const [message, setMessage] = useState('')
   const [selectActive, setSelectActive] = useState(false)
   const [planActive, setPlanActive] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
+
+  useEffect(() => {
+    if (!isExpanded) return
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (formRef.current && !formRef.current.contains(event.target as Node)) {
+        setIsExpanded(false)
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => document.removeEventListener('pointerdown', handlePointerDown)
+  }, [isExpanded])
 
   const canSend = message.trim().length > 0
 
@@ -86,13 +101,16 @@ export default function ChatForm({
 
   return (
     <form
+      ref={formRef}
+      onFocus={() => setIsExpanded(true)}
       onSubmit={(e) => {
         e.preventDefault()
         handleSubmit()
       }}
+      data-expanded={isExpanded || undefined}
       className="group/form bg-surface mb-3 shrink-0 px-4 pb-3 md:mb-0"
     >
-      <div className="border-border-default mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-focus-within/form:flex md:flex md:flex-row md:gap-0">
+      <div className="border-border-default mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-data-expanded/form:flex md:flex md:flex-row md:gap-0">
         <span aria-live="polite">
           {formatTokens(tokens)} daily tokens remaining.
         </span>
@@ -107,7 +125,7 @@ export default function ChatForm({
         </Button>
       </div>
 
-      <div className="relative w-full rounded-xl border border-transparent bg-[linear-gradient(var(--color-surface-raised),var(--color-surface-raised)),linear-gradient(to_bottom_right,var(--color-blue-400),var(--color-blue-100))] [background-clip:padding-box,border-box] bg-origin-border p-3 shadow-md transition-shadow focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)] md:pb-0 md:shadow-sm md:group-focus-within/form:pb-0 md:focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)]">
+      <div className="relative w-full rounded-xl border border-transparent bg-[linear-gradient(var(--color-surface-raised),var(--color-surface-raised)),linear-gradient(to_bottom_right,var(--color-blue-400),var(--color-blue-100))] [background-clip:padding-box,border-box] bg-origin-border p-3 shadow-md transition-shadow focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)] md:pb-0 md:shadow-sm md:group-data-expanded/form:pb-0 md:focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)]">
         <label htmlFor="command" className="sr-only">
           Command
         </label>
@@ -119,13 +137,13 @@ export default function ChatForm({
           onChange={handleTextareaChange}
           onKeyDown={handleKeyDown}
           placeholder={getPlaceholder(selectActive, planActive)}
-          className="w-full resize-none px-1.5 py-1 text-base outline-none group-focus-within/form:min-h-20 focus:outline-none focus-visible:outline-none md:min-h-20 md:text-sm"
+          className="w-full resize-none px-1.5 py-1 text-base outline-none group-data-expanded/form:min-h-20 focus:outline-none focus-visible:outline-none md:min-h-20 md:text-sm"
         />
 
         <div
           role="toolbar"
           aria-label="Message options"
-          className="hidden items-center justify-between gap-3 py-1.5 group-focus-within/form:flex md:flex"
+          className="hidden items-center justify-between gap-3 py-1.5 group-data-expanded/form:flex md:flex"
           onMouseDown={(e) => e.preventDefault()}
         >
           <div className="flex items-center gap-3">
