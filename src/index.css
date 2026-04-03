@@ -110,6 +110,10 @@
     var(--color-gray-300),
     var(--color-gray-900)
   );
+  --color-fill-destructive: light-dark(
+    var(--color-red-500),
+    var(--color-red-500)
+  );
 }
 
 /**
