@@ -2,7 +2,7 @@
 
 As I anticipate my technical interview at Bolt, I decided to practice building the Bolt.new user interface from scratch. The purpose of doing this was to ensure my design and React development skills are sharp before my interviews.
 
-Roughly ~65% of the code is hand-written. The foundational layers, including types, utility functions, primitive components, the custom dropdown system, and the state architecture, were designed and written by hand. AI was used for execution within that structure.
+Roughly ~65% of the code is hand-written. The foundational layers, including core component abstractions, layout and responsiveness, types, the custom dropdown system, and the state architecture, were designed and written by hand. AI was used for execution within that structure.
 
 As the project's foundation was laid by hand (i.e., core abstractions and design patterns), iterating with AI became easier and, honestly, much more tempting. I used AI coding assistance for Q&A, generating/formatting mock data, and executing straightforward but comprehensive refactors that were easily verifiable (e.g., ensuring HTML semantics were correct; auditing accessibility concerns, etc.)
 
