@@ -16,6 +16,7 @@ type CollapseToggleProps = {
   className?: string
   controls?: string
   label?: string
+  disabled?: boolean
 }
 
 const iconMap = {
@@ -31,6 +32,7 @@ export default function CollapseToggle({
   className,
   controls,
   label,
+  disabled,
 }: CollapseToggleProps) {
   const Icon = iconMap[direction][isExpanded ? 'expanded' : 'collapsed']
   const action = isExpanded ? 'Collapse' : 'Expand'
@@ -43,6 +45,7 @@ export default function CollapseToggle({
       variant="ghost"
       iconOnly
       onClick={onToggle}
+      disabled={disabled}
       aria-label={ariaLabel}
       aria-expanded={isExpanded}
       aria-controls={controls}

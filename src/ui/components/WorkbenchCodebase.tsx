@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { File, type FileContents } from '@pierre/diffs/react'
 import type { TreeNode } from '~/types/workbench'
 import WorkbenchLeftSidebar from './WorkbenchLeftSidebar'
@@ -7,6 +8,7 @@ import WorkbenchTerminal from './WorkbenchTerminal'
 import WorkbenchRightContent from './WorkbenchRightContent'
 import { FolderTree } from 'lucide-react'
 import { DIFF_FILE_OPTIONS } from '~/utils/diffOptions'
+import { useCollapsible } from '~/hooks/useCollapsible'
 
 type WorkbenchCodebaseProps = {
   file: FileContents
@@ -26,6 +28,23 @@ export default function WorkbenchCodebase({
   terminal,
   isVisible,
 }: WorkbenchCodebaseProps) {
+  const sidebarExpandedRef = useRef(true)
+  const contentExpandedRef = useRef(true)
+
+  const { isExpanded: sidebarExpanded, toggle: toggleSidebar } = useCollapsible(
+    true,
+    () => !sidebarExpandedRef.current || contentExpandedRef.current,
+  )
+  const { isExpanded: contentExpanded, toggle: toggleContent } = useCollapsible(
+    true,
+    () => !contentExpandedRef.current || sidebarExpandedRef.current,
+  )
+
+  useEffect(() => {
+    sidebarExpandedRef.current = sidebarExpanded
+    contentExpandedRef.current = contentExpanded
+  }, [sidebarExpanded, contentExpanded])
+
   return (
     <WorkbenchContainer className={isVisible ? '' : 'hidden'}>
       <WorkbenchContents>
@@ -34,6 +53,9 @@ export default function WorkbenchCodebase({
             list={list}
             listLabel="Files"
             listIcon={FolderTree}
+            panelExpanded={sidebarExpanded}
+            onPanelToggle={toggleSidebar}
+            collapseDisabled={sidebarExpanded && !contentExpanded}
           />
 
           <WorkbenchRightContent
@@ -44,6 +66,9 @@ export default function WorkbenchCodebase({
                 </span>
               </>
             }
+            panelExpanded={contentExpanded}
+            onPanelToggle={toggleContent}
+            collapseDisabled={contentExpanded && !sidebarExpanded}
           >
             <File file={file} options={DIFF_FILE_OPTIONS} />
           </WorkbenchRightContent>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Database } from 'lucide-react'
 import WorkbenchContainer from './WorkbenchContainer'
 import WorkbenchContents from './WorkbenchContents'
@@ -10,6 +10,7 @@ import type { TreeNode } from '~/types/workbench'
 import type { PaginationConfig } from './WorkbenchLeftSidebar'
 import { buildEditedValues } from '~/utils/database'
 import { joinTreePath } from '~/utils/tree'
+import { useCollapsible } from '~/hooks/useCollapsible'
 
 const DB_PAGINATION: PaginationConfig = {
   depths: [1],
@@ -31,6 +32,23 @@ export default function WorkbenchDatabase({
   list,
   isVisible,
 }: WorkbenchDatabaseProps) {
+  const sidebarExpandedRef = useRef(true)
+  const contentExpandedRef = useRef(true)
+
+  const { isExpanded: sidebarExpanded, toggle: toggleSidebar } = useCollapsible(
+    true,
+    () => !sidebarExpandedRef.current || contentExpandedRef.current,
+  )
+  const { isExpanded: contentExpanded, toggle: toggleContent } = useCollapsible(
+    true,
+    () => !contentExpandedRef.current || sidebarExpandedRef.current,
+  )
+
+  useEffect(() => {
+    sidebarExpandedRef.current = sidebarExpanded
+    contentExpandedRef.current = contentExpanded
+  }, [sidebarExpanded, contentExpanded])
+
   const [selectedNode, setSelectedNode] = useState<TreeNode | null>(null)
   const [selectedNodePath, setSelectedNodePath] = useState<string | null>(null)
   const [selectedRow, setSelectedRow] = useState<TreeNode | null>(null)
@@ -84,6 +102,9 @@ export default function WorkbenchDatabase({
             onSelect={handleSelectNode}
             pagination={DB_PAGINATION}
             truncateNames={true}
+            panelExpanded={sidebarExpanded}
+            onPanelToggle={toggleSidebar}
+            collapseDisabled={sidebarExpanded && !contentExpanded}
           />
 
           <WorkbenchRightContent
@@ -102,6 +123,9 @@ export default function WorkbenchDatabase({
                 'Tables'
               )
             }
+            panelExpanded={contentExpanded}
+            onPanelToggle={toggleContent}
+            collapseDisabled={contentExpanded && !sidebarExpanded}
           >
             <div className="flex flex-col">
               <div className="p-3">

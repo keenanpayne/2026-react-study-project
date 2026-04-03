@@ -7,7 +7,6 @@ import CollapseToggle from './CollapseToggle'
 import SearchInput from './SearchInput'
 import { SearchCode, type LucideIcon } from 'lucide-react'
 import Pagination from './Pagination'
-import { useCollapsible } from '~/hooks/useCollapsible'
 import { cx } from '~/utils/cx'
 import {
   computeInitialExpanded,
@@ -30,6 +29,9 @@ type WorkbenchLeftSidebarProps = {
   onSelect?: (node: TreeNode, path: string) => void
   pagination?: PaginationConfig
   truncateNames?: boolean
+  panelExpanded: boolean
+  onPanelToggle: () => void
+  collapseDisabled?: boolean
 }
 
 export default function WorkbenchLeftSidebar({
@@ -41,8 +43,10 @@ export default function WorkbenchLeftSidebar({
   onSelect,
   pagination,
   truncateNames,
+  panelExpanded,
+  onPanelToggle,
+  collapseDisabled,
 }: WorkbenchLeftSidebarProps) {
-  const { isExpanded: panelExpanded, toggle: togglePanel } = useCollapsible()
   const [prevList, setPrevList] = useState(list)
   const [expanded, setExpanded] = useState<Set<string>>(() =>
     computeInitialExpanded(list, ''),
@@ -234,10 +238,11 @@ export default function WorkbenchLeftSidebar({
 
           <CollapseToggle
             isExpanded={panelExpanded}
-            onToggle={togglePanel}
+            onToggle={onPanelToggle}
             direction="horizontal"
             controls="sidebar-panel"
             label="file browser"
+            disabled={collapseDisabled}
           />
         </nav>
       </header>
