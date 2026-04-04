@@ -17,6 +17,8 @@ import Dropdown from './Dropdown'
 import DropdownItem from './DropdownItem'
 import DropdownList from './DropdownList'
 import DropdownTrigger from './DropdownTrigger'
+import Button from './Button'
+import BoltLogo from './BoltLogo'
 
 const DB_PAGINATION: PaginationConfig = {
   depths: [1],
@@ -190,7 +192,7 @@ function LogsSection() {
   return (
     <div className="space-y-3 p-6 md:space-y-6">
       <header>
-        <h2 className="text-xl font-semibold">Logs</h2>
+        <h2 className="mb-1.5 text-xl font-semibold">Logs</h2>
 
         <p>
           Monitor database queries, authentication events, and backend services.
@@ -234,7 +236,41 @@ function LogsSection() {
 }
 
 function SecurityAuditSection() {
-  return <p className="p-3">Security Audit (stub).</p>
+  return (
+    <div className="space-y-3 p-6 md:space-y-6">
+      <header>
+        <div className="flex flex-row justify-between gap-3">
+          <h2 className="mb-1.5 text-xl font-semibold">Security Audit</h2>
+
+          <Button size="md" radius="md" variant="subtle">
+            <BoltLogo wordmark className="h-4" />
+            Ask Bolt to fix
+          </Button>
+        </div>
+
+        <p>
+          Identifies vulnerabilities like missing RLS policies and insecure
+          permissions.
+        </p>
+
+        <p>Use "Ask Bolt to fix" to apply recommended improvements.</p>
+
+        <div className="mt-3 space-y-1.5 @md:mt-6 @lg:mt-9">
+          <p className="text-sm font-semibold">
+            Leaked Password Protection Disabled{' '}
+            <span className="text-warning bg-warning-bg ml-1.5 rounded-full px-3 py-1 text-xs">
+              Warning
+            </span>
+          </p>
+          <p className="text-text-muted text-sm">
+            Supabase Auth prevents the use of compromised passwords by checking
+            against HaveIBeenPwned.org. <br />
+            Enable this feature to enhance security.
+          </p>
+        </div>
+      </header>
+    </div>
+  )
 }
 
 function AdvancedSection() {

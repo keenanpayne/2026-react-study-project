@@ -95,6 +95,17 @@
     oklch(from var(--color-green-900) l c h / 0.3)
   );
 
+  /* Warning */
+  --color-warning: light-dark(var(--color-orange-600), var(--color-orange-500));
+  --color-warning-hover: light-dark(
+    var(--color-orange-700),
+    var(--color-orange-400)
+  );
+  --color-warning-bg: light-dark(
+    var(--color-orange-100),
+    oklch(from var(--color-orange-900) l c h / 0.3)
+  );
+
   /* Icons */
   --color-icon-default: light-dark(
     var(--color-gray-600),
