@@ -12,17 +12,35 @@ import Button from './Button'
 import DropdownSettings from './DropdownSettings'
 import DropdownUser from './DropdownUser'
 import DropdownTrigger from './DropdownTrigger'
-import type { WorkbenchPane } from '~/types/navigation'
+import type {
+  WorkbenchDatabaseSection,
+  WorkbenchPane,
+} from '~/types/navigation'
 import type { UserTeam } from '~/types/user'
+
+const DATABASE_SECTIONS: { id: WorkbenchDatabaseSection; label: string }[] = [
+  { id: 'database', label: 'Database' },
+  { id: 'logs', label: 'Logs' },
+  { id: 'securityAudit', label: 'Security Audit' },
+  { id: 'advanced', label: 'Advanced' },
+]
 
 type WorkbenchHeaderProps = {
   activePane: WorkbenchPane
   onPaneChange: (pane: WorkbenchPane) => void
+  activeDatabaseSection: WorkbenchDatabaseSection
+  onDatabaseSectionChange: (section: WorkbenchDatabaseSection) => void
   teams: UserTeam[]
 }
 
 export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
-  const { activePane, onPaneChange, teams } = props
+  const {
+    activePane,
+    onPaneChange,
+    teams,
+    activeDatabaseSection,
+    onDatabaseSectionChange,
+  } = props
   const activeTeam = teams.find((team) => team.active)
 
   if (!activeTeam) {
@@ -186,26 +204,18 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
             aria-label="Database sections"
             className="order-2 mr-auto ml-auto flex flex-1 items-center justify-center gap-1.5 sm:order-1"
           >
-            <Button
-              size="lg"
-              radius="pill"
-              variant="selected"
-              aria-current="true"
-            >
-              Database
-            </Button>
-
-            <Button size="lg" radius="pill" variant="ghost">
-              Logs
-            </Button>
-
-            <Button size="lg" radius="pill" variant="ghost">
-              Security Audit
-            </Button>
-
-            <Button size="lg" radius="pill" variant="ghost">
-              Advanced
-            </Button>
+            {DATABASE_SECTIONS.map(({ id, label }) => (
+              <Button
+                key={id}
+                size="lg"
+                radius="pill"
+                variant={activeDatabaseSection === id ? 'selected' : 'ghost'}
+                aria-pressed={activeDatabaseSection === id}
+                onClick={() => onDatabaseSectionChange(id)}
+              >
+                {label}
+              </Button>
+            ))}
           </div>
         )}
 

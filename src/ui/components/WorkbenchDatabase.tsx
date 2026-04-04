@@ -11,6 +11,13 @@ import type { PaginationConfig } from './WorkbenchLeftSidebar'
 import { buildEditedValues } from '~/utils/database'
 import { joinTreePath } from '~/utils/tree'
 import { useCollapsible } from '~/hooks/useCollapsible'
+import type { WorkbenchDatabaseSection } from '~/types/navigation'
+
+const SECTION_STUBS: Partial<Record<WorkbenchDatabaseSection, string>> = {
+  logs: 'Logs (stub).',
+  securityAudit: 'Security Audit (stub).',
+  advanced: 'Advanced (stub).',
+}
 
 const DB_PAGINATION: PaginationConfig = {
   depths: [1],
@@ -26,11 +33,13 @@ type WorkbenchDatabaseProps = {
    * Tailwind `hidden` class.
    */
   isVisible: boolean
+  activeDatabaseSection: WorkbenchDatabaseSection
 }
 
 export default function WorkbenchDatabase({
   list,
   isVisible,
+  activeDatabaseSection,
 }: WorkbenchDatabaseProps) {
   const sidebarExpandedRef = useRef(true)
   const contentExpandedRef = useRef(true)
@@ -92,68 +101,72 @@ export default function WorkbenchDatabase({
   return (
     <WorkbenchContainer className={isVisible ? '' : 'hidden'}>
       <WorkbenchContents>
-        <div className="flex min-h-0 flex-1 flex-col @md:flex-row">
-          <WorkbenchLeftSidebar
-            list={list}
-            listLabel="Tables"
-            listIcon={Database}
-            selectedNodePath={selectedNodePath}
-            selectedRowPath={selectedRowPath}
-            onSelect={handleSelectNode}
-            pagination={DB_PAGINATION}
-            truncateNames={true}
-            panelExpanded={sidebarExpanded}
-            onPanelToggle={toggleSidebar}
-            collapseDisabled={sidebarExpanded && !contentExpanded}
-          />
+        {activeDatabaseSection === 'database' ? (
+          <div className="flex min-h-0 flex-1 flex-col @md:flex-row">
+            <WorkbenchLeftSidebar
+              list={list}
+              listLabel="Tables"
+              listIcon={Database}
+              selectedNodePath={selectedNodePath}
+              selectedRowPath={selectedRowPath}
+              onSelect={handleSelectNode}
+              pagination={DB_PAGINATION}
+              truncateNames={true}
+              panelExpanded={sidebarExpanded}
+              onPanelToggle={toggleSidebar}
+              collapseDisabled={sidebarExpanded && !contentExpanded}
+            />
 
-          <WorkbenchRightContent
-            title={
-              selectedNode ? (
-                <div className="flex flex-1 flex-row gap-3">
-                  <p>
-                    Table:{' '}
-                    <span className="font-bold">{selectedNode.name}</span>
-                  </p>
-                  <p className="text-text-muted text-sm">
-                    {`${selectedNode.children?.length ?? 0} ${selectedNode.type === 'table' ? 'rows' : 'columns'}`}
-                  </p>
+            <WorkbenchRightContent
+              title={
+                selectedNode ? (
+                  <div className="flex flex-1 flex-row gap-3">
+                    <p>
+                      Table:{' '}
+                      <span className="font-bold">{selectedNode.name}</span>
+                    </p>
+                    <p className="text-text-muted text-sm">
+                      {`${selectedNode.children?.length ?? 0} ${selectedNode.type === 'table' ? 'rows' : 'columns'}`}
+                    </p>
+                  </div>
+                ) : (
+                  'Tables'
+                )
+              }
+              panelExpanded={contentExpanded}
+              onPanelToggle={toggleContent}
+              collapseDisabled={contentExpanded && !sidebarExpanded}
+            >
+              <div className="flex flex-col">
+                <div className="p-3">
+                  {selectedNode?.children ? (
+                    <DatabaseTable
+                      node={selectedNode}
+                      selectedRow={selectedRow}
+                      onSelectRow={handleSelectRow}
+                    />
+                  ) : null}
                 </div>
-              ) : (
-                'Tables'
-              )
-            }
-            panelExpanded={contentExpanded}
-            onPanelToggle={toggleContent}
-            collapseDisabled={contentExpanded && !sidebarExpanded}
-          >
-            <div className="flex flex-col">
-              <div className="p-3">
-                {selectedNode?.children ? (
-                  <DatabaseTable
-                    node={selectedNode}
-                    selectedRow={selectedRow}
-                    onSelectRow={handleSelectRow}
-                  />
-                ) : null}
+
+                {selectedRow?.children && (
+                  <div className="px-3 pb-3">
+                    <DatabaseRowEditForm
+                      selectedRow={selectedRow}
+                      editedValues={editedValues}
+                      onValueChange={(name, value) =>
+                        setEditedValues((prev) => ({ ...prev, [name]: value }))
+                      }
+                      onClose={() => handleSelectRow(null)}
+                      onSave={() => handleSelectRow(null)}
+                    />
+                  </div>
+                )}
               </div>
-
-              {selectedRow?.children && (
-                <div className="px-3 pb-3">
-                  <DatabaseRowEditForm
-                    selectedRow={selectedRow}
-                    editedValues={editedValues}
-                    onValueChange={(name, value) =>
-                      setEditedValues((prev) => ({ ...prev, [name]: value }))
-                    }
-                    onClose={() => handleSelectRow(null)}
-                    onSave={() => handleSelectRow(null)}
-                  />
-                </div>
-              )}
-            </div>
-          </WorkbenchRightContent>
-        </div>
+            </WorkbenchRightContent>
+          </div>
+        ) : (
+          <p className="p-3">{SECTION_STUBS[activeDatabaseSection]}</p>
+        )}
       </WorkbenchContents>
     </WorkbenchContainer>
   )

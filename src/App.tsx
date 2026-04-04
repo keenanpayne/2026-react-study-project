@@ -27,9 +27,12 @@ import {
 } from './data/mockChat'
 import { useMobileNavigation } from './hooks/useMobileNavigation'
 import InstallPrompt from './ui/components/InstallPrompt'
+import type { WorkbenchDatabaseSection } from '~/types/navigation'
 
 export default function App() {
   const [isActionDialogOpen, setIsActionDialogOpen] = useState(false)
+  const [activeDatabaseSection, setActiveDatabaseSection] =
+    useState<WorkbenchDatabaseSection>('database')
   const {
     activePane,
     setActivePane,
@@ -104,6 +107,8 @@ export default function App() {
             teams={MockUserTeams}
             activePane={activePane}
             onPaneChange={setActivePane}
+            activeDatabaseSection={activeDatabaseSection}
+            onDatabaseSectionChange={setActiveDatabaseSection}
           />
 
           <WorkbenchPreview
@@ -121,6 +126,7 @@ export default function App() {
           <WorkbenchDatabase
             isVisible={activePane === 'database'}
             list={MockWorkbenchDatabaseTables}
+            activeDatabaseSection={activeDatabaseSection}
           />
         </section>
       </main>
