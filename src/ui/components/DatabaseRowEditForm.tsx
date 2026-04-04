@@ -9,6 +9,7 @@ type DatabaseRowEditFormProps = {
   onValueChange: (columnName: string, value: string) => void
   onClose: () => void
   onSave: () => void
+  title?: string
 }
 
 export default function DatabaseRowEditForm({
@@ -17,6 +18,7 @@ export default function DatabaseRowEditForm({
   onValueChange,
   onClose,
   onSave,
+  title,
 }: DatabaseRowEditFormProps) {
   const formId = useId()
 
@@ -31,7 +33,7 @@ export default function DatabaseRowEditForm({
     <form className="panel-card rounded-lg" onSubmit={handleSubmit}>
       <div className="section-header flex items-center justify-between rounded-t-lg px-4 py-3">
         <h2 className="text-text-secondary text-sm font-medium">
-          Edit Row: {selectedRow.name}
+          {title ?? `Edit Row: ${selectedRow.name}`}
         </h2>
 
         <Button

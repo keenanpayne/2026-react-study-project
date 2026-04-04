@@ -1,5 +1,15 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { ChevronsUpDown, Database, TriangleAlert } from 'lucide-react'
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
+import {
+  ChevronsUpDown,
+  Database,
+  ListFilter,
+  Plus,
+  RefreshCw,
+  ShieldCheck,
+  Terminal,
+  TriangleAlert,
+  type LucideIcon,
+} from 'lucide-react'
 import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 import WorkbenchContainer from './WorkbenchContainer'
 import WorkbenchContents from './WorkbenchContents'
@@ -34,6 +44,39 @@ const LOG_TYPE_OPTIONS = [
 
 type LogTypeOption = (typeof LOG_TYPE_OPTIONS)[number]
 
+const POLICIES_DATA = [
+  {
+    policyname: 'Users can create posts',
+    roles: '{authenticated}',
+    cmd: 'INSERT',
+  },
+  {
+    policyname: 'Users can delete own posts',
+    roles: '{authenticated}',
+    cmd: 'DELETE',
+  },
+  {
+    policyname: 'Users can update own posts',
+    roles: '{authenticated}',
+    cmd: 'UPDATE',
+  },
+  {
+    policyname: 'Users can view own posts',
+    roles: '{authenticated}',
+    cmd: 'SELECT',
+  },
+] as const
+
+const TABLE_MENU_CONFIG = [
+  { label: 'View Policies' as const, icon: ShieldCheck },
+  { label: 'Add a Row' as const, icon: Plus },
+  { label: 'Refresh' as const, icon: RefreshCw },
+  { label: 'Query' as const, icon: Terminal },
+  { label: 'Filter' as const, icon: ListFilter },
+] as const satisfies readonly { label: string; icon: LucideIcon }[]
+
+type TableMenuItem = (typeof TABLE_MENU_CONFIG)[number]['label']
+
 function LogsTypeMenu({
   value,
   onChange,
@@ -63,6 +106,99 @@ function LogsTypeMenu({
   )
 }
 
+const MOCK_FILTER_COLUMNS = ['id', 'created_at', 'email'] as const
+
+function TableFilterMenu() {
+  const closeCtx = useDropdownTriggerClose()
+  const searchId = useId()
+  const [columnVisible, setColumnVisible] = useState<
+    Record<(typeof MOCK_FILTER_COLUMNS)[number], boolean>
+  >({
+    id: true,
+    created_at: false,
+    email: true,
+  })
+  const [search, setSearch] = useState('')
+
+  function handleClear() {
+    setSearch('')
+    setColumnVisible({ id: true, created_at: false, email: true })
+  }
+
+  return (
+    <Dropdown align="left" className="w-60 p-3">
+      <p className="text-text-secondary mb-3 text-sm font-medium">
+        Filter rows
+      </p>
+
+      <div className="mb-3 flex flex-col gap-2">
+        <p className="text-text-muted text-xs font-medium">Columns</p>
+        {MOCK_FILTER_COLUMNS.map((name) => (
+          <label
+            key={name}
+            className="text-text-secondary flex cursor-pointer items-center gap-2 text-sm"
+          >
+            <input
+              type="checkbox"
+              checked={columnVisible[name]}
+              onChange={() =>
+                setColumnVisible((prev) => ({
+                  ...prev,
+                  [name]: !prev[name],
+                }))
+              }
+              className="border-border-strong rounded border"
+            />
+            {name}
+          </label>
+        ))}
+      </div>
+
+      <div className="mb-4 flex flex-col gap-1">
+        <label
+          className="text-text-muted text-xs font-medium"
+          htmlFor={searchId}
+        >
+          Search
+        </label>
+        <input
+          id={searchId}
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search…"
+          className="input-base"
+          autoComplete="off"
+        />
+      </div>
+
+      <div className="flex justify-end gap-2">
+        <Button
+          type="button"
+          size="sm"
+          radius="md"
+          variant="ghost"
+          onClick={() => {
+            handleClear()
+            closeCtx?.close()
+          }}
+        >
+          Clear
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          radius="md"
+          variant="primary"
+          onClick={() => closeCtx?.close()}
+        >
+          Apply
+        </Button>
+      </div>
+    </Dropdown>
+  )
+}
+
 function DatabaseSection({ list }: { list: TreeNode[] }) {
   const sidebarExpandedRef = useRef(true)
   const contentExpandedRef = useRef(true)
@@ -86,6 +222,10 @@ function DatabaseSection({ list }: { list: TreeNode[] }) {
   const [selectedRow, setSelectedRow] = useState<TreeNode | null>(null)
   const [selectedRowPath, setSelectedRowPath] = useState<string | null>(null)
   const [editedValues, setEditedValues] = useState<Record<string, string>>({})
+  const [activeTableMenu, setActiveTableMenu] = useState<TableMenuItem | null>(
+    null,
+  )
+  const [addRowValues, setAddRowValues] = useState<Record<string, string>>({})
 
   function handleSelectNode(node: TreeNode | null, path?: string) {
     if (node?.type === 'row' && path) {
@@ -94,6 +234,7 @@ function DatabaseSection({ list }: { list: TreeNode[] }) {
       )
       if (parentTable) {
         const parentPath = path.substring(0, path.lastIndexOf('/'))
+        if (parentTable !== selectedNode) setActiveTableMenu(null)
         setSelectedNode(parentTable)
         setSelectedNodePath(parentPath || parentTable.name)
         handleSelectRow(node, path)
@@ -101,6 +242,7 @@ function DatabaseSection({ list }: { list: TreeNode[] }) {
       }
     }
 
+    if (node !== selectedNode) setActiveTableMenu(null)
     setSelectedNode(node)
     setSelectedNodePath(path ?? null)
     setSelectedRow(null)
@@ -156,31 +298,179 @@ function DatabaseSection({ list }: { list: TreeNode[] }) {
         onPanelToggle={toggleContent}
         collapseDisabled={contentExpanded && !sidebarExpanded}
       >
-        <div className="flex flex-col">
-          <div className="p-3">
-            {selectedNode?.children ? (
-              <DatabaseTable
-                node={selectedNode}
-                selectedRow={selectedRow}
-                onSelectRow={handleSelectRow}
-              />
-            ) : null}
-          </div>
-
-          {selectedRow?.children && (
-            <div className="px-3 pb-3">
-              <DatabaseRowEditForm
-                selectedRow={selectedRow}
-                editedValues={editedValues}
-                onValueChange={(name, value) =>
-                  setEditedValues((prev) => ({ ...prev, [name]: value }))
+        <>
+          {selectedNode && (
+            <nav
+              aria-label="Table actions"
+              className="divider-bottom flex items-center gap-1 px-2 py-1"
+            >
+              {TABLE_MENU_CONFIG.map(({ label, icon: Icon }) => {
+                if (label === 'Filter') {
+                  if (activeTableMenu) return null
+                  return (
+                    <DropdownTrigger
+                      key={label}
+                      size="md"
+                      radius="md"
+                      wrapperClassName="shrink-0"
+                      dropdown={<TableFilterMenu />}
+                    >
+                      <Icon
+                        size={16}
+                        strokeWidth={2}
+                        aria-hidden="true"
+                        className="stroke-icon-muted shrink-0"
+                      />
+                      {label}
+                    </DropdownTrigger>
+                  )
                 }
-                onClose={() => handleSelectRow(null)}
-                onSave={() => handleSelectRow(null)}
-              />
-            </div>
+
+                return (
+                  <Button
+                    key={label}
+                    size="md"
+                    radius="md"
+                    variant={activeTableMenu === label ? 'selected' : 'ghost'}
+                    aria-pressed={activeTableMenu === label}
+                    onClick={() => {
+                      if (label === 'Refresh') return
+                      setActiveTableMenu((prev) =>
+                        prev === label ? null : label,
+                      )
+                      if (label === 'Add a Row') {
+                        const columns =
+                          selectedNode?.children?.[0]?.children ?? []
+                        const empty: Record<string, string> = {}
+                        for (const col of columns) empty[col.name] = ''
+                        setAddRowValues(empty)
+                      }
+                    }}
+                  >
+                    <Icon
+                      size={16}
+                      strokeWidth={2}
+                      aria-hidden="true"
+                      className="stroke-icon-muted shrink-0"
+                    />
+                    {label}
+                  </Button>
+                )
+              })}
+            </nav>
           )}
-        </div>
+
+          <div className="flex flex-col">
+            {activeTableMenu ? (
+              <div className="p-3">
+                {activeTableMenu === 'View Policies' ? (
+                  <div className="panel-card overflow-x-auto rounded-lg">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="section-header">
+                          <th
+                            scope="col"
+                            className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
+                          >
+                            policyname
+                          </th>
+                          <th
+                            scope="col"
+                            className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
+                          >
+                            roles
+                          </th>
+                          <th
+                            scope="col"
+                            className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
+                          >
+                            cmd
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {POLICIES_DATA.map((policy) => (
+                          <tr
+                            key={policy.policyname}
+                            className="divider-bottom last:border-b-0"
+                          >
+                            <td className="text-text-secondary px-4 py-2 whitespace-nowrap">
+                              {policy.policyname}
+                            </td>
+                            <td className="text-text-secondary px-4 py-2 whitespace-nowrap">
+                              {policy.roles}
+                            </td>
+                            <td className="text-text-secondary px-4 py-2 whitespace-nowrap">
+                              {policy.cmd}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : activeTableMenu === 'Add a Row' &&
+                  selectedNode?.children?.[0]?.children ? (
+                  <DatabaseRowEditForm
+                    title="Add Row"
+                    selectedRow={{
+                      name: 'new',
+                      type: 'row',
+                      children: selectedNode.children[0].children.map(
+                        (col) => ({
+                          name: col.name,
+                          type: col.type,
+                          value: col.value,
+                        }),
+                      ),
+                    }}
+                    editedValues={addRowValues}
+                    onValueChange={(name, value) =>
+                      setAddRowValues((prev) => ({
+                        ...prev,
+                        [name]: value,
+                      }))
+                    }
+                    onClose={() => setActiveTableMenu(null)}
+                    onSave={() => setActiveTableMenu(null)}
+                  />
+                ) : (
+                  <p className="text-text-muted text-sm">
+                    {activeTableMenu} content goes here.
+                  </p>
+                )}
+              </div>
+            ) : (
+              <>
+                <div className="p-3">
+                  {selectedNode?.children ? (
+                    <DatabaseTable
+                      node={selectedNode}
+                      selectedRow={selectedRow}
+                      onSelectRow={handleSelectRow}
+                    />
+                  ) : null}
+                </div>
+
+                {selectedRow?.children && (
+                  <div className="px-3 pb-3">
+                    <DatabaseRowEditForm
+                      selectedRow={selectedRow}
+                      editedValues={editedValues}
+                      onValueChange={(name, value) =>
+                        setEditedValues((prev) => ({
+                          ...prev,
+                          [name]: value,
+                        }))
+                      }
+                      onClose={() => handleSelectRow(null)}
+                      onSave={() => handleSelectRow(null)}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </>
       </WorkbenchRightContent>
     </div>
   )
