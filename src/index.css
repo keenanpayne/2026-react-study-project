@@ -96,7 +96,7 @@
   );
 
   /* Warning */
-  --color-warning: light-dark(var(--color-orange-600), var(--color-orange-500));
+  --color-warning: light-dark(var(--color-orange-500), var(--color-orange-400));
   --color-warning-hover: light-dark(
     var(--color-orange-700),
     var(--color-orange-400)

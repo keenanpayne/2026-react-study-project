@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { ChevronsUpDown, Database } from 'lucide-react'
+import { ChevronsUpDown, Database, TriangleAlert } from 'lucide-react'
 import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 import WorkbenchContainer from './WorkbenchContainer'
 import WorkbenchContents from './WorkbenchContents'
@@ -218,9 +218,9 @@ function LogsSection() {
         />
       </DropdownTrigger>
 
-      <div className="border-border-strong flex flex-col items-center justify-center rounded-lg border px-3 @md:py-10 @lg:py-15">
+      <div className="border-border-strong flex flex-col items-center justify-center rounded-lg border p-3 @md:py-10 @lg:py-15">
         <Database
-          size={48}
+          size={36}
           className="text-text-muted mb-3"
           strokeWidth={1.5}
         />
@@ -255,13 +255,14 @@ function SecurityAuditSection() {
 
         <p>Use "Ask Bolt to fix" to apply recommended improvements.</p>
 
-        <div className="mt-3 space-y-1.5 @md:mt-6 @lg:mt-9">
+        <div className="mt-3 space-y-1 @md:mt-6 @lg:mt-9">
           <p className="text-sm font-semibold">
             Leaked Password Protection Disabled{' '}
             <span className="text-warning bg-warning-bg ml-1.5 rounded-full px-3 py-1 text-xs">
               Warning
             </span>
           </p>
+
           <p className="text-text-muted text-sm">
             Supabase Auth prevents the use of compromised passwords by checking
             against HaveIBeenPwned.org. <br />
@@ -274,7 +275,64 @@ function SecurityAuditSection() {
 }
 
 function AdvancedSection() {
-  return <p className="p-3">Advanced (stub).</p>
+  return (
+    <div className="space-y-3 p-6 md:space-y-6">
+      <header>
+        <h2 className="mb-1.5 text-xl font-semibold">Advanced Settings</h2>
+
+        <p>Manage database connections and ownership.</p>
+
+        <p>
+          Connect an existing Supabase project or claim a Bolt-managed database.
+        </p>
+
+        <div className="mt-3 flex flex-col justify-between @md:mt-6 @md:flex-row @md:items-center @lg:mt-9">
+          <div className="space-y-1">
+            <p className="text-sm font-semibold">
+              Connect to an existing database
+            </p>
+
+            <p className="text-text-muted text-sm">
+              Connect to a different Supabase project to manage your data.
+            </p>
+
+            <p className="text-warning flex flex-col gap-1.5 text-sm @md:flex-row @md:items-center">
+              <TriangleAlert
+                size={16}
+                strokeWidth={1.5}
+                className="shrink-0"
+                aria-hidden="true"
+              />
+              To connect a project, you must first link your Supabase account in{' '}
+              <span className="font-medium underline">
+                Personal Settings → Applications
+              </span>
+            </p>
+          </div>
+
+          <div>
+            <Button size="md" radius="md" variant="primary">
+              Connect
+            </Button>
+          </div>
+        </div>
+
+        <div className="mt-3 flex flex-row items-center justify-between @md:mt-6 @lg:mt-9">
+          <div className="space-y-1">
+            <p className="text-sm font-semibold">Claim in Supabase</p>
+
+            <p className="text-text-muted text-sm">
+              Move this database into your own Supabase account.
+            </p>
+          </div>
+
+          <Button size="md" radius="md" variant="subtle">
+            Claim
+          </Button>
+        </div>
+      </header>
+    </div>
+  )
 }
 
 type WorkbenchDatabaseProps = {
