@@ -193,7 +193,7 @@ export default function WorkbenchLeftSidebar({
       )}
     >
       <header
-        className={`section-header sticky top-0 left-0 z-10 h-10 rounded-t-xl px-1 py-1 @md:rounded-tl-xl`}
+        className={`section-header sticky top-0 left-0 z-10 h-10 rounded-t-xl px-1 py-1 @md:rounded-tr-xl`}
       >
         <nav
           aria-label="File browser"

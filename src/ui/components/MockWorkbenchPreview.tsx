@@ -1,14 +1,14 @@
 export default function MockWorkbenchPreview() {
   return (
-    <div className="h-full w-full bg-gray-900">
-      <div className="absolute top-1/2 left-1/2 min-w-xs -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-8 lg:min-w-md">
+    <div className="min-h-full w-full bg-gray-900">
+      <div className="absolute top-1/2 left-1/2 min-w-xs -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-4 md:p-8 lg:min-w-md">
         <header className="space-y-1.5 text-center">
           <h2 className="text-3xl font-bold text-gray-900">PostFlow</h2>
 
           <p className="text-gray-600">Social media scheduling made simple.</p>
         </header>
 
-        <form className="mt-6 space-y-4 text-gray-900">
+        <form className="mt-6 space-y-2 text-gray-900 md:space-y-4">
           <div className="flex flex-col gap-2">
             <label className="text-sm" htmlFor="email">
               Email
@@ -43,7 +43,7 @@ export default function MockWorkbenchPreview() {
           </button>
         </form>
 
-        <p className="mt-8 block text-center text-gray-900">
+        <p className="mt-4 block text-center text-gray-900 md:mt-8">
           Don't have an account?{' '}
           <button
             type="button"

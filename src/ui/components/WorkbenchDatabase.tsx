@@ -389,11 +389,12 @@ function DatabaseSection({ list }: { list: TreeNode[] }) {
       <WorkbenchRightContent
         title={
           selectedNode ? (
-            <div className="flex flex-1 flex-row gap-3">
+            <div className="flex flex-1 flex-row items-center gap-1">
               <p>
                 Table: <span className="font-bold">{selectedNode.name}</span>
               </p>
-              <p className="text-text-muted text-sm">
+              <p className="text-xs leading-tight">
+                —{' '}
                 {`${selectedNode.children?.length ?? 0} ${selectedNode.type === 'table' ? 'rows' : 'columns'}`}
               </p>
             </div>
@@ -408,7 +409,7 @@ function DatabaseSection({ list }: { list: TreeNode[] }) {
         {selectedNode && (
           <nav
             aria-label="Table actions"
-            className="divider-bottom flex items-center gap-1 px-2 py-1"
+            className="divider-bottom flex flex-wrap items-center gap-1 px-2 py-1"
           >
             {TABLE_MENU_CONFIG.map(({ label, icon: Icon }) => {
               if (label === 'Row' && !selectedRow) return null
@@ -432,7 +433,7 @@ function DatabaseSection({ list }: { list: TreeNode[] }) {
                       size={16}
                       strokeWidth={2}
                       aria-hidden="true"
-                      className="stroke-icon-muted shrink-0"
+                      className="shrink-0"
                     />
                     {label}
                   </DropdownTrigger>
@@ -462,7 +463,7 @@ function DatabaseSection({ list }: { list: TreeNode[] }) {
                     size={16}
                     strokeWidth={2}
                     aria-hidden="true"
-                    className="stroke-icon-muted shrink-0"
+                    className="shrink-0"
                   />
                   {label}
                 </Button>
