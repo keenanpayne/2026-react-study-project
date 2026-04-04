@@ -5,7 +5,9 @@ import {
   ListFilter,
   Plus,
   RefreshCw,
+  Rows3,
   ShieldCheck,
+  TableProperties,
   Terminal,
   TriangleAlert,
   type LucideIcon,
@@ -68,6 +70,8 @@ const POLICIES_DATA = [
 ] as const
 
 const TABLE_MENU_CONFIG = [
+  { label: 'Table' as const, icon: TableProperties },
+  { label: 'Row' as const, icon: Rows3 },
   { label: 'View Policies' as const, icon: ShieldCheck },
   { label: 'Add a Row' as const, icon: Plus },
   { label: 'Refresh' as const, icon: RefreshCw },
@@ -251,7 +255,7 @@ function databaseSectionReducer(
         selectedRow: null,
         selectedRowPath: null,
         editedValues: {},
-        activeTableMenu: action.resetMenu ? null : state.activeTableMenu,
+        activeTableMenu: action.resetMenu ? 'Table' : state.activeTableMenu,
       }
 
     case 'SELECT_ROW': {
@@ -265,6 +269,7 @@ function databaseSectionReducer(
         selectedRow: action.row,
         selectedRowPath: rowPath,
         editedValues: buildEditedValues(action.row),
+        activeTableMenu: 'Row',
       }
     }
 
@@ -274,6 +279,7 @@ function databaseSectionReducer(
         selectedRow: null,
         selectedRowPath: null,
         editedValues: {},
+        activeTableMenu: 'Table',
       }
 
     case 'SET_TABLE_MENU':
@@ -402,8 +408,15 @@ function DatabaseSection({ list }: { list: TreeNode[] }) {
             className="divider-bottom flex items-center gap-1 px-2 py-1"
           >
             {TABLE_MENU_CONFIG.map(({ label, icon: Icon }) => {
+              if (label === 'Row' && !selectedRow) return null
+
               if (label === 'Filter') {
-                if (activeTableMenu) return null
+                if (
+                  activeTableMenu &&
+                  activeTableMenu !== 'Table' &&
+                  activeTableMenu !== 'Row'
+                )
+                  return null
                 return (
                   <DropdownTrigger
                     key={label}
@@ -456,122 +469,120 @@ function DatabaseSection({ list }: { list: TreeNode[] }) {
         )}
 
         <div className="flex flex-col">
-          {activeTableMenu ? (
+          {activeTableMenu === 'Table' ? (
             <div className="p-3">
-              {activeTableMenu === 'View Policies' ? (
-                <div className="panel-card overflow-x-auto rounded-lg">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="section-header">
-                        <th
-                          scope="col"
-                          className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
-                        >
-                          policyname
-                        </th>
-                        <th
-                          scope="col"
-                          className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
-                        >
-                          roles
-                        </th>
-                        <th
-                          scope="col"
-                          className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
-                        >
-                          cmd
-                        </th>
+              {selectedNode?.children ? (
+                <DatabaseTable
+                  node={selectedNode}
+                  selectedRow={selectedRow}
+                  onSelectRow={handleSelectRow}
+                />
+              ) : null}
+            </div>
+          ) : activeTableMenu === 'Row' ? (
+            selectedRow?.children ? (
+              <div className="p-3">
+                <DatabaseRowEditForm
+                  selectedRow={selectedRow}
+                  editedValues={editedValues}
+                  onValueChange={(name, value) =>
+                    dispatch({ type: 'UPDATE_EDIT_VALUE', name, value })
+                  }
+                  onClose={() => dispatch({ type: 'CLEAR_ROW' })}
+                  onSave={() => dispatch({ type: 'CLEAR_ROW' })}
+                />
+              </div>
+            ) : null
+          ) : activeTableMenu === 'View Policies' ? (
+            <div className="p-3">
+              <div className="panel-card overflow-x-auto rounded-lg">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="section-header">
+                      <th
+                        scope="col"
+                        className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
+                      >
+                        policyname
+                      </th>
+                      <th
+                        scope="col"
+                        className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
+                      >
+                        roles
+                      </th>
+                      <th
+                        scope="col"
+                        className="text-text-secondary px-4 py-2 text-left font-medium whitespace-nowrap"
+                      >
+                        cmd
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {POLICIES_DATA.map((policy) => (
+                      <tr
+                        key={policy.policyname}
+                        className="divider-bottom last:border-b-0"
+                      >
+                        <td className="text-text-secondary px-4 py-2 whitespace-nowrap">
+                          {policy.policyname}
+                        </td>
+                        <td className="text-text-secondary px-4 py-2 whitespace-nowrap">
+                          {policy.roles}
+                        </td>
+                        <td className="text-text-secondary px-4 py-2 whitespace-nowrap">
+                          {policy.cmd}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {POLICIES_DATA.map((policy) => (
-                        <tr
-                          key={policy.policyname}
-                          className="divider-bottom last:border-b-0"
-                        >
-                          <td className="text-text-secondary px-4 py-2 whitespace-nowrap">
-                            {policy.policyname}
-                          </td>
-                          <td className="text-text-secondary px-4 py-2 whitespace-nowrap">
-                            {policy.roles}
-                          </td>
-                          <td className="text-text-secondary px-4 py-2 whitespace-nowrap">
-                            {policy.cmd}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : activeTableMenu === 'Add a Row' ? (
-                selectedNode?.children?.[0]?.children ? (
-                  <DatabaseRowEditForm
-                    title="Add Row"
-                    selectedRow={{
-                      name: 'new',
-                      type: 'row',
-                      children: selectedNode.children[0].children.map(
-                        (col) => ({
-                          name: col.name,
-                          type: col.type,
-                          value: col.value,
-                        }),
-                      ),
-                    }}
-                    editedValues={addRowValues}
-                    onValueChange={(name, value) =>
-                      dispatch({
-                        type: 'UPDATE_ADD_ROW_VALUE',
-                        name,
-                        value,
-                      })
-                    }
-                    onClose={() =>
-                      dispatch({ type: 'SET_TABLE_MENU', menu: null })
-                    }
-                    onSave={() =>
-                      dispatch({ type: 'SET_TABLE_MENU', menu: null })
-                    }
-                  />
-                ) : (
-                  <p className="text-text-muted text-sm">
-                    Unable to add a row. This table has no existing rows to
-                    infer column structure from.
-                  </p>
-                )
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : activeTableMenu === 'Add a Row' ? (
+            <div className="p-3">
+              {selectedNode?.children?.[0]?.children ? (
+                <DatabaseRowEditForm
+                  title="Add Row"
+                  selectedRow={{
+                    name: 'new',
+                    type: 'row',
+                    children: selectedNode.children[0].children.map((col) => ({
+                      name: col.name,
+                      type: col.type,
+                      value: col.value,
+                    })),
+                  }}
+                  editedValues={addRowValues}
+                  onValueChange={(name, value) =>
+                    dispatch({
+                      type: 'UPDATE_ADD_ROW_VALUE',
+                      name,
+                      value,
+                    })
+                  }
+                  onClose={() =>
+                    dispatch({ type: 'SET_TABLE_MENU', menu: null })
+                  }
+                  onSave={() =>
+                    dispatch({ type: 'SET_TABLE_MENU', menu: null })
+                  }
+                />
               ) : (
                 <p className="text-text-muted text-sm">
-                  {activeTableMenu} content goes here.
+                  Unable to add a row. This table has no existing rows to infer
+                  column structure from.
                 </p>
               )}
             </div>
-          ) : (
-            <>
-              <div className="p-3">
-                {selectedNode?.children ? (
-                  <DatabaseTable
-                    node={selectedNode}
-                    selectedRow={selectedRow}
-                    onSelectRow={handleSelectRow}
-                  />
-                ) : null}
-              </div>
-
-              {selectedRow?.children && (
-                <div className="px-3 pb-3">
-                  <DatabaseRowEditForm
-                    selectedRow={selectedRow}
-                    editedValues={editedValues}
-                    onValueChange={(name, value) =>
-                      dispatch({ type: 'UPDATE_EDIT_VALUE', name, value })
-                    }
-                    onClose={() => dispatch({ type: 'CLEAR_ROW' })}
-                    onSave={() => dispatch({ type: 'CLEAR_ROW' })}
-                  />
-                </div>
-              )}
-            </>
-          )}
+          ) : activeTableMenu ? (
+            <div className="p-3">
+              <p className="text-text-muted text-sm">
+                {activeTableMenu} content goes here.
+              </p>
+            </div>
+          ) : null}
         </div>
       </WorkbenchRightContent>
     </div>
