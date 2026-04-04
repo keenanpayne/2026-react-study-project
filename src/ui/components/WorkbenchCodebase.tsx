@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import { File, type FileContents } from '@pierre/diffs/react'
 import type { TreeNode } from '~/types/workbench'
 import WorkbenchLeftSidebar from './WorkbenchLeftSidebar'
@@ -8,7 +7,7 @@ import WorkbenchTerminal from './WorkbenchTerminal'
 import WorkbenchRightContent from './WorkbenchRightContent'
 import { FolderTree } from 'lucide-react'
 import { DIFF_FILE_OPTIONS } from '~/utils/diffOptions'
-import { useCollapsible } from '~/hooks/useCollapsible'
+import { useCollapsiblePair } from '~/hooks/useCollapsible'
 
 type WorkbenchCodebaseProps = {
   file: FileContents
@@ -28,22 +27,8 @@ export default function WorkbenchCodebase({
   terminal,
   isVisible,
 }: WorkbenchCodebaseProps) {
-  const sidebarExpandedRef = useRef(true)
-  const contentExpandedRef = useRef(true)
-
-  const { isExpanded: sidebarExpanded, toggle: toggleSidebar } = useCollapsible(
-    true,
-    () => !sidebarExpandedRef.current || contentExpandedRef.current,
-  )
-  const { isExpanded: contentExpanded, toggle: toggleContent } = useCollapsible(
-    true,
-    () => !contentExpandedRef.current || sidebarExpandedRef.current,
-  )
-
-  useEffect(() => {
-    sidebarExpandedRef.current = sidebarExpanded
-    contentExpandedRef.current = contentExpanded
-  }, [sidebarExpanded, contentExpanded])
+  const { sidebarExpanded, toggleSidebar, contentExpanded, toggleContent } =
+    useCollapsiblePair()
 
   return (
     <WorkbenchContainer className={isVisible ? '' : 'hidden'}>
