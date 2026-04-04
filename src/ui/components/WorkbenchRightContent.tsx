@@ -44,7 +44,7 @@ export default function WorkbenchRightContent({
 
       <div
         id="right-content-panel"
-        className={`overflow-hidden transition-opacity duration-150 ease-out ${panelExpanded ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+        className={`overflow-hidden transition-opacity duration-150 ease-out ${panelExpanded ? 'h-full opacity-100' : 'pointer-events-none opacity-0'}`}
       >
         {children}
       </div>

@@ -1,4 +1,11 @@
+import type { FileContents } from '@pierre/diffs/react'
 import type { TreeNode } from '~/types/workbench'
+
+export const MockDatabaseQuery: FileContents = {
+  name: 'query',
+  lang: 'sql',
+  contents: 'SELECT * FROM public."posts" LIMIT 100;',
+}
 
 export const MockWorkbenchDatabaseTables: TreeNode[] = [
   {

@@ -12,7 +12,10 @@ import {
   TriangleAlert,
   type LucideIcon,
 } from 'lucide-react'
+import { File } from '@pierre/diffs/react'
 import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
+import { DIFF_FILE_OPTIONS } from '~/utils/diffOptions'
+import { MockDatabaseQuery } from '~/data/mockDatabase'
 import WorkbenchContainer from './WorkbenchContainer'
 import WorkbenchContents from './WorkbenchContents'
 import WorkbenchRightContent from './WorkbenchRightContent'
@@ -135,7 +138,7 @@ function TableFilterMenu() {
   }
 
   return (
-    <Dropdown align="left" className="w-60 p-3">
+    <Dropdown align="right" className="w-60 p-3">
       <p className="text-text-secondary mb-3 text-sm font-medium">
         Filter rows
       </p>
@@ -575,6 +578,23 @@ function DatabaseSection({ list }: { list: TreeNode[] }) {
                   column structure from.
                 </p>
               )}
+            </div>
+          ) : activeTableMenu === 'Query' ? (
+            <div className="space-y-3 p-3">
+              <div>
+                <h3 className="text-sm font-semibold">
+                  Query {selectedNode?.name}
+                </h3>
+                <p className="text-text-muted text-sm">Your query</p>
+              </div>
+
+              <div className="panel-card overflow-hidden rounded-lg">
+                <File file={MockDatabaseQuery} options={DIFF_FILE_OPTIONS} />
+              </div>
+
+              <Button size="md" radius="md" variant="primary">
+                Run Query
+              </Button>
             </div>
           ) : activeTableMenu ? (
             <div className="p-3">
