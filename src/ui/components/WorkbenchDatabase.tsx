@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
-import { Database } from 'lucide-react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { ChevronsUpDown, Database } from 'lucide-react'
+import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 import WorkbenchContainer from './WorkbenchContainer'
 import WorkbenchContents from './WorkbenchContents'
 import WorkbenchRightContent from './WorkbenchRightContent'
@@ -12,35 +13,55 @@ import { buildEditedValues } from '~/utils/database'
 import { joinTreePath } from '~/utils/tree'
 import { useCollapsible } from '~/hooks/useCollapsible'
 import type { WorkbenchDatabaseSection } from '~/types/navigation'
-
-const SECTION_STUBS: Partial<Record<WorkbenchDatabaseSection, string>> = {
-  logs: 'Logs (stub).',
-  securityAudit: 'Security Audit (stub).',
-  advanced: 'Advanced (stub).',
-}
+import Dropdown from './Dropdown'
+import DropdownItem from './DropdownItem'
+import DropdownList from './DropdownList'
+import DropdownTrigger from './DropdownTrigger'
 
 const DB_PAGINATION: PaginationConfig = {
   depths: [1],
   pageSize: 10,
 }
 
-type WorkbenchDatabaseProps = {
-  list: TreeNode[]
-  /**
-   * Controls CSS visibility rather than mount/unmount. All panes stay mounted
-   * to preserve scroll position, selected table/row state, and edit form
-   * content across tab switches. Hidden panes use `display: none` via the
-   * Tailwind `hidden` class.
-   */
-  isVisible: boolean
-  activeDatabaseSection: WorkbenchDatabaseSection
+const LOG_TYPE_OPTIONS = [
+  'Server Function Logs',
+  'Authentication Logs',
+  'PostgreSQL Logs',
+  'Realtime Logs',
+] as const
+
+type LogTypeOption = (typeof LOG_TYPE_OPTIONS)[number]
+
+function LogsTypeMenu({
+  value,
+  onChange,
+}: {
+  value: LogTypeOption
+  onChange: (next: LogTypeOption) => void
+}) {
+  const closeCtx = useDropdownTriggerClose()
+
+  return (
+    <Dropdown align="left" className="w-55">
+      <DropdownList>
+        {LOG_TYPE_OPTIONS.map((label) => (
+          <DropdownItem
+            key={label}
+            size="md"
+            title={label}
+            selected={label === value}
+            onSelect={() => {
+              onChange(label)
+              closeCtx?.close()
+            }}
+          />
+        ))}
+      </DropdownList>
+    </Dropdown>
+  )
 }
 
-export default function WorkbenchDatabase({
-  list,
-  isVisible,
-  activeDatabaseSection,
-}: WorkbenchDatabaseProps) {
+function DatabaseSection({ list }: { list: TreeNode[] }) {
   const sidebarExpandedRef = useRef(true)
   const contentExpandedRef = useRef(true)
 
@@ -99,75 +120,160 @@ export default function WorkbenchDatabase({
   }
 
   return (
-    <WorkbenchContainer className={isVisible ? '' : 'hidden'}>
-      <WorkbenchContents>
-        {activeDatabaseSection === 'database' ? (
-          <div className="flex min-h-0 flex-1 flex-col @md:flex-row">
-            <WorkbenchLeftSidebar
-              list={list}
-              listLabel="Tables"
-              listIcon={Database}
-              selectedNodePath={selectedNodePath}
-              selectedRowPath={selectedRowPath}
-              onSelect={handleSelectNode}
-              pagination={DB_PAGINATION}
-              truncateNames={true}
-              panelExpanded={sidebarExpanded}
-              onPanelToggle={toggleSidebar}
-              collapseDisabled={sidebarExpanded && !contentExpanded}
-            />
+    <div className="flex min-h-0 flex-1 flex-col @md:flex-row">
+      <WorkbenchLeftSidebar
+        list={list}
+        listLabel="Tables"
+        listIcon={Database}
+        selectedNodePath={selectedNodePath}
+        selectedRowPath={selectedRowPath}
+        onSelect={handleSelectNode}
+        pagination={DB_PAGINATION}
+        truncateNames={true}
+        panelExpanded={sidebarExpanded}
+        onPanelToggle={toggleSidebar}
+        collapseDisabled={sidebarExpanded && !contentExpanded}
+      />
 
-            <WorkbenchRightContent
-              title={
-                selectedNode ? (
-                  <div className="flex flex-1 flex-row gap-3">
-                    <p>
-                      Table:{' '}
-                      <span className="font-bold">{selectedNode.name}</span>
-                    </p>
-                    <p className="text-text-muted text-sm">
-                      {`${selectedNode.children?.length ?? 0} ${selectedNode.type === 'table' ? 'rows' : 'columns'}`}
-                    </p>
-                  </div>
-                ) : (
-                  'Tables'
-                )
-              }
-              panelExpanded={contentExpanded}
-              onPanelToggle={toggleContent}
-              collapseDisabled={contentExpanded && !sidebarExpanded}
-            >
-              <div className="flex flex-col">
-                <div className="p-3">
-                  {selectedNode?.children ? (
-                    <DatabaseTable
-                      node={selectedNode}
-                      selectedRow={selectedRow}
-                      onSelectRow={handleSelectRow}
-                    />
-                  ) : null}
-                </div>
-
-                {selectedRow?.children && (
-                  <div className="px-3 pb-3">
-                    <DatabaseRowEditForm
-                      selectedRow={selectedRow}
-                      editedValues={editedValues}
-                      onValueChange={(name, value) =>
-                        setEditedValues((prev) => ({ ...prev, [name]: value }))
-                      }
-                      onClose={() => handleSelectRow(null)}
-                      onSave={() => handleSelectRow(null)}
-                    />
-                  </div>
-                )}
-              </div>
-            </WorkbenchRightContent>
+      <WorkbenchRightContent
+        title={
+          selectedNode ? (
+            <div className="flex flex-1 flex-row gap-3">
+              <p>
+                Table: <span className="font-bold">{selectedNode.name}</span>
+              </p>
+              <p className="text-text-muted text-sm">
+                {`${selectedNode.children?.length ?? 0} ${selectedNode.type === 'table' ? 'rows' : 'columns'}`}
+              </p>
+            </div>
+          ) : (
+            'Tables'
+          )
+        }
+        panelExpanded={contentExpanded}
+        onPanelToggle={toggleContent}
+        collapseDisabled={contentExpanded && !sidebarExpanded}
+      >
+        <div className="flex flex-col">
+          <div className="p-3">
+            {selectedNode?.children ? (
+              <DatabaseTable
+                node={selectedNode}
+                selectedRow={selectedRow}
+                onSelectRow={handleSelectRow}
+              />
+            ) : null}
           </div>
-        ) : (
-          <p className="p-3">{SECTION_STUBS[activeDatabaseSection]}</p>
-        )}
-      </WorkbenchContents>
+
+          {selectedRow?.children && (
+            <div className="px-3 pb-3">
+              <DatabaseRowEditForm
+                selectedRow={selectedRow}
+                editedValues={editedValues}
+                onValueChange={(name, value) =>
+                  setEditedValues((prev) => ({ ...prev, [name]: value }))
+                }
+                onClose={() => handleSelectRow(null)}
+                onSave={() => handleSelectRow(null)}
+              />
+            </div>
+          )}
+        </div>
+      </WorkbenchRightContent>
+    </div>
+  )
+}
+
+function LogsSection() {
+  const [logType, setLogType] = useState<LogTypeOption>(LOG_TYPE_OPTIONS[0])
+
+  return (
+    <div className="space-y-3 p-6 md:space-y-6">
+      <header>
+        <h2 className="text-xl font-semibold">Logs</h2>
+
+        <p>
+          Monitor database queries, authentication events, and backend services.
+        </p>
+        <p>Troubleshoot errors and track activity from the past hour.</p>
+      </header>
+
+      <DropdownTrigger
+        size="md"
+        radius="md"
+        className="h-9"
+        wrapperClassName="shrink-0"
+        dropdown={<LogsTypeMenu value={logType} onChange={setLogType} />}
+      >
+        <span className="max-w-[min(100%,14rem)] truncate text-sm font-medium">
+          {logType}
+        </span>
+        <ChevronsUpDown
+          size={16}
+          strokeWidth={2}
+          aria-hidden="true"
+          className="stroke-icon-muted shrink-0"
+        />
+      </DropdownTrigger>
+
+      <div className="border-border-strong flex flex-col items-center justify-center rounded-lg border px-3 @md:py-10 @lg:py-15">
+        <Database
+          size={48}
+          className="text-text-muted mb-3"
+          strokeWidth={1.5}
+        />
+        <p className="mb-1 text-sm font-semibold">
+          No {logType} available yet.
+        </p>
+        <p className="text-text-muted text-sm">
+          Check back later for activity logs.
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function SecurityAuditSection() {
+  return <p className="p-3">Security Audit (stub).</p>
+}
+
+function AdvancedSection() {
+  return <p className="p-3">Advanced (stub).</p>
+}
+
+type WorkbenchDatabaseProps = {
+  list: TreeNode[]
+  /**
+   * Controls CSS visibility rather than mount/unmount. All panes stay mounted
+   * to preserve scroll position, selected table/row state, and edit form
+   * content across tab switches. Hidden panes use `display: none` via the
+   * Tailwind `hidden` class.
+   */
+  isVisible: boolean
+  activeDatabaseSection: WorkbenchDatabaseSection
+}
+
+export default function WorkbenchDatabase({
+  list,
+  isVisible,
+  activeDatabaseSection,
+}: WorkbenchDatabaseProps) {
+  function sectionContent(): ReactNode {
+    switch (activeDatabaseSection) {
+      case 'database':
+        return <DatabaseSection list={list} />
+      case 'logs':
+        return <LogsSection />
+      case 'securityAudit':
+        return <SecurityAuditSection />
+      case 'advanced':
+        return <AdvancedSection />
+    }
+  }
+
+  return (
+    <WorkbenchContainer className={isVisible ? '' : 'hidden'}>
+      <WorkbenchContents>{sectionContent()}</WorkbenchContents>
     </WorkbenchContainer>
   )
 }
