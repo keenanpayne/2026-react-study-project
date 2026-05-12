@@ -5,6 +5,7 @@ export type ChatActionData = {
   title: string
   codeRef?: string
   iconType: ChatActionIconType
+  isLoading?: boolean
 }
 
 export type ChatQuestion = {

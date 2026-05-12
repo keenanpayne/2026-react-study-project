@@ -176,11 +176,23 @@ export default function App() {
       queueResponseText('openingText', MockChatResponse.openingText)
       pauseStream(STREAM_SECTION_PAUSE)
 
-      MockChatActions.forEach((_, index) => {
+      MockChatActions.forEach((action) => {
         queueStreamStep(() => {
-          setChatActions(MockChatActions.slice(0, index + 1))
+          setChatActions((current) => [
+            ...current,
+            { ...action, isLoading: true },
+          ])
         })
         pauseStream(STREAM_ACTION_STEP_DELAY)
+        queueStreamStep(() => {
+          setChatActions((current) =>
+            current.map((currentAction) =>
+              currentAction.id === action.id
+                ? { ...currentAction, isLoading: false }
+                : currentAction,
+            ),
+          )
+        })
       })
 
       pauseStream(STREAM_SECTION_PAUSE)
