@@ -8,7 +8,7 @@ import BoltLogo from './BoltLogo'
 
 function Separator() {
   return (
-    <span className="text-text-faint block h-[18px] text-xl leading-4 antialiased">
+    <span className="text-text-faint block h-[18px] text-xl leading-4 antialiased opacity-65">
       /
     </span>
   )
@@ -38,9 +38,9 @@ export default function ChatHeader({
           radius="md"
           as="a"
           href="https://bolt.new"
-          className="h-10 shrink-0"
+          className="shrink-0"
         >
-          <BoltLogo className="h-6" wordmark />
+          <BoltLogo className="h-5.5" wordmark />
         </Button>
 
         <Separator />
@@ -48,7 +48,7 @@ export default function ChatHeader({
         <DropdownTrigger
           size="md"
           radius="md"
-          className="h-9"
+          className="h-9 gap-1"
           wrapperClassName="shrink-0"
           dropdown={<DropdownTeams data={teams} />}
         >
@@ -60,8 +60,8 @@ export default function ChatHeader({
             />
           )}
           <ChevronsUpDown
-            size={16}
-            strokeWidth={2}
+            size={14}
+            strokeWidth={1.5}
             aria-hidden="true"
             className="stroke-icon-muted"
           />

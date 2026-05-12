@@ -1,6 +1,7 @@
 import {
   CircleEllipsis,
   ChevronDown,
+  LoaderCircle,
   SquareTerminal,
   Eye,
   type LucideIcon,
@@ -45,7 +46,9 @@ export default function ChatActions({
 
       <ul className="space-y-3 pt-5">
         {actions.map((action) => {
-          const Icon = ICON_MAP[action.iconType]
+          const Icon = action.isLoading
+            ? LoaderCircle
+            : ICON_MAP[action.iconType]
           return (
             <ChatAction
               key={action.id}
@@ -61,9 +64,13 @@ export default function ChatActions({
               icon={
                 <Icon
                   size={18}
-                  strokeWidth={1}
+                  strokeWidth={action.isLoading ? 1.5 : 1}
                   aria-hidden
-                  className="icon-interactive group-hover/button:stroke-icon-hover"
+                  className={
+                    action.isLoading
+                      ? 'text-icon-muted animate-spin'
+                      : 'icon-interactive group-hover/button:stroke-icon-hover'
+                  }
                 />
               }
               actionOnClick={actionOnClick}

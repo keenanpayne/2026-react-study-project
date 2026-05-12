@@ -5,12 +5,45 @@ export type ChatActionData = {
   title: string
   codeRef?: string
   iconType: ChatActionIconType
+  isLoading?: boolean
+}
+
+export type ChatQuestionAnswerType =
+  | 'text'
+  | 'single-select'
+  | 'multi-select'
+  | 'image-upload'
+
+export type ChatQuestionOption = {
+  id: string
+  label: string
+  description?: string
+  allowsCustomResponse?: boolean
 }
 
 export type ChatQuestion = {
   id: number
   label: string
   text: string
+  answerType: ChatQuestionAnswerType
+  options?: ChatQuestionOption[]
+  placeholder?: string
+  allowSkip?: boolean
+}
+
+export type ChatQuestionAnswerValue =
+  | string
+  | string[]
+  | {
+      fileName: string
+      fileSize: number
+      fileType: string
+    }
+
+export type ChatQuestionAnswer = {
+  questionId: number
+  status: 'answered' | 'skipped'
+  value?: ChatQuestionAnswerValue
 }
 
 export type ChatPlanSection = {
@@ -29,7 +62,7 @@ export type ChatResponseData = {
   summaryTitle: string
   summaryText: string
   closingText: string
-  plan: {
+  plan?: {
     title: string
     version: string
     createdAt: Date

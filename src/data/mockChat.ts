@@ -1,5 +1,17 @@
 import type { ChatActionData, ChatResponseData } from '~/types/chat'
 
+export const MockChatResponseEmpty: ChatResponseData = {
+  openingText: 'Enter a prompt to get started',
+  followUpText: '',
+  questionsIntro: '',
+  questions: [],
+  planTitle: '',
+  planSections: [],
+  summaryTitle: '',
+  summaryText: '',
+  closingText: '',
+}
+
 export const MockChatActions: ChatActionData[] = [
   { id: 1, title: 'Get current working directory', iconType: 'terminal' },
   { id: 2, title: 'Listed files in project root', iconType: 'terminal' },
@@ -26,16 +38,44 @@ export const MockChatResponse: ChatResponseData = {
       id: 1,
       label: 'Authentication & User Management:',
       text: 'Should users be able to sign up/login to manage their own accounts, or is this a single-user application?',
+      answerType: 'single-select',
+      options: [
+        { id: 'accounts', label: 'Users can sign up and manage accounts' },
+        { id: 'single-user', label: 'This is a single-user application' },
+        { id: 'unsure', label: 'Not sure yet' },
+      ],
     },
     {
       id: 2,
       label: 'OAuth Integration:',
       text: 'Do you want users to connect their actual social media accounts (requiring OAuth flows for Twitter/X, LinkedIn, etc.), or should this be a "compose and copy" tool where users manually post the content?',
+      answerType: 'single-select',
+      options: [
+        { id: 'oauth', label: 'Connect real social accounts with OAuth' },
+        { id: 'copy', label: 'Compose and copy manually' },
+        { id: 'hybrid', label: 'Support both flows' },
+      ],
     },
     {
       id: 3,
       label: 'Post Features:',
       text: 'What level of post complexity should be supported - text only, or also images, videos, polls, threads, and other platform-specific features?',
+      answerType: 'multi-select',
+      options: [
+        { id: 'text', label: 'Text posts' },
+        { id: 'images', label: 'Images' },
+        { id: 'videos', label: 'Videos' },
+        { id: 'polls', label: 'Polls' },
+        { id: 'threads', label: 'Threads' },
+        { id: 'other', label: 'Other', allowsCustomResponse: true },
+      ],
+    },
+    {
+      id: 4,
+      label: 'App logo:',
+      text: 'Do you have a logo for the app? If so, please upload it here.',
+      answerType: 'image-upload',
+      allowSkip: true,
     },
   ],
   planTitle: 'Plan: Social Media Scheduling Application',

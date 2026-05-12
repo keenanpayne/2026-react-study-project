@@ -6,14 +6,14 @@ import type {
 import { cva, type VariantProps } from 'class-variance-authority'
 
 const buttonStyles = cva(
-  'inline-flex cursor-pointer items-center text-left transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
+  'inline-flex cursor-pointer items-center text-left transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
   {
     variants: {
       size: {
         flat: '',
         sm: 'text-xs p-1 gap-1.5',
-        md: 'text-sm px-1.25 sm:px-2 py-1.5 gap-1.5',
-        lg: 'text-sm px-1.5 sm:px-2 sm:px-3 py-1.5 gap-1.5',
+        md: 'text-sm px-1.25 sm:px-2.25 py-1.5 gap-1.5',
+        lg: 'text-sm px-1.5 sm:px-2.5 sm:px-3 py-1.5 gap-1.5',
       },
       radius: {
         sm: 'rounded-sm',
@@ -30,6 +30,7 @@ const buttonStyles = cva(
         primary: 'bg-inverse text-text-inverse hover:bg-inverse-hover',
         danger: 'bg-danger text-white hover:bg-danger-hover',
         success: 'bg-success text-white hover:bg-success-hover',
+        blue: 'bg-blue-500 text-white hover:bg-blue-600',
       },
       iconOnly: {
         false: null,

@@ -13,6 +13,8 @@ import {
   Zap,
   Lock,
   type LucideIcon,
+  ArrowRightLeft,
+  Star,
 } from 'lucide-react'
 import type { UserProject } from '~/types/user'
 import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
@@ -229,7 +231,7 @@ export default function DropdownProjects({
     () => [
       {
         id: 'recent',
-        title: 'Open recent project',
+        title: 'Recent projects',
         icon: Folders,
         dropdown: (
           <DropdownRecentProjects
@@ -239,8 +241,10 @@ export default function DropdownProjects({
         ),
       },
       { id: 'history', title: 'Version history', icon: History },
+      { id: 'transfer', title: 'Transfer to...', icon: ArrowRightLeft },
       { id: 'rename', title: 'Rename...', icon: PencilLine },
       { id: 'duplicate', title: 'Duplicate', icon: Copy },
+      { id: 'star', title: 'Star project', icon: Star },
       {
         id: 'export',
         title: 'Export',
