@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 import { ImageUp } from 'lucide-react'
 import Button from './Button'
-import type { KeyboardEvent } from 'react'
+import type { ComponentPropsWithoutRef, KeyboardEvent } from 'react'
 import type {
   ChatQuestion,
   ChatQuestionAnswer,
@@ -20,6 +20,14 @@ type ChatQuestionFormProps = {
   onBack: () => void
 }
 
+type QuestionTextareaProps = Omit<
+  ComponentPropsWithoutRef<'textarea'>,
+  'onChange' | 'value'
+> & {
+  value: string
+  onValueChange: (value: string) => void
+}
+
 const formatFileSize = (size: number) => {
   if (size < 1024) return `${size} B`
   if (size < 1024 * 1024) return `${Math.round(size / 1024)} KB`
@@ -30,6 +38,29 @@ const isFileAnswerValue = (
   value: ChatQuestionAnswerValue | undefined,
 ): value is { fileName: string; fileSize: number; fileType: string } =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
+
+function QuestionTextarea({
+  className = '',
+  value,
+  onValueChange,
+  ...props
+}: QuestionTextareaProps) {
+  const textareaClassName = [
+    'border-border-default focus:ring-focus-ring resize-none rounded-lg border bg-transparent px-3 py-2 text-sm outline-none focus:ring-2',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  return (
+    <textarea
+      {...props}
+      value={value}
+      onChange={(event) => onValueChange(event.target.value)}
+      className={textareaClassName}
+    />
+  )
+}
 
 function OptionCard({
   option,
@@ -77,6 +108,15 @@ export default function ChatQuestionForm({
 }: ChatQuestionFormProps) {
   const initialAnswerValue =
     initialAnswer?.status === 'answered' ? initialAnswer.value : undefined
+  const options = useMemo(() => question.options ?? [], [question.options])
+  const optionIds = useMemo(
+    () => new Set(options.map((option) => option.id)),
+    [options],
+  )
+  const customResponseOption = useMemo(
+    () => options.find((option) => option.allowsCustomResponse),
+    [options],
+  )
   const [textValue, setTextValue] = useState(() =>
     question.answerType === 'text' && typeof initialAnswerValue === 'string'
       ? initialAnswerValue
@@ -90,8 +130,19 @@ export default function ChatQuestionForm({
   )
   const [selectedMulti, setSelectedMulti] = useState<string[]>(() =>
     question.answerType === 'multi-select' && Array.isArray(initialAnswerValue)
-      ? initialAnswerValue
+      ? [
+          ...initialAnswerValue.filter((value) => optionIds.has(value)),
+          ...(customResponseOption &&
+          initialAnswerValue.some((value) => !optionIds.has(value))
+            ? [customResponseOption.id]
+            : []),
+        ]
       : [],
+  )
+  const [customResponseValue, setCustomResponseValue] = useState(() =>
+    question.answerType === 'multi-select' && Array.isArray(initialAnswerValue)
+      ? (initialAnswerValue.find((value) => !optionIds.has(value)) ?? '')
+      : '',
   )
   const [selectedFileAnswer, setSelectedFileAnswer] = useState<{
     fileName: string
@@ -104,14 +155,18 @@ export default function ChatQuestionForm({
       : null,
   )
   const optionName = `chat-question-${question.id}`
-  const options = useMemo(() => question.options ?? [], [question.options])
   const canSkip = question.allowSkip !== false
   const wasSkipped = initialAnswer?.status === 'skipped'
+  const isCustomResponseSelected =
+    customResponseOption !== undefined &&
+    selectedMulti.includes(customResponseOption.id)
 
   const canSubmit =
     (question.answerType === 'text' && textValue.trim().length > 0) ||
     (question.answerType === 'single-select' && selectedSingle.length > 0) ||
-    (question.answerType === 'multi-select' && selectedMulti.length > 0) ||
+    (question.answerType === 'multi-select' &&
+      selectedMulti.length > 0 &&
+      (!isCustomResponseSelected || customResponseValue.trim().length > 0)) ||
     (question.answerType === 'image-upload' && selectedFileAnswer !== null)
 
   const handleMultiToggle = useCallback((optionId: string) => {
@@ -136,7 +191,15 @@ export default function ChatQuestionForm({
     }
 
     if (question.answerType === 'multi-select') {
-      onSubmit(selectedMulti)
+      onSubmit(
+        selectedMulti.map((optionId) => {
+          const option = options.find((option) => option.id === optionId)
+
+          return option?.allowsCustomResponse
+            ? customResponseValue.trim()
+            : optionId
+        }),
+      )
       return
     }
 
@@ -145,7 +208,9 @@ export default function ChatQuestionForm({
     }
   }, [
     canSubmit,
+    customResponseValue,
     onSubmit,
+    options,
     question.answerType,
     selectedFileAnswer,
     selectedMulti,
@@ -202,12 +267,13 @@ export default function ChatQuestionForm({
             )}
 
             {question.answerType === 'text' && (
-              <textarea
+              <QuestionTextarea
+                id={`chat-question-${question.id}-text`}
                 value={textValue}
-                onChange={(event) => setTextValue(event.target.value)}
+                onValueChange={setTextValue}
                 onKeyDown={handleKeyDown}
                 placeholder={question.placeholder ?? 'Type your answer...'}
-                className="border-border-default focus:ring-focus-ring min-h-24 w-full resize-none rounded-lg border bg-transparent p-3 text-sm outline-none focus:ring-2"
+                className="min-h-24 w-full"
               />
             )}
 
@@ -229,14 +295,25 @@ export default function ChatQuestionForm({
             {question.answerType === 'multi-select' && (
               <div className="grid gap-2">
                 {options.map((option) => (
-                  <OptionCard
-                    key={option.id}
-                    option={option}
-                    type="checkbox"
-                    name={optionName}
-                    checked={selectedMulti.includes(option.id)}
-                    onChange={() => handleMultiToggle(option.id)}
-                  />
+                  <div key={option.id} className="grid gap-2">
+                    <OptionCard
+                      option={option}
+                      type="checkbox"
+                      name={optionName}
+                      checked={selectedMulti.includes(option.id)}
+                      onChange={() => handleMultiToggle(option.id)}
+                    />
+                    {option.allowsCustomResponse &&
+                      selectedMulti.includes(option.id) && (
+                        <QuestionTextarea
+                          id={`chat-question-${question.id}-custom-response`}
+                          value={customResponseValue}
+                          onValueChange={setCustomResponseValue}
+                          placeholder="Type a custom post feature..."
+                          className="ml-6 min-h-20"
+                        />
+                      )}
+                  </div>
                 ))}
               </div>
             )}

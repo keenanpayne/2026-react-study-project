@@ -55,6 +55,7 @@ export const MockChatResponse: ChatResponseData = {
         { id: 'videos', label: 'Videos' },
         { id: 'polls', label: 'Polls' },
         { id: 'threads', label: 'Threads' },
+        { id: 'other', label: 'Other', allowsCustomResponse: true },
       ],
     },
     {

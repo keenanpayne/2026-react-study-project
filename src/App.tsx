@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import type { UIEvent } from 'react'
+import { ArrowDown } from 'lucide-react'
 import Dialog from './ui/components/Dialog'
 import ChatResponse from './ui/components/ChatResponse'
 import ChatHeader from './ui/components/ChatHeader'
 import ChatMessage from './ui/components/ChatMessage'
 import ChatForm from './ui/components/ChatForm'
 import ChatQuestionForm from './ui/components/ChatQuestionForm'
+import Button from './ui/components/Button'
 import WorkbenchHeader from './ui/components/WorkbenchHeader'
 import WorkbenchPreview from './ui/components/WorkbenchPreview'
 import WorkbenchCodebase from './ui/components/WorkbenchCodebase'
@@ -55,6 +58,8 @@ const STREAM_SENTENCE_DELAY = 320
 const STREAM_SECTION_PAUSE = 375
 const STREAM_ACTION_STEP_DELAY = 750
 const STREAM_FINAL_PAUSE = 700
+const MANUAL_SCROLL_DELTA = 1
+const SCROLL_BOTTOM_THRESHOLD = 8
 
 type StreamQueueHelpers = {
   queueStreamStep: (callback: () => void) => void
@@ -106,6 +111,10 @@ const getWordDelay = (wordToken: string, index: number) => {
   return STREAM_WORD_DELAY + (index % 4) * 18
 }
 
+const isScrolledToBottom = (element: HTMLDivElement) =>
+  element.scrollHeight - element.scrollTop - element.clientHeight <=
+  SCROLL_BOTTOM_THRESHOLD
+
 export default function App() {
   const [isActionDialogOpen, setIsActionDialogOpen] = useState(false)
   const [activeDatabaseSection, setActiveDatabaseSection] =
@@ -120,8 +129,11 @@ export default function App() {
     [],
   )
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0)
+  const [isScrollToBottomVisible, setIsScrollToBottomVisible] = useState(false)
   const streamTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
   const chatScrollRef = useRef<HTMLDivElement>(null)
+  const isChatAutoScrollEnabledRef = useRef(true)
+  const lastChatScrollTopRef = useRef(0)
   const {
     activePane,
     setActivePane,
@@ -145,17 +157,70 @@ export default function App() {
     streamTimersRef.current = []
   }, [])
 
+  const scrollChatToBottom = useCallback((behavior: ScrollBehavior) => {
+    const chatScrollEl = chatScrollRef.current
+    if (!chatScrollEl) return
+
+    lastChatScrollTopRef.current = chatScrollEl.scrollTop
+    chatScrollEl.scrollTo({
+      top: chatScrollEl.scrollHeight,
+      behavior,
+    })
+  }, [])
+
+  const handleScrollToBottomClick = useCallback(() => {
+    isChatAutoScrollEnabledRef.current = true
+    setIsScrollToBottomVisible(false)
+    scrollChatToBottom('smooth')
+  }, [scrollChatToBottom])
+
+  const resetChatAutoScroll = useCallback(() => {
+    isChatAutoScrollEnabledRef.current = true
+    setIsScrollToBottomVisible(false)
+    lastChatScrollTopRef.current = chatScrollRef.current?.scrollTop ?? 0
+  }, [])
+
   useEffect(() => clearStreamTimers, [clearStreamTimers])
 
   useEffect(() => {
     const chatScrollEl = chatScrollRef.current
-    if (!chatScrollEl || chatStatus === 'idle') return
+    if (
+      !chatScrollEl ||
+      chatStatus === 'idle' ||
+      !isChatAutoScrollEnabledRef.current
+    ) {
+      return
+    }
 
-    chatScrollEl.scrollTo({
-      top: chatScrollEl.scrollHeight,
-      behavior: chatStatus === 'streaming' ? 'smooth' : 'auto',
-    })
-  }, [chatActions, chatResponse, chatStatus])
+    scrollChatToBottom(chatStatus === 'streaming' ? 'smooth' : 'auto')
+  }, [chatActions, chatResponse, chatStatus, scrollChatToBottom])
+
+  const handleChatScroll = useCallback(
+    (event: UIEvent<HTMLDivElement>) => {
+      const chatScrollEl = event.currentTarget
+      const nextScrollTop = chatScrollEl.scrollTop
+      const previousScrollTop = lastChatScrollTopRef.current
+      const isAtBottom = isScrolledToBottom(chatScrollEl)
+
+      lastChatScrollTopRef.current = nextScrollTop
+
+      if (isAtBottom) {
+        isChatAutoScrollEnabledRef.current = true
+        setIsScrollToBottomVisible(false)
+        return
+      }
+
+      if (
+        chatStatus === 'streaming' &&
+        isChatAutoScrollEnabledRef.current &&
+        nextScrollTop < previousScrollTop - MANUAL_SCROLL_DELTA
+      ) {
+        isChatAutoScrollEnabledRef.current = false
+        setIsScrollToBottomVisible(true)
+      }
+    },
+    [chatStatus],
+  )
 
   const runStreamQueue = useCallback(
     (
@@ -269,6 +334,7 @@ export default function App() {
   const handleChatSubmit = useCallback(
     (message: string) => {
       clearStreamTimers()
+      resetChatAutoScroll()
       setChatMessage(message)
       setChatResponse({})
       setChatActions([])
@@ -320,11 +386,12 @@ export default function App() {
         },
       )
     },
-    [clearStreamTimers, queuePlanStream, runStreamQueue],
+    [clearStreamTimers, queuePlanStream, resetChatAutoScroll, runStreamQueue],
   )
 
   const finishQuestions = useCallback(
     (answers: ChatQuestionAnswer[]) => {
+      resetChatAutoScroll()
       setQuestionAnswers(answers)
       setChatResponse((current) => ({
         ...current,
@@ -335,7 +402,7 @@ export default function App() {
       setChatStatus('streaming')
       queuePlanStream()
     },
-    [queuePlanStream],
+    [queuePlanStream, resetChatAutoScroll],
   )
 
   const handleQuestionSubmit = useCallback(
@@ -435,7 +502,11 @@ export default function App() {
             currentProject={MockUserCurrentProject}
           />
 
-          <div ref={chatScrollRef} className="min-h-0 flex-1 overflow-auto">
+          <div
+            ref={chatScrollRef}
+            className="min-h-0 flex-1 overflow-auto"
+            onScroll={handleChatScroll}
+          >
             {chatMessage && (
               <ChatMessage
                 message={chatMessage}
@@ -462,7 +533,28 @@ export default function App() {
               onBack={handleQuestionBack}
             />
           ) : (
-            <ChatForm tokens={MockUserBoltTokens} onSubmit={handleChatSubmit} />
+            <div className="relative shrink-0">
+              {isScrollToBottomVisible && (
+                <div className="pointer-events-none absolute right-0 bottom-full left-0 z-10 mb-3 flex justify-center">
+                  <Button
+                    size="md"
+                    radius="pill"
+                    variant="subtle"
+                    iconOnly
+                    aria-label="Scroll to latest response"
+                    className="border-border-default bg-surface-raised pointer-events-auto border shadow-lg"
+                    onClick={handleScrollToBottomClick}
+                  >
+                    <ArrowDown size={18} aria-hidden="true" />
+                  </Button>
+                </div>
+              )}
+
+              <ChatForm
+                tokens={MockUserBoltTokens}
+                onSubmit={handleChatSubmit}
+              />
+            </div>
           )}
         </section>
 

@@ -18,6 +18,7 @@ export type ChatQuestionOption = {
   id: string
   label: string
   description?: string
+  allowsCustomResponse?: boolean
 }
 
 export type ChatQuestion = {
