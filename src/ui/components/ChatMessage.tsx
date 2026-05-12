@@ -7,8 +7,10 @@ import type { ChatActionData, ChatResponseData } from '~/types/chat'
 
 type ChatMessageProps = {
   message: string
-  response: ChatResponseData
+  response: Partial<ChatResponseData>
   actions: ChatActionData[]
+  isLoading?: boolean
+  isStreaming?: boolean
   onOpenActionDetails: () => void
 }
 
@@ -16,6 +18,8 @@ export default function ChatMessage({
   message,
   response,
   actions,
+  isLoading = false,
+  isStreaming = false,
   onOpenActionDetails,
 }: ChatMessageProps) {
   return (
@@ -44,8 +48,10 @@ export default function ChatMessage({
         <ChatResponse
           response={response}
           actions={actions}
-          actionsExpanded={false}
+          actionsExpanded={true}
           actionOnClick={onOpenActionDetails}
+          isLoading={isLoading}
+          isStreaming={isStreaming}
         />
       </article>
     </>

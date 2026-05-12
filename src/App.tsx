@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Dialog from './ui/components/Dialog'
 import ChatResponse from './ui/components/ChatResponse'
 import ChatHeader from './ui/components/ChatHeader'
@@ -20,19 +20,47 @@ import {
   MockUserProjects,
   MockUserTeams,
 } from './data/mockUser'
-import {
-  MockChatActions,
-  MockChatResponse,
-  MockChatUserMessage,
-} from './data/mockChat'
+import { MockChatActions, MockChatResponse } from './data/mockChat'
 import { useMobileNavigation } from './hooks/useMobileNavigation'
 import InstallPrompt from './ui/components/InstallPrompt'
+import type {
+  ChatActionData,
+  ChatPlanSection,
+  ChatResponseData,
+} from '~/types/chat'
 import type { WorkbenchDatabaseSection } from '~/types/navigation'
+
+type ChatStatus = 'idle' | 'loading' | 'streaming' | 'complete'
+
+const STREAM_INITIAL_DELAY = 1400
+const STREAM_STEP_DELAY = 1100
+const STREAM_ACTION_STEP_DELAY = 750
+const STREAM_PLAN_ITEM_STEP_DELAY = 450
+
+const buildVisiblePlanSections = (
+  sectionIndex: number,
+  itemCount: number,
+): ChatPlanSection[] =>
+  MockChatResponse.planSections
+    .slice(0, sectionIndex + 1)
+    .map((section, index) =>
+      index === sectionIndex
+        ? { ...section, items: section.items.slice(0, itemCount) }
+        : section,
+    )
 
 export default function App() {
   const [isActionDialogOpen, setIsActionDialogOpen] = useState(false)
   const [activeDatabaseSection, setActiveDatabaseSection] =
     useState<WorkbenchDatabaseSection>('database')
+  const [chatMessage, setChatMessage] = useState<string | null>(null)
+  const [chatResponse, setChatResponse] = useState<Partial<ChatResponseData>>(
+    {},
+  )
+  const [chatActions, setChatActions] = useState<ChatActionData[]>([])
+  const [chatStatus, setChatStatus] = useState<ChatStatus>('idle')
+  const streamTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+  const chatScrollRef = useRef<HTMLDivElement>(null)
   const {
     activePane,
     setActivePane,
@@ -43,6 +71,111 @@ export default function App() {
   } = useMobileNavigation()
 
   const isMobileChat = activeMobileView === 'chat'
+  const isLoading = chatStatus === 'loading'
+  const isStreaming = chatStatus === 'streaming'
+
+  const clearStreamTimers = useCallback(() => {
+    streamTimersRef.current.forEach((timer) => clearTimeout(timer))
+    streamTimersRef.current = []
+  }, [])
+
+  useEffect(() => clearStreamTimers, [clearStreamTimers])
+
+  useEffect(() => {
+    const chatScrollEl = chatScrollRef.current
+    if (!chatScrollEl || chatStatus === 'idle') return
+
+    chatScrollEl.scrollTo({
+      top: chatScrollEl.scrollHeight,
+      behavior: chatStatus === 'streaming' ? 'smooth' : 'auto',
+    })
+  }, [chatActions, chatResponse, chatStatus])
+
+  const handleChatSubmit = useCallback(
+    (message: string) => {
+      clearStreamTimers()
+      setChatMessage(message)
+      setChatResponse({})
+      setChatActions([])
+      setChatStatus('loading')
+
+      let streamDelay = STREAM_INITIAL_DELAY
+      const queueStreamStep = (
+        callback: () => void,
+        stepDelay = STREAM_STEP_DELAY,
+      ) => {
+        const delay = streamDelay
+        const timer = setTimeout(callback, delay)
+        streamTimersRef.current.push(timer)
+        streamDelay += stepDelay
+      }
+
+      queueStreamStep(() => {
+        setChatStatus('streaming')
+        setChatResponse({ openingText: MockChatResponse.openingText })
+      })
+
+      MockChatActions.forEach((_, index) => {
+        queueStreamStep(() => {
+          setChatActions(MockChatActions.slice(0, index + 1))
+        }, STREAM_ACTION_STEP_DELAY)
+      })
+
+      queueStreamStep(() => {
+        setChatResponse((current) => ({
+          ...current,
+          followUpText: MockChatResponse.followUpText,
+        }))
+      })
+
+      queueStreamStep(() => {
+        setChatResponse((current) => ({
+          ...current,
+          questionsIntro: MockChatResponse.questionsIntro,
+          questions: MockChatResponse.questions,
+        }))
+      })
+
+      queueStreamStep(() => {
+        setChatResponse((current) => ({
+          ...current,
+          planTitle: MockChatResponse.planTitle,
+        }))
+      })
+
+      MockChatResponse.planSections.forEach((section, sectionIndex) => {
+        section.items.forEach((_, itemIndex) => {
+          queueStreamStep(() => {
+            setChatResponse((current) => ({
+              ...current,
+              planSections: buildVisiblePlanSections(
+                sectionIndex,
+                itemIndex + 1,
+              ),
+            }))
+          }, STREAM_PLAN_ITEM_STEP_DELAY)
+        })
+      })
+
+      queueStreamStep(() => {
+        setChatResponse((current) => ({
+          ...current,
+          summaryTitle: MockChatResponse.summaryTitle,
+          summaryText: MockChatResponse.summaryText,
+        }))
+      })
+
+      queueStreamStep(() => {
+        setChatResponse((current) => ({
+          ...current,
+          closingText: MockChatResponse.closingText,
+          plan: MockChatResponse.plan,
+        }))
+        setChatStatus('complete')
+      })
+    },
+    [clearStreamTimers],
+  )
 
   return (
     <>
@@ -85,16 +218,20 @@ export default function App() {
             currentProject={MockUserCurrentProject}
           />
 
-          <div className="min-h-0 flex-1 overflow-auto">
-            <ChatMessage
-              message={MockChatUserMessage}
-              response={MockChatResponse}
-              actions={MockChatActions}
-              onOpenActionDetails={() => setIsActionDialogOpen(true)}
-            />
+          <div ref={chatScrollRef} className="min-h-0 flex-1 overflow-auto">
+            {chatMessage && (
+              <ChatMessage
+                message={chatMessage}
+                response={chatResponse}
+                actions={chatActions}
+                isLoading={isLoading}
+                isStreaming={isStreaming}
+                onOpenActionDetails={() => setIsActionDialogOpen(true)}
+              />
+            )}
           </div>
 
-          <ChatForm tokens={MockUserBoltTokens} />
+          <ChatForm tokens={MockUserBoltTokens} onSubmit={handleChatSubmit} />
         </section>
 
         <section
