@@ -41,10 +41,9 @@ type ChatResponseTextKey =
   | 'closingText'
 
 const STREAM_INITIAL_DELAY = 1500
-const STREAM_CHARACTER_DELAY = 24
-const STREAM_SPACE_DELAY = 32
-const STREAM_COMMA_DELAY = 75
-const STREAM_SENTENCE_DELAY = 150
+const STREAM_WORD_DELAY = 95
+const STREAM_CLAUSE_DELAY = 180
+const STREAM_SENTENCE_DELAY = 320
 const STREAM_SECTION_PAUSE = 375
 const STREAM_ACTION_STEP_DELAY = 750
 const STREAM_FINAL_PAUSE = 700
@@ -81,12 +80,15 @@ const buildVisibleQuestions = (
         : question,
     )
 
-const getCharacterDelay = (character: string, index: number) => {
-  if (/[.!?]/.test(character)) return STREAM_SENTENCE_DELAY
-  if (/[,;:]/.test(character)) return STREAM_COMMA_DELAY
-  if (/\s/.test(character)) return STREAM_SPACE_DELAY
+const getWordTokens = (text: string) => text.match(/\s*\S+\s*/g) ?? []
 
-  return STREAM_CHARACTER_DELAY + (index % 4) * 8
+const getWordDelay = (wordToken: string, index: number) => {
+  const word = wordToken.trim()
+
+  if (/[.!?]$/.test(word)) return STREAM_SENTENCE_DELAY
+  if (/[,;:]$/.test(word)) return STREAM_CLAUSE_DELAY
+
+  return STREAM_WORD_DELAY + (index % 4) * 18
 }
 
 export default function App() {
@@ -152,13 +154,13 @@ export default function App() {
         text: string,
         onUpdate: (visibleText: string) => void,
       ) => {
-        const characters = Array.from(text)
+        const wordTokens = getWordTokens(text)
 
-        characters.forEach((character, index) => {
+        wordTokens.forEach((wordToken, index) => {
           queueStreamStep(() =>
-            onUpdate(characters.slice(0, index + 1).join('')),
+            onUpdate(wordTokens.slice(0, index + 1).join('')),
           )
-          pauseStream(getCharacterDelay(character, index))
+          pauseStream(getWordDelay(wordToken, index))
         })
       }
       const queueResponseText = (key: ChatResponseTextKey, text: string) => {
@@ -210,7 +212,7 @@ export default function App() {
           }))
         })
 
-        pauseStream(STREAM_COMMA_DELAY)
+        pauseStream(STREAM_CLAUSE_DELAY)
         queueTextStream(question.text, (visibleText) => {
           setChatResponse((current) => ({
             ...current,
