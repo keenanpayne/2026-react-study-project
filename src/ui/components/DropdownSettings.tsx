@@ -8,6 +8,7 @@ import {
   Lightbulb,
   Settings,
   SquareFunction,
+  WandSparkles,
   type LucideIcon,
 } from 'lucide-react'
 import Dropdown, {
@@ -53,6 +54,7 @@ const SETTINGS_ENTRIES = [
     icon: SquareFunction,
   },
   { kind: 'item', id: 'secrets', title: 'Secrets', icon: Key },
+  { kind: 'item', id: 'skills', title: 'Skills', icon: WandSparkles },
   { kind: 'item', id: 'connectors', title: 'Connectors', icon: Component },
   { kind: 'separator', id: 'sep-after-connectors' },
   {
