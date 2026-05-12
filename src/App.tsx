@@ -4,6 +4,7 @@ import ChatResponse from './ui/components/ChatResponse'
 import ChatHeader from './ui/components/ChatHeader'
 import ChatMessage from './ui/components/ChatMessage'
 import ChatForm from './ui/components/ChatForm'
+import ChatQuestionForm from './ui/components/ChatQuestionForm'
 import WorkbenchHeader from './ui/components/WorkbenchHeader'
 import WorkbenchPreview from './ui/components/WorkbenchPreview'
 import WorkbenchCodebase from './ui/components/WorkbenchCodebase'
@@ -25,12 +26,19 @@ import { useMobileNavigation } from './hooks/useMobileNavigation'
 import InstallPrompt from './ui/components/InstallPrompt'
 import type {
   ChatActionData,
+  ChatQuestionAnswer,
+  ChatQuestionAnswerValue,
   ChatPlanSection,
   ChatResponseData,
 } from '~/types/chat'
 import type { WorkbenchDatabaseSection } from '~/types/navigation'
 
-type ChatStatus = 'idle' | 'loading' | 'streaming' | 'complete'
+type ChatStatus =
+  | 'idle'
+  | 'loading'
+  | 'streaming'
+  | 'awaitingQuestions'
+  | 'complete'
 type ChatResponseTextKey =
   | 'openingText'
   | 'followUpText'
@@ -47,6 +55,26 @@ const STREAM_SENTENCE_DELAY = 320
 const STREAM_SECTION_PAUSE = 375
 const STREAM_ACTION_STEP_DELAY = 750
 const STREAM_FINAL_PAUSE = 700
+
+type StreamQueueHelpers = {
+  queueStreamStep: (callback: () => void) => void
+  pauseStream: (delay: number) => void
+  queueTextStream: (
+    text: string,
+    onUpdate: (visibleText: string) => void,
+  ) => void
+  queueResponseText: (key: ChatResponseTextKey, text: string) => void
+}
+
+const upsertQuestionAnswer = (
+  answers: ChatQuestionAnswer[],
+  answer: ChatQuestionAnswer,
+) => [
+  ...answers.filter(
+    (currentAnswer) => currentAnswer.questionId !== answer.questionId,
+  ),
+  answer,
+]
 
 const buildVisiblePlanSections = (
   sectionIndex: number,
@@ -66,19 +94,6 @@ const buildVisiblePlanSections = (
 
       return { ...section, title: visibleTitle, items: visibleItems }
     })
-
-const buildVisibleQuestions = (
-  questionIndex: number,
-  visibleLabel: string,
-  visibleText: string,
-) =>
-  MockChatResponse.questions
-    .slice(0, questionIndex + 1)
-    .map((question, index) =>
-      index === questionIndex
-        ? { ...question, label: visibleLabel, text: visibleText }
-        : question,
-    )
 
 const getWordTokens = (text: string) => text.match(/\s*\S+\s*/g) ?? []
 
@@ -101,6 +116,10 @@ export default function App() {
   )
   const [chatActions, setChatActions] = useState<ChatActionData[]>([])
   const [chatStatus, setChatStatus] = useState<ChatStatus>('idle')
+  const [questionAnswers, setQuestionAnswers] = useState<ChatQuestionAnswer[]>(
+    [],
+  )
+  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0)
   const streamTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
   const chatScrollRef = useRef<HTMLDivElement>(null)
   const {
@@ -115,6 +134,11 @@ export default function App() {
   const isMobileChat = activeMobileView === 'chat'
   const isLoading = chatStatus === 'loading'
   const isStreaming = chatStatus === 'streaming'
+  const isAnsweringQuestions = chatStatus === 'awaitingQuestions'
+  const activeQuestion = MockChatResponse.questions[activeQuestionIndex]
+  const activeQuestionAnswer = questionAnswers.find(
+    (answer) => answer.questionId === activeQuestion?.id,
+  )
 
   const clearStreamTimers = useCallback(() => {
     streamTimersRef.current.forEach((timer) => clearTimeout(timer))
@@ -133,15 +157,12 @@ export default function App() {
     })
   }, [chatActions, chatResponse, chatStatus])
 
-  const handleChatSubmit = useCallback(
-    (message: string) => {
-      clearStreamTimers()
-      setChatMessage(message)
-      setChatResponse({})
-      setChatActions([])
-      setChatStatus('loading')
-
-      let streamDelay = STREAM_INITIAL_DELAY
+  const runStreamQueue = useCallback(
+    (
+      initialDelay: number,
+      buildQueue: (helpers: StreamQueueHelpers) => void,
+    ) => {
+      let streamDelay = initialDelay
       const queueStreamStep = (callback: () => void) => {
         const delay = streamDelay
         const timer = setTimeout(callback, delay)
@@ -172,106 +193,206 @@ export default function App() {
         })
       }
 
-      queueStreamStep(() => {
-        setChatStatus('streaming')
-      })
-      queueResponseText('openingText', MockChatResponse.openingText)
-      pauseStream(STREAM_SECTION_PAUSE)
-
-      MockChatActions.forEach((action) => {
-        queueStreamStep(() => {
-          setChatActions((current) => [
-            ...current,
-            { ...action, isLoading: true },
-          ])
-        })
-        pauseStream(STREAM_ACTION_STEP_DELAY)
-        queueStreamStep(() => {
-          setChatActions((current) =>
-            current.map((currentAction) =>
-              currentAction.id === action.id
-                ? { ...currentAction, isLoading: false }
-                : currentAction,
-            ),
-          )
-        })
-      })
-
-      pauseStream(STREAM_SECTION_PAUSE)
-      queueResponseText('followUpText', MockChatResponse.followUpText)
-
-      pauseStream(STREAM_SECTION_PAUSE)
-      queueResponseText('questionsIntro', MockChatResponse.questionsIntro)
-
-      MockChatResponse.questions.forEach((question, questionIndex) => {
-        pauseStream(STREAM_SECTION_PAUSE)
-        queueTextStream(question.label, (visibleLabel) => {
-          setChatResponse((current) => ({
-            ...current,
-            questions: buildVisibleQuestions(questionIndex, visibleLabel, ''),
-          }))
-        })
-
-        pauseStream(STREAM_CLAUSE_DELAY)
-        queueTextStream(question.text, (visibleText) => {
-          setChatResponse((current) => ({
-            ...current,
-            questions: buildVisibleQuestions(
-              questionIndex,
-              question.label,
-              visibleText,
-            ),
-          }))
-        })
-      })
-
-      pauseStream(STREAM_SECTION_PAUSE)
-      queueResponseText('planTitle', MockChatResponse.planTitle)
-
-      MockChatResponse.planSections.forEach((section, sectionIndex) => {
-        pauseStream(STREAM_SECTION_PAUSE)
-        queueTextStream(section.title, (visibleTitle) => {
-          setChatResponse((current) => ({
-            ...current,
-            planSections: buildVisiblePlanSections(sectionIndex, visibleTitle),
-          }))
-        })
-
-        section.items.forEach((item, itemIndex) => {
-          pauseStream(STREAM_SECTION_PAUSE)
-          queueTextStream(item, (visibleItem) => {
-            setChatResponse((current) => ({
-              ...current,
-              planSections: buildVisiblePlanSections(
-                sectionIndex,
-                section.title,
-                itemIndex,
-                visibleItem,
-              ),
-            }))
-          })
-        })
-      })
-
-      pauseStream(STREAM_SECTION_PAUSE)
-      queueResponseText('summaryTitle', MockChatResponse.summaryTitle)
-      pauseStream(STREAM_SECTION_PAUSE)
-      queueResponseText('summaryText', MockChatResponse.summaryText)
-
-      pauseStream(STREAM_SECTION_PAUSE)
-      queueResponseText('closingText', MockChatResponse.closingText)
-
-      pauseStream(STREAM_FINAL_PAUSE)
-      queueStreamStep(() => {
-        setChatResponse((current) => ({
-          ...current,
-          plan: MockChatResponse.plan,
-        }))
-        setChatStatus('complete')
+      buildQueue({
+        queueStreamStep,
+        pauseStream,
+        queueTextStream,
+        queueResponseText,
       })
     },
-    [clearStreamTimers],
+    [],
   )
+
+  const queuePlanStream = useCallback(
+    (initialDelay = 0) => {
+      runStreamQueue(
+        initialDelay,
+        ({
+          queueStreamStep,
+          pauseStream,
+          queueTextStream,
+          queueResponseText,
+        }) => {
+          pauseStream(STREAM_SECTION_PAUSE)
+          queueResponseText('planTitle', MockChatResponse.planTitle)
+
+          MockChatResponse.planSections.forEach((section, sectionIndex) => {
+            pauseStream(STREAM_SECTION_PAUSE)
+            queueTextStream(section.title, (visibleTitle) => {
+              setChatResponse((current) => ({
+                ...current,
+                planSections: buildVisiblePlanSections(
+                  sectionIndex,
+                  visibleTitle,
+                ),
+              }))
+            })
+
+            section.items.forEach((item, itemIndex) => {
+              pauseStream(STREAM_SECTION_PAUSE)
+              queueTextStream(item, (visibleItem) => {
+                setChatResponse((current) => ({
+                  ...current,
+                  planSections: buildVisiblePlanSections(
+                    sectionIndex,
+                    section.title,
+                    itemIndex,
+                    visibleItem,
+                  ),
+                }))
+              })
+            })
+          })
+
+          pauseStream(STREAM_SECTION_PAUSE)
+          queueResponseText('summaryTitle', MockChatResponse.summaryTitle)
+          pauseStream(STREAM_SECTION_PAUSE)
+          queueResponseText('summaryText', MockChatResponse.summaryText)
+
+          pauseStream(STREAM_SECTION_PAUSE)
+          queueResponseText('closingText', MockChatResponse.closingText)
+
+          pauseStream(STREAM_FINAL_PAUSE)
+          queueStreamStep(() => {
+            setChatResponse((current) => ({
+              ...current,
+              plan: MockChatResponse.plan,
+            }))
+            setChatStatus('complete')
+          })
+        },
+      )
+    },
+    [runStreamQueue],
+  )
+
+  const handleChatSubmit = useCallback(
+    (message: string) => {
+      clearStreamTimers()
+      setChatMessage(message)
+      setChatResponse({})
+      setChatActions([])
+      setQuestionAnswers([])
+      setActiveQuestionIndex(0)
+      setChatStatus('loading')
+
+      runStreamQueue(
+        STREAM_INITIAL_DELAY,
+        ({ queueStreamStep, pauseStream, queueResponseText }) => {
+          queueStreamStep(() => {
+            setChatStatus('streaming')
+          })
+          queueResponseText('openingText', MockChatResponse.openingText)
+          pauseStream(STREAM_SECTION_PAUSE)
+
+          MockChatActions.forEach((action) => {
+            queueStreamStep(() => {
+              setChatActions((current) => [
+                ...current,
+                { ...action, isLoading: true },
+              ])
+            })
+            pauseStream(STREAM_ACTION_STEP_DELAY)
+            queueStreamStep(() => {
+              setChatActions((current) =>
+                current.map((currentAction) =>
+                  currentAction.id === action.id
+                    ? { ...currentAction, isLoading: false }
+                    : currentAction,
+                ),
+              )
+            })
+          })
+
+          pauseStream(STREAM_SECTION_PAUSE)
+          queueResponseText('followUpText', MockChatResponse.followUpText)
+
+          pauseStream(STREAM_SECTION_PAUSE)
+          queueStreamStep(() => {
+            if (MockChatResponse.questions.length > 0) {
+              setChatStatus('awaitingQuestions')
+              return
+            }
+
+            setChatStatus('streaming')
+            queuePlanStream()
+          })
+        },
+      )
+    },
+    [clearStreamTimers, queuePlanStream, runStreamQueue],
+  )
+
+  const finishQuestions = useCallback(
+    (answers: ChatQuestionAnswer[]) => {
+      setQuestionAnswers(answers)
+      setChatResponse((current) => ({
+        ...current,
+        questionsIntro: MockChatResponse.questionsIntro,
+        questions: MockChatResponse.questions,
+      }))
+      setActiveQuestionIndex(MockChatResponse.questions.length - 1)
+      setChatStatus('streaming')
+      queuePlanStream()
+    },
+    [queuePlanStream],
+  )
+
+  const handleQuestionSubmit = useCallback(
+    (value: ChatQuestionAnswerValue) => {
+      if (!activeQuestion) return
+
+      const nextAnswers = upsertQuestionAnswer(questionAnswers, {
+        questionId: activeQuestion.id,
+        status: 'answered',
+        value,
+      })
+
+      if (activeQuestionIndex >= MockChatResponse.questions.length - 1) {
+        finishQuestions(nextAnswers)
+        return
+      }
+
+      setQuestionAnswers(nextAnswers)
+      setActiveQuestionIndex((current) => current + 1)
+    },
+    [activeQuestion, activeQuestionIndex, finishQuestions, questionAnswers],
+  )
+
+  const handleQuestionSkip = useCallback(() => {
+    if (!activeQuestion) return
+
+    const nextAnswers = upsertQuestionAnswer(questionAnswers, {
+      questionId: activeQuestion.id,
+      status: 'skipped',
+    })
+
+    if (activeQuestionIndex >= MockChatResponse.questions.length - 1) {
+      finishQuestions(nextAnswers)
+      return
+    }
+
+    setQuestionAnswers(nextAnswers)
+    setActiveQuestionIndex((current) => current + 1)
+  }, [activeQuestion, activeQuestionIndex, finishQuestions, questionAnswers])
+
+  const handleQuestionSkipAll = useCallback(() => {
+    const answeredQuestionIds = new Set(
+      questionAnswers.map((answer) => answer.questionId),
+    )
+    const skippedAnswers = MockChatResponse.questions
+      .filter((question) => !answeredQuestionIds.has(question.id))
+      .map<ChatQuestionAnswer>((question) => ({
+        questionId: question.id,
+        status: 'skipped',
+      }))
+
+    finishQuestions([...questionAnswers, ...skippedAnswers])
+  }, [finishQuestions, questionAnswers])
+
+  const handleQuestionBack = useCallback(() => {
+    setActiveQuestionIndex((current) => Math.max(current - 1, 0))
+  }, [])
 
   return (
     <>
@@ -320,6 +441,7 @@ export default function App() {
                 message={chatMessage}
                 response={chatResponse}
                 actions={chatActions}
+                questionAnswers={questionAnswers}
                 isLoading={isLoading}
                 isStreaming={isStreaming}
                 onOpenActionDetails={() => setIsActionDialogOpen(true)}
@@ -327,7 +449,21 @@ export default function App() {
             )}
           </div>
 
-          <ChatForm tokens={MockUserBoltTokens} onSubmit={handleChatSubmit} />
+          {isAnsweringQuestions && activeQuestion ? (
+            <ChatQuestionForm
+              key={activeQuestion.id}
+              question={activeQuestion}
+              questionIndex={activeQuestionIndex}
+              questionCount={MockChatResponse.questions.length}
+              initialAnswer={activeQuestionAnswer}
+              onSubmit={handleQuestionSubmit}
+              onSkip={handleQuestionSkip}
+              onSkipAll={handleQuestionSkipAll}
+              onBack={handleQuestionBack}
+            />
+          ) : (
+            <ChatForm tokens={MockUserBoltTokens} onSubmit={handleChatSubmit} />
+          )}
         </section>
 
         <section

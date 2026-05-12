@@ -1,19 +1,49 @@
 import ChatPlan from './ChatPlan'
 import ChatActions from './ChatActions'
-import type { ChatActionData, ChatResponseData } from '~/types/chat'
+import type {
+  ChatActionData,
+  ChatQuestion,
+  ChatQuestionAnswer,
+  ChatQuestionAnswerValue,
+  ChatResponseData,
+} from '~/types/chat'
 
 type ChatResponseProps = {
   response: Partial<ChatResponseData>
   actions: ChatActionData[]
+  questionAnswers?: ChatQuestionAnswer[]
   actionsExpanded: boolean
   actionOnClick: () => void
   isLoading?: boolean
   isStreaming?: boolean
 }
 
+const getOptionLabel = (question: ChatQuestion, optionId: string) =>
+  question.options?.find((option) => option.id === optionId)?.label ?? optionId
+
+const formatAnswerValue = (
+  question: ChatQuestion,
+  value: ChatQuestionAnswerValue | undefined,
+) => {
+  if (!value) return ''
+
+  if (Array.isArray(value)) {
+    return value
+      .map((optionId) => getOptionLabel(question, optionId))
+      .join(', ')
+  }
+
+  if (typeof value === 'string') {
+    return getOptionLabel(question, value)
+  }
+
+  return value.fileName
+}
+
 export default function ChatResponse({
   response,
   actions,
+  questionAnswers = [],
   actionsExpanded,
   actionOnClick,
   isLoading = false,
@@ -45,11 +75,30 @@ export default function ChatResponse({
 
       {hasQuestions && (
         <ol className="list-outside list-decimal space-y-3 pl-6">
-          {response.questions?.map((q) => (
-            <li key={q.id}>
-              <strong>{q.label}</strong> {q.text}
-            </li>
-          ))}
+          {response.questions?.map((question) => {
+            const answer = questionAnswers.find(
+              (a) => a.questionId === question.id,
+            )
+            return (
+              <li key={question.id}>
+                <strong>{question.label}</strong> {question.text}
+                {answer && (
+                  <p className="mt-1 text-xs">
+                    <span
+                      className={`mt-1 text-xs ${
+                        answer.status === 'skipped'
+                          ? 'text-text-warning'
+                          : 'text-text-success'
+                      }`}
+                    >
+                      {answer.status === 'skipped' ? 'Skipped' : 'Answered:'}
+                    </span>{' '}
+                    {formatAnswerValue(question, answer.value)}
+                  </p>
+                )}
+              </li>
+            )
+          })}
         </ol>
       )}
 
@@ -69,7 +118,7 @@ export default function ChatResponse({
                 {section.id}. {section.title}
               </h3>
 
-              <ul className="mt-3 list-outside list-disc space-y-3 pl-6">
+              <ul className="mt-3 list-outside list-disc space-y-1.5 pl-6">
                 {section.items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}

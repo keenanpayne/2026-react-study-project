@@ -3,12 +3,17 @@ import ChatResponse from './ChatResponse'
 import DropdownChat from './DropdownChat'
 import DropdownTrigger from './DropdownTrigger'
 import BoltLogo from './BoltLogo'
-import type { ChatActionData, ChatResponseData } from '~/types/chat'
+import type {
+  ChatActionData,
+  ChatQuestionAnswer,
+  ChatResponseData,
+} from '~/types/chat'
 
 type ChatMessageProps = {
   message: string
   response: Partial<ChatResponseData>
   actions: ChatActionData[]
+  questionAnswers?: ChatQuestionAnswer[]
   isLoading?: boolean
   isStreaming?: boolean
   onOpenActionDetails: () => void
@@ -18,6 +23,7 @@ export default function ChatMessage({
   message,
   response,
   actions,
+  questionAnswers = [],
   isLoading = false,
   isStreaming = false,
   onOpenActionDetails,
@@ -48,6 +54,7 @@ export default function ChatMessage({
         <ChatResponse
           response={response}
           actions={actions}
+          questionAnswers={questionAnswers}
           actionsExpanded={true}
           actionOnClick={onOpenActionDetails}
           isLoading={isLoading}

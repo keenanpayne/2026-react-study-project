@@ -43,6 +43,15 @@
     var(--color-gray-300)
   );
   --color-text-selected: light-dark(var(--color-sky-800), var(--color-sky-200));
+  --color-text-success: light-dark(
+    var(--color-green-600),
+    var(--color-green-500)
+  );
+  --color-text-warning: light-dark(
+    var(--color-yellow-600),
+    var(--color-yellow-500)
+  );
+  --color-text-danger: light-dark(var(--color-red-600), var(--color-red-500));
 
   /* Interactive */
   --color-hover-item: light-dark(var(--color-gray-100), var(--color-zinc-700));

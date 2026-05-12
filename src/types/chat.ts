@@ -8,10 +8,41 @@ export type ChatActionData = {
   isLoading?: boolean
 }
 
+export type ChatQuestionAnswerType =
+  | 'text'
+  | 'single-select'
+  | 'multi-select'
+  | 'image-upload'
+
+export type ChatQuestionOption = {
+  id: string
+  label: string
+  description?: string
+}
+
 export type ChatQuestion = {
   id: number
   label: string
   text: string
+  answerType: ChatQuestionAnswerType
+  options?: ChatQuestionOption[]
+  placeholder?: string
+  allowSkip?: boolean
+}
+
+export type ChatQuestionAnswerValue =
+  | string
+  | string[]
+  | {
+      fileName: string
+      fileSize: number
+      fileType: string
+    }
+
+export type ChatQuestionAnswer = {
+  questionId: number
+  status: 'answered' | 'skipped'
+  value?: ChatQuestionAnswerValue
 }
 
 export type ChatPlanSection = {

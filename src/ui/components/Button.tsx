@@ -6,7 +6,7 @@ import type {
 import { cva, type VariantProps } from 'class-variance-authority'
 
 const buttonStyles = cva(
-  'inline-flex cursor-pointer items-center text-left transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
+  'inline-flex cursor-pointer items-center text-left transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
   {
     variants: {
       size: {
@@ -30,6 +30,7 @@ const buttonStyles = cva(
         primary: 'bg-inverse text-text-inverse hover:bg-inverse-hover',
         danger: 'bg-danger text-white hover:bg-danger-hover',
         success: 'bg-success text-white hover:bg-success-hover',
+        blue: 'bg-blue-500 text-white hover:bg-blue-600',
       },
       iconOnly: {
         false: null,
