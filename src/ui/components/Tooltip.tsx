@@ -67,7 +67,7 @@ export default function Tooltip({
               popupClassName,
             )}
           >
-            <BaseTooltip.Arrow className="flex size-2.5 items-center justify-center">
+            <BaseTooltip.Arrow className="pointer-events-none flex size-2.5 items-center justify-center data-[side=bottom]:-top-[5px] data-[side=left]:-right-[5px] data-[side=right]:-left-[5px] data-[side=top]:-bottom-[5px]">
               <span className="bg-inverse block size-2 rotate-45 rounded-[1px]" />
             </BaseTooltip.Arrow>
 
