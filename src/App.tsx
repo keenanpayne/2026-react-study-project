@@ -24,7 +24,11 @@ import {
   MockUserProjects,
   MockUserTeams,
 } from './data/mockUser'
-import { MockChatActions, MockChatResponse } from './data/mockChat'
+import {
+  MockChatActions,
+  MockChatResponse,
+  MockChatResponseEmpty,
+} from './data/mockChat'
 import { useMobileNavigation } from './hooks/useMobileNavigation'
 import InstallPrompt from './ui/components/InstallPrompt'
 import type {
@@ -507,6 +511,8 @@ export default function App() {
             className="min-h-0 flex-1 overflow-auto"
             onScroll={handleChatScroll}
           >
+            {!chatMessage && <ChatMessage response={MockChatResponseEmpty} />}
+
             {chatMessage && (
               <ChatMessage
                 message={chatMessage}

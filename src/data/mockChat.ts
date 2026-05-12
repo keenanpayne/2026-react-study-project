@@ -1,5 +1,17 @@
 import type { ChatActionData, ChatResponseData } from '~/types/chat'
 
+export const MockChatResponseEmpty: ChatResponseData = {
+  openingText: 'Enter a prompt to get started',
+  followUpText: '',
+  questionsIntro: '',
+  questions: [],
+  planTitle: '',
+  planSections: [],
+  summaryTitle: '',
+  summaryText: '',
+  closingText: '',
+}
+
 export const MockChatActions: ChatActionData[] = [
   { id: 1, title: 'Get current working directory', iconType: 'terminal' },
   { id: 2, title: 'Listed files in project root', iconType: 'terminal' },

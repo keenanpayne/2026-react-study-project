@@ -62,7 +62,7 @@ export type ChatResponseData = {
   summaryTitle: string
   summaryText: string
   closingText: string
-  plan: {
+  plan?: {
     title: string
     version: string
     createdAt: Date

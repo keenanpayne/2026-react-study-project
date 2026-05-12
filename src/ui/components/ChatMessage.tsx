@@ -10,45 +10,53 @@ import type {
 } from '~/types/chat'
 
 type ChatMessageProps = {
-  message: string
+  message?: string
   response: Partial<ChatResponseData>
-  actions: ChatActionData[]
+  actions?: ChatActionData[]
   questionAnswers?: ChatQuestionAnswer[]
   isLoading?: boolean
   isStreaming?: boolean
-  onOpenActionDetails: () => void
+  onOpenActionDetails?: () => void
 }
 
 export default function ChatMessage({
-  message,
+  message = '',
   response,
-  actions,
+  actions = [],
   questionAnswers = [],
   isLoading = false,
   isStreaming = false,
-  onOpenActionDetails,
+  onOpenActionDetails = () => {},
 }: ChatMessageProps) {
   return (
     <>
-      <article aria-label="Your message" className="p-5">
-        <p className="border-border-default bg-surface-muted rounded-lg border p-3 text-sm leading-relaxed">
-          {message}
-        </p>
-      </article>
+      {message !== '' && (
+        <article aria-label="Your message" className="p-5">
+          <p className="border-border-default bg-surface-muted rounded-lg border p-3 text-sm leading-relaxed">
+            {message}
+          </p>
+        </article>
+      )}
 
       <article
         aria-label="Assistant response"
-        className="flex flex-col gap-3 px-5 pb-6 text-sm leading-relaxed"
+        className={`flex flex-col gap-3 px-5 pb-6 text-sm leading-relaxed ${message === '' ? 'mt-3' : ''}`}
       >
         <div className="flex items-center justify-between">
           <BoltLogo className="h-3.5" />
 
-          <div role="toolbar" aria-label="Message actions">
-            <DropdownTrigger size="sm" radius="md" dropdown={<DropdownChat />}>
-              <span className="sr-only">Open chat menu</span>
-              <Ellipsis aria-hidden="true" />
-            </DropdownTrigger>
-          </div>
+          {message !== '' && (
+            <div role="toolbar" aria-label="Message actions">
+              <DropdownTrigger
+                size="sm"
+                radius="md"
+                dropdown={<DropdownChat />}
+              >
+                <span className="sr-only">Open chat menu</span>
+                <Ellipsis aria-hidden="true" />
+              </DropdownTrigger>
+            </div>
+          )}
         </div>
 
         <ChatResponse
