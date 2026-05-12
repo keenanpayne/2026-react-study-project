@@ -31,23 +31,63 @@ import type {
 import type { WorkbenchDatabaseSection } from '~/types/navigation'
 
 type ChatStatus = 'idle' | 'loading' | 'streaming' | 'complete'
+type ChatResponseTextKey =
+  | 'openingText'
+  | 'followUpText'
+  | 'questionsIntro'
+  | 'planTitle'
+  | 'summaryTitle'
+  | 'summaryText'
+  | 'closingText'
 
-const STREAM_INITIAL_DELAY = 1400
-const STREAM_STEP_DELAY = 1100
+const STREAM_INITIAL_DELAY = 1500
+const STREAM_CHARACTER_DELAY = 24
+const STREAM_SPACE_DELAY = 32
+const STREAM_COMMA_DELAY = 75
+const STREAM_SENTENCE_DELAY = 150
+const STREAM_SECTION_PAUSE = 375
 const STREAM_ACTION_STEP_DELAY = 750
-const STREAM_PLAN_ITEM_STEP_DELAY = 450
+const STREAM_FINAL_PAUSE = 700
 
 const buildVisiblePlanSections = (
   sectionIndex: number,
-  itemCount: number,
+  visibleTitle: string,
+  itemIndex?: number,
+  visibleItem?: string,
 ): ChatPlanSection[] =>
   MockChatResponse.planSections
     .slice(0, sectionIndex + 1)
-    .map((section, index) =>
-      index === sectionIndex
-        ? { ...section, items: section.items.slice(0, itemCount) }
-        : section,
+    .map((section, index) => {
+      if (index !== sectionIndex) return section
+
+      const visibleItems =
+        itemIndex === undefined
+          ? []
+          : [...section.items.slice(0, itemIndex), visibleItem ?? '']
+
+      return { ...section, title: visibleTitle, items: visibleItems }
+    })
+
+const buildVisibleQuestions = (
+  questionIndex: number,
+  visibleLabel: string,
+  visibleText: string,
+) =>
+  MockChatResponse.questions
+    .slice(0, questionIndex + 1)
+    .map((question, index) =>
+      index === questionIndex
+        ? { ...question, label: visibleLabel, text: visibleText }
+        : question,
     )
+
+const getCharacterDelay = (character: string, index: number) => {
+  if (/[.!?]/.test(character)) return STREAM_SENTENCE_DELAY
+  if (/[,;:]/.test(character)) return STREAM_COMMA_DELAY
+  if (/\s/.test(character)) return STREAM_SPACE_DELAY
+
+  return STREAM_CHARACTER_DELAY + (index % 4) * 8
+}
 
 export default function App() {
   const [isActionDialogOpen, setIsActionDialogOpen] = useState(false)
@@ -100,75 +140,117 @@ export default function App() {
       setChatStatus('loading')
 
       let streamDelay = STREAM_INITIAL_DELAY
-      const queueStreamStep = (
-        callback: () => void,
-        stepDelay = STREAM_STEP_DELAY,
-      ) => {
+      const queueStreamStep = (callback: () => void) => {
         const delay = streamDelay
         const timer = setTimeout(callback, delay)
         streamTimersRef.current.push(timer)
-        streamDelay += stepDelay
+      }
+      const pauseStream = (delay: number) => {
+        streamDelay += delay
+      }
+      const queueTextStream = (
+        text: string,
+        onUpdate: (visibleText: string) => void,
+      ) => {
+        const characters = Array.from(text)
+
+        characters.forEach((character, index) => {
+          queueStreamStep(() =>
+            onUpdate(characters.slice(0, index + 1).join('')),
+          )
+          pauseStream(getCharacterDelay(character, index))
+        })
+      }
+      const queueResponseText = (key: ChatResponseTextKey, text: string) => {
+        queueTextStream(text, (visibleText) => {
+          setChatResponse((current) => ({
+            ...current,
+            [key]: visibleText,
+          }))
+        })
       }
 
       queueStreamStep(() => {
         setChatStatus('streaming')
-        setChatResponse({ openingText: MockChatResponse.openingText })
       })
+      queueResponseText('openingText', MockChatResponse.openingText)
+      pauseStream(STREAM_SECTION_PAUSE)
 
       MockChatActions.forEach((_, index) => {
         queueStreamStep(() => {
           setChatActions(MockChatActions.slice(0, index + 1))
-        }, STREAM_ACTION_STEP_DELAY)
+        })
+        pauseStream(STREAM_ACTION_STEP_DELAY)
       })
 
-      queueStreamStep(() => {
-        setChatResponse((current) => ({
-          ...current,
-          followUpText: MockChatResponse.followUpText,
-        }))
+      pauseStream(STREAM_SECTION_PAUSE)
+      queueResponseText('followUpText', MockChatResponse.followUpText)
+
+      pauseStream(STREAM_SECTION_PAUSE)
+      queueResponseText('questionsIntro', MockChatResponse.questionsIntro)
+
+      MockChatResponse.questions.forEach((question, questionIndex) => {
+        pauseStream(STREAM_SECTION_PAUSE)
+        queueTextStream(question.label, (visibleLabel) => {
+          setChatResponse((current) => ({
+            ...current,
+            questions: buildVisibleQuestions(questionIndex, visibleLabel, ''),
+          }))
+        })
+
+        pauseStream(STREAM_COMMA_DELAY)
+        queueTextStream(question.text, (visibleText) => {
+          setChatResponse((current) => ({
+            ...current,
+            questions: buildVisibleQuestions(
+              questionIndex,
+              question.label,
+              visibleText,
+            ),
+          }))
+        })
       })
 
-      queueStreamStep(() => {
-        setChatResponse((current) => ({
-          ...current,
-          questionsIntro: MockChatResponse.questionsIntro,
-          questions: MockChatResponse.questions,
-        }))
-      })
-
-      queueStreamStep(() => {
-        setChatResponse((current) => ({
-          ...current,
-          planTitle: MockChatResponse.planTitle,
-        }))
-      })
+      pauseStream(STREAM_SECTION_PAUSE)
+      queueResponseText('planTitle', MockChatResponse.planTitle)
 
       MockChatResponse.planSections.forEach((section, sectionIndex) => {
-        section.items.forEach((_, itemIndex) => {
-          queueStreamStep(() => {
+        pauseStream(STREAM_SECTION_PAUSE)
+        queueTextStream(section.title, (visibleTitle) => {
+          setChatResponse((current) => ({
+            ...current,
+            planSections: buildVisiblePlanSections(sectionIndex, visibleTitle),
+          }))
+        })
+
+        section.items.forEach((item, itemIndex) => {
+          pauseStream(STREAM_SECTION_PAUSE)
+          queueTextStream(item, (visibleItem) => {
             setChatResponse((current) => ({
               ...current,
               planSections: buildVisiblePlanSections(
                 sectionIndex,
-                itemIndex + 1,
+                section.title,
+                itemIndex,
+                visibleItem,
               ),
             }))
-          }, STREAM_PLAN_ITEM_STEP_DELAY)
+          })
         })
       })
 
-      queueStreamStep(() => {
-        setChatResponse((current) => ({
-          ...current,
-          summaryTitle: MockChatResponse.summaryTitle,
-          summaryText: MockChatResponse.summaryText,
-        }))
-      })
+      pauseStream(STREAM_SECTION_PAUSE)
+      queueResponseText('summaryTitle', MockChatResponse.summaryTitle)
+      pauseStream(STREAM_SECTION_PAUSE)
+      queueResponseText('summaryText', MockChatResponse.summaryText)
 
+      pauseStream(STREAM_SECTION_PAUSE)
+      queueResponseText('closingText', MockChatResponse.closingText)
+
+      pauseStream(STREAM_FINAL_PAUSE)
       queueStreamStep(() => {
         setChatResponse((current) => ({
           ...current,
-          closingText: MockChatResponse.closingText,
           plan: MockChatResponse.plan,
         }))
         setChatStatus('complete')
