@@ -580,7 +580,9 @@ export default function App() {
 
           <WorkbenchPreview
             isVisible={activePane === 'preview'}
-            children={<MockWorkbenchPreview />}
+            showStartPlaceholder={!chatMessage}
+            onImplementPlan={() => handleChatSubmit('Implement this plan')}
+            children={chatMessage ? <MockWorkbenchPreview /> : null}
           />
 
           <WorkbenchCodebase
