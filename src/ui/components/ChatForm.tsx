@@ -478,7 +478,7 @@ export default function ChatForm({
                 size="md"
                 radius="pill"
                 aria-label="Drafts"
-                className="group/button flex shrink-0 items-center gap-0.5 leading-loose hover:gap-1 focus-visible:gap-1"
+                className="group/button flex shrink-0 items-center gap-0.5 leading-loose hover:gap-1 focus-visible:gap-1 aria-expanded:gap-1"
                 dropdown={
                   <ChatDraftsDropdown
                     drafts={drafts}
@@ -497,7 +497,7 @@ export default function ChatForm({
                 />
                 <span
                   aria-hidden="true"
-                  className="text-text-secondary max-w-0 overflow-hidden text-xs leading-normal whitespace-nowrap opacity-0 transition-[max-width,opacity] duration-200 group-hover/button:max-w-52 group-hover/button:opacity-100 group-focus-visible/button:max-w-52 group-focus-visible/button:opacity-100"
+                  className="text-text-secondary group max-w-0 overflow-hidden text-xs leading-normal whitespace-nowrap opacity-0 transition-[max-width,opacity] duration-200 group-hover/button:max-w-52 group-hover/button:opacity-100 group-focus-visible/button:max-w-52 group-focus-visible/button:opacity-100 group-aria-expanded/button:max-w-52 group-aria-expanded/button:opacity-100"
                 >
                   Drafts
                 </span>
