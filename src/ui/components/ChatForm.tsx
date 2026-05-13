@@ -503,10 +503,7 @@ export default function ChatForm({
                 </span>
 
                 {drafts.length > 0 && (
-                  <span
-                    className="bg-surfaceTwo group-hover/button:bg-hover-strong group-hover/button:text-text-primary flex h-3 w-3 items-center justify-center rounded-full p-2 text-[10px] font-medium -tracking-[0.125em] tabular-nums"
-                    style={{ letterSpacing: '0' }}
-                  >
+                  <span className="bg-surfaceTwo group-hover/button:bg-hover-strong group-hover/button:text-text-primary flex h-3 w-3 items-center justify-center rounded-full p-2 text-[10px] font-medium tabular-nums">
                     {drafts.length}
                   </span>
                 )}
