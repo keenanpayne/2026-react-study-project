@@ -28,8 +28,9 @@ export default function WorkbenchPreview({
     <WorkbenchContainer className={isVisible ? 'overflow-hidden' : 'hidden'}>
       {showStartPlaceholder ? (
         <div className="bg-surface-muted h-full w-full">
-          <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-5 p-8 text-center">
-            <BoltLogo className="h-16" wordmark />
+          <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-6 p-8 text-center">
+            <BoltLogo className="h-18" wordmark />
+
             {hasChatStarted ? (
               <p className="loading-text-gradient animate-loading-text text-lg">
                 Generating your preview&hellip;
