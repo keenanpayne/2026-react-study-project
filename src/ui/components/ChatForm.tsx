@@ -392,7 +392,7 @@ export default function ChatForm({
       data-expanded={isExpanded || undefined}
       className="group/form bg-surface mb-3 shrink-0 px-4 pb-3 md:mb-0"
     >
-      <div className="border-border-default mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-data-expanded/form:flex md:flex md:flex-row md:gap-0">
+      <div className="border-borderOutline bg-surface mx-2 hidden flex-col justify-between gap-0.5 rounded-t-lg border-t border-r border-l px-2 py-1.5 text-xs group-data-expanded/form:flex md:flex md:flex-row md:gap-0">
         <span aria-live="polite">
           {formatTokens(tokens)} daily tokens remaining.
         </span>
@@ -538,7 +538,7 @@ export default function ChatForm({
                 size={28}
                 strokeWidth={1.5}
                 aria-hidden="true"
-                className="icon-circle bg-brand group-hover/button:bg-brand stroke-brandContainer group-hover/button:stroke-onBrand p-1.25"
+                className="icon-circle bg-brand group-hover/button:bg-brand group-hover/button:stroke-onBrand stroke-white p-1.25"
               />
             </Button>
           </div>
