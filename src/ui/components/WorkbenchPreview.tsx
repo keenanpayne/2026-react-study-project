@@ -12,6 +12,7 @@ type WorkbenchPreviewProps = {
    */
   isVisible: boolean
   showStartPlaceholder?: boolean
+  hasChatStarted?: boolean
   onImplementPlan?: () => void
   children?: ReactNode
 }
@@ -19,6 +20,7 @@ type WorkbenchPreviewProps = {
 export default function WorkbenchPreview({
   isVisible,
   showStartPlaceholder = false,
+  hasChatStarted = false,
   onImplementPlan,
   children,
 }: WorkbenchPreviewProps) {
@@ -28,18 +30,24 @@ export default function WorkbenchPreview({
         <div className="bg-surface-muted h-full w-full">
           <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-5 p-8 text-center">
             <BoltLogo className="h-16" wordmark />
-            <p className="text-text-secondary flex flex-wrap items-center justify-center gap-x-1.5 gap-y-2 text-lg">
-              <span>Click</span>
-              <Button
-                size="lg"
-                radius="md"
-                variant="blue"
-                onClick={onImplementPlan}
-              >
-                Implement this plan
-              </Button>
-              <span>to start building</span>
-            </p>
+            {hasChatStarted ? (
+              <p className="text-text-secondary text-lg">
+                Generating your preview soon...
+              </p>
+            ) : (
+              <p className="text-text-secondary flex flex-wrap items-center justify-center gap-x-1.5 gap-y-2 text-lg">
+                <span>Click</span>
+                <Button
+                  size="lg"
+                  radius="md"
+                  variant="blue"
+                  onClick={onImplementPlan}
+                >
+                  Implement this plan
+                </Button>
+                <span>to start building</span>
+              </p>
+            )}
           </div>
         </div>
       ) : (

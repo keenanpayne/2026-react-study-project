@@ -151,6 +151,8 @@ export default function App() {
   const isLoading = chatStatus === 'loading'
   const isStreaming = chatStatus === 'streaming'
   const isAnsweringQuestions = chatStatus === 'awaitingQuestions'
+  const hasChatStarted = chatMessage !== null
+  const isMockConversationComplete = chatStatus === 'complete'
   const activeQuestion = MockChatResponse.questions[activeQuestionIndex]
   const activeQuestionAnswer = questionAnswers.find(
     (answer) => answer.questionId === activeQuestion?.id,
@@ -576,14 +578,17 @@ export default function App() {
             onPaneChange={setActivePane}
             activeDatabaseSection={activeDatabaseSection}
             onDatabaseSectionChange={setActiveDatabaseSection}
-            chatInitiated={chatMessage !== null}
+            chatInitiated={hasChatStarted}
           />
 
           <WorkbenchPreview
             isVisible={activePane === 'preview'}
-            showStartPlaceholder={!chatMessage}
+            showStartPlaceholder={!isMockConversationComplete}
+            hasChatStarted={hasChatStarted}
             onImplementPlan={() => handleChatSubmit('Implement this plan')}
-            children={chatMessage ? <MockWorkbenchPreview /> : null}
+            children={
+              isMockConversationComplete ? <MockWorkbenchPreview /> : null
+            }
           />
 
           <WorkbenchCodebase
