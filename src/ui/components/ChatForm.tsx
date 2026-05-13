@@ -281,13 +281,24 @@ export default function ChatForm({
       createMessageDraft(currentMessage),
       ...currentDrafts,
     ])
+    setMessage('')
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+    }
   }, [message, updateDrafts])
 
   const handleApplyDraft = useCallback(
     (draft: MessageDraft) => {
-      updateDrafts((currentDrafts) =>
-        currentDrafts.filter((currentDraft) => currentDraft.id !== draft.id),
-      )
+      const currentMessage = textareaRef.current?.value ?? message
+
+      updateDrafts((currentDrafts) => {
+        const withoutApplied = currentDrafts.filter(
+          (currentDraft) => currentDraft.id !== draft.id,
+        )
+        if (!currentMessage.trim()) return withoutApplied
+
+        return [createMessageDraft(currentMessage), ...withoutApplied]
+      })
       setMessage(draft.text)
 
       requestAnimationFrame(() => {
@@ -295,7 +306,7 @@ export default function ChatForm({
         resizeTextarea()
       })
     },
-    [resizeTextarea, updateDrafts],
+    [message, resizeTextarea, updateDrafts],
   )
 
   const handleTextareaChange = useCallback(
@@ -450,12 +461,14 @@ export default function ChatForm({
                   Drafts
                 </span>
 
-                <span
-                  className="bg-surfaceTwo group-hover/button:bg-hover-strong group-hover/button:text-text-primary flex h-3 w-3 items-center justify-center rounded-full p-2 text-[10px] font-medium -tracking-[0.125em] tabular-nums"
-                  style={{ letterSpacing: '0' }}
-                >
-                  {drafts.length}
-                </span>
+                {drafts.length > 0 && (
+                  <span
+                    className="bg-surfaceTwo group-hover/button:bg-hover-strong group-hover/button:text-text-primary flex h-3 w-3 items-center justify-center rounded-full p-2 text-[10px] font-medium -tracking-[0.125em] tabular-nums"
+                    style={{ letterSpacing: '0' }}
+                  >
+                    {drafts.length}
+                  </span>
+                )}
               </DropdownTrigger>
 
               <ToggleButton
