@@ -4,6 +4,7 @@ import type {
   ReactNode,
 } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { cx } from '~/utils/cx'
 
 const buttonStyles = cva(
   'inline-flex cursor-pointer items-center text-left transition-colors duration-150 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
@@ -98,13 +99,15 @@ export default function Button({
   iconOnly,
   ...rest
 }: ButtonProps) {
-  const buttonClassName = buttonStyles({
-    size,
-    radius,
-    variant: variant ?? 'ghost',
-    iconOnly,
-    className,
-  })
+  const buttonClassName = cx(
+    buttonStyles({
+      size,
+      radius,
+      variant: variant ?? 'ghost',
+      iconOnly,
+      className,
+    }),
+  )
 
   if (as === 'a') {
     const anchorProps = rest as Omit<

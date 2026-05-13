@@ -194,6 +194,7 @@ export default function ChatForm({
                 label="Select"
                 active={selectActive}
                 onToggle={() => setSelectActive((v) => !v)}
+                displayLabelOnHover={true}
               />
 
               <ToggleButton
@@ -201,6 +202,7 @@ export default function ChatForm({
                 label="Plan"
                 active={planActive}
                 onToggle={() => setPlanActive((v) => !v)}
+                displayLabelOnHover={true}
               />
             </div>
 
