@@ -70,6 +70,18 @@ function sortDraftsNewestFirst(drafts: MessageDraft[]) {
   return [...drafts].sort((a, b) => b.createdAt - a.createdAt)
 }
 
+function dedupeDraftsByExactText(drafts: MessageDraft[]): MessageDraft[] {
+  const sorted = sortDraftsNewestFirst(drafts)
+  const seen = new Set<string>()
+  const unique: MessageDraft[] = []
+  for (const draft of sorted) {
+    if (seen.has(draft.text)) continue
+    seen.add(draft.text)
+    unique.push(draft)
+  }
+  return unique
+}
+
 function readMessageDrafts(): MessageDraft[] {
   if (typeof window === 'undefined') return []
 
@@ -80,7 +92,7 @@ function readMessageDrafts(): MessageDraft[] {
     const parsed = JSON.parse(stored)
     if (!Array.isArray(parsed)) return []
 
-    return sortDraftsNewestFirst(
+    return dedupeDraftsByExactText(
       parsed.filter(
         (draft): draft is MessageDraft =>
           draft != null &&
@@ -97,9 +109,10 @@ function readMessageDrafts(): MessageDraft[] {
 function writeMessageDrafts(drafts: MessageDraft[]) {
   if (typeof window === 'undefined') return
 
+  const deduped = dedupeDraftsByExactText(drafts)
   window.localStorage.setItem(
     CHAT_MESSAGE_DRAFTS_STORAGE_KEY,
-    JSON.stringify(sortDraftsNewestFirst(drafts)),
+    JSON.stringify(sortDraftsNewestFirst(deduped)),
   )
 }
 
@@ -231,7 +244,7 @@ export default function ChatForm({
   const updateDrafts = useCallback(
     (updater: (currentDrafts: MessageDraft[]) => MessageDraft[]) => {
       setDrafts((currentDrafts) => {
-        const nextDrafts = sortDraftsNewestFirst(updater(currentDrafts))
+        const nextDrafts = dedupeDraftsByExactText(updater(currentDrafts))
         writeMessageDrafts(nextDrafts)
         return nextDrafts
       })
