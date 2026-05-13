@@ -73,8 +73,8 @@ export function useMobileNavigation(initialPane: WorkbenchPane = 'preview') {
     if (isMobileLayout()) {
       if (pane === 'codebase' || pane === 'database') {
         setActiveMobileView(pane)
-      } else if (pane === 'preview') {
-        setActiveMobileView('preview')
+      } else {
+        setActiveMobileView('chat')
       }
     }
   }, [])
