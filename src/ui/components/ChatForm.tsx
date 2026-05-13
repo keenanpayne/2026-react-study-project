@@ -200,6 +200,7 @@ function ChatDraftsDropdown({
               key={draft.id}
               size="sm"
               role="menuitem"
+              className="flex-nowrap"
               title={
                 <span className="block max-w-56 truncate">
                   {getDraftPreview(draft.text)}
@@ -213,6 +214,7 @@ function ChatDraftsDropdown({
                   radius="pill"
                   variant="ghost"
                   iconOnly
+                  className="group/delete-draft"
                   aria-label={`Delete draft "${getDraftPreview(draft.text)}"`}
                   tabIndex={-1}
                   onClick={(event) => {
@@ -228,6 +230,7 @@ function ChatDraftsDropdown({
                   <Trash2
                     size={DROPDOWN_ICON_SIZE}
                     strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+                    className="group-hover/delete-draft:stroke-danger stroke-icon-default"
                     aria-hidden
                   />
                 </Button>
