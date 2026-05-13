@@ -29,7 +29,7 @@ export function getDropdownItemClassName({
     SIZE_CLASSES[size],
     hasSubmenu && 'relative',
     selected && 'bg-selected hover:bg-selected-hover',
-    disabled && 'opacity-55',
+    disabled && 'opacity-55 pointer-events-none cursor-not-allowed',
     className,
   )
 }

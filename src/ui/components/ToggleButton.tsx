@@ -23,7 +23,7 @@ export default function ToggleButton({
       radius="pill"
       variant={active ? 'selected' : 'ghost'}
       className={cx(
-        'group/button shrink-0',
+        'group/button flex shrink-0 items-center',
         displayLabelOnHover && 'gap-0 hover:gap-1 focus-visible:gap-1',
       )}
       type="button"
@@ -45,7 +45,7 @@ export default function ToggleButton({
       <span
         aria-hidden={displayLabelOnHover ? true : undefined}
         className={cx(
-          'text-xs',
+          'text-xs leading-normal',
           active ? 'text-onBrandContainer' : 'text-text-secondary',
           displayLabelOnHover &&
             'max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-[max-width,opacity] duration-200 group-hover/button:max-w-52 group-hover/button:opacity-100 group-focus-visible/button:max-w-52 group-focus-visible/button:opacity-100',

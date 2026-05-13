@@ -5,12 +5,22 @@ import {
   MousePointerClick,
   Lightbulb,
   ArrowUp,
+  FileText,
+  Save,
 } from 'lucide-react'
 import Button from './Button'
 import ToggleButton from './ToggleButton'
+import Dropdown, {
+  DROPDOWN_ICON_SIZE,
+  DROPDOWN_ICON_STROKE_WIDTH,
+} from './Dropdown'
 import DropdownAttachments from './DropdownAttachments'
+import DropdownItem from './DropdownItem'
+import DropdownList from './DropdownList'
 import DropdownModels from './DropdownModels'
+import DropdownSeparator from './DropdownSeparator'
 import DropdownTrigger from './DropdownTrigger'
+import { useDropdownTriggerClose } from '~/context/dropdownTriggerCloseContext'
 import { formatTokens } from '~/utils/formatTokens'
 
 type ModelInfo = {
@@ -26,10 +36,71 @@ type ChatFormProps = {
   onSubmit?: (message: string) => void
 }
 
+type MessageDraft = {
+  id: string
+  text: string
+  createdAt: number
+}
+
 const DEFAULT_MODEL: ModelInfo = {
   id: 'sonnet-4.5',
   label: 'Sonnet 4.5',
   logoSrc: '/anthropic.svg',
+}
+
+const CHAT_MESSAGE_DRAFTS_STORAGE_KEY = 'bolt-chat-message-drafts'
+
+function createDraftId() {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID()
+  }
+
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`
+}
+
+function createMessageDraft(text: string): MessageDraft {
+  return {
+    id: createDraftId(),
+    text,
+    createdAt: Date.now(),
+  }
+}
+
+function sortDraftsNewestFirst(drafts: MessageDraft[]) {
+  return [...drafts].sort((a, b) => b.createdAt - a.createdAt)
+}
+
+function readMessageDrafts(): MessageDraft[] {
+  if (typeof window === 'undefined') return []
+
+  try {
+    const stored = window.localStorage.getItem(CHAT_MESSAGE_DRAFTS_STORAGE_KEY)
+    if (!stored) return []
+
+    const parsed = JSON.parse(stored)
+    if (!Array.isArray(parsed)) return []
+
+    return sortDraftsNewestFirst(
+      parsed.filter(
+        (draft): draft is MessageDraft =>
+          draft != null &&
+          typeof draft.id === 'string' &&
+          typeof draft.text === 'string' &&
+          typeof draft.createdAt === 'number',
+      ),
+    )
+  } catch {
+    return []
+  }
+}
+
+function writeMessageDrafts(drafts: MessageDraft[]) {
+  if (typeof window === 'undefined') return
+
+  window.localStorage.setItem(
+    CHAT_MESSAGE_DRAFTS_STORAGE_KEY,
+    JSON.stringify(sortDraftsNewestFirst(drafts)),
+  )
 }
 
 function getPlaceholder(selectActive: boolean, planActive: boolean): string {
@@ -41,6 +112,93 @@ function getPlaceholder(selectActive: boolean, planActive: boolean): string {
     : 'How can Bolt help you today? (or /command)'
 }
 
+function getDraftPreview(text: string) {
+  return text.trim().replace(/\s+/g, ' ').slice(0, 80)
+}
+
+function formatDraftCreatedAt(createdAt: number) {
+  return new Intl.DateTimeFormat(undefined, {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(createdAt)
+}
+
+type ChatDraftsDropdownProps = {
+  drafts: MessageDraft[]
+  canSaveDraft: boolean
+  onSaveDraft: () => void
+  onApplyDraft: (draft: MessageDraft) => void
+}
+
+function ChatDraftsDropdown({
+  drafts,
+  canSaveDraft,
+  onSaveDraft,
+  onApplyDraft,
+}: ChatDraftsDropdownProps) {
+  const closeCtx = useDropdownTriggerClose()
+
+  const handleSaveDraft = () => {
+    onSaveDraft()
+    closeCtx?.close()
+  }
+
+  const handleApplyDraft = (draft: MessageDraft) => {
+    onApplyDraft(draft)
+    closeCtx?.close()
+  }
+
+  return (
+    <Dropdown align="top" className="max-w-80 min-w-64">
+      <DropdownList>
+        <DropdownItem
+          size="sm"
+          role="menuitem"
+          icon={
+            <Save
+              size={DROPDOWN_ICON_SIZE}
+              strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+              className="stroke-icon-default shrink-0"
+              aria-hidden
+            />
+          }
+          title="Save new draft"
+          disabled={!canSaveDraft}
+          onSelect={handleSaveDraft}
+        />
+
+        <DropdownSeparator />
+
+        {drafts.length === 0 ? (
+          <DropdownItem
+            size="sm"
+            role="menuitem"
+            title={<span className="text-text-muted">No saved drafts</span>}
+            disabled
+          />
+        ) : (
+          drafts.map((draft) => (
+            <DropdownItem
+              key={draft.id}
+              size="sm"
+              role="menuitem"
+              title={
+                <span className="block max-w-56 truncate">
+                  {getDraftPreview(draft.text)}
+                </span>
+              }
+              append={formatDraftCreatedAt(draft.createdAt)}
+              onSelect={() => handleApplyDraft(draft)}
+            />
+          ))
+        )}
+      </DropdownList>
+    </Dropdown>
+  )
+}
+
 export default function ChatForm({
   tokens,
   selectedModel = DEFAULT_MODEL,
@@ -48,6 +206,9 @@ export default function ChatForm({
   onSubmit,
 }: ChatFormProps) {
   const [message, setMessage] = useState('')
+  const [drafts, setDrafts] = useState<MessageDraft[]>(() =>
+    readMessageDrafts(),
+  )
   const [selectActive, setSelectActive] = useState(false)
   const [planActive, setPlanActive] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
@@ -67,7 +228,27 @@ export default function ChatForm({
     return () => document.removeEventListener('pointerdown', handlePointerDown)
   }, [isExpanded])
 
+  const updateDrafts = useCallback(
+    (updater: (currentDrafts: MessageDraft[]) => MessageDraft[]) => {
+      setDrafts((currentDrafts) => {
+        const nextDrafts = sortDraftsNewestFirst(updater(currentDrafts))
+        writeMessageDrafts(nextDrafts)
+        return nextDrafts
+      })
+    },
+    [],
+  )
+
+  const resizeTextarea = useCallback(() => {
+    const el = textareaRef.current
+    if (!el) return
+
+    el.style.height = 'auto'
+    el.style.height = `${Math.min(el.scrollHeight, 200)}px`
+  }, [])
+
   const canSend = message.trim().length > 0
+  const canSaveDraft = message.trim().length > 0
 
   const handleSubmit = useCallback(() => {
     const trimmed = message.trim()
@@ -78,6 +259,31 @@ export default function ChatForm({
       textareaRef.current.style.height = 'auto'
     }
   }, [message, onSubmit])
+
+  const handleSaveCurrentDraft = useCallback(() => {
+    const currentMessage = textareaRef.current?.value ?? message
+    if (!currentMessage.trim()) return
+
+    updateDrafts((currentDrafts) => [
+      createMessageDraft(currentMessage),
+      ...currentDrafts,
+    ])
+  }, [message, updateDrafts])
+
+  const handleApplyDraft = useCallback(
+    (draft: MessageDraft) => {
+      updateDrafts((currentDrafts) =>
+        currentDrafts.filter((currentDraft) => currentDraft.id !== draft.id),
+      )
+      setMessage(draft.text)
+
+      requestAnimationFrame(() => {
+        textareaRef.current?.focus()
+        resizeTextarea()
+      })
+    },
+    [resizeTextarea, updateDrafts],
+  )
 
   const handleTextareaChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -98,6 +304,21 @@ export default function ChatForm({
     },
     [canSend, handleSubmit],
   )
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      const currentMessage = textareaRef.current?.value ?? message
+      if (!currentMessage.trim()) return
+
+      writeMessageDrafts([
+        createMessageDraft(currentMessage),
+        ...readMessageDrafts(),
+      ])
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [message])
 
   return (
     <form
@@ -188,7 +409,39 @@ export default function ChatForm({
           </div>
 
           <div className="flex items-center gap-1.5 md:gap-3">
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1">
+              <DropdownTrigger
+                size="md"
+                radius="pill"
+                aria-label="Drafts"
+                className="group/button flex shrink-0 items-center gap-0.25 leading-loose hover:gap-1 focus-visible:gap-1"
+                dropdown={
+                  <ChatDraftsDropdown
+                    drafts={drafts}
+                    canSaveDraft={canSaveDraft}
+                    onSaveDraft={handleSaveCurrentDraft}
+                    onApplyDraft={handleApplyDraft}
+                  />
+                }
+              >
+                <FileText
+                  size={18}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                  className="icon-interactive group-hover/button:stroke-icon-hover"
+                />
+                <span
+                  aria-hidden="true"
+                  className="text-text-secondary max-w-0 overflow-hidden text-xs leading-normal whitespace-nowrap opacity-0 transition-[max-width,opacity] duration-200 group-hover/button:max-w-52 group-hover/button:opacity-100 group-focus-visible/button:max-w-52 group-focus-visible/button:opacity-100"
+                >
+                  Drafts
+                </span>
+
+                <span className="text-text-muted group-hover/button:text-text-primary font-mono text-[10px] -tracking-[0.125em] tabular-nums">
+                  ({drafts.length})
+                </span>
+              </DropdownTrigger>
+
               <ToggleButton
                 icon={MousePointerClick}
                 label="Select"
