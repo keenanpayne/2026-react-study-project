@@ -31,8 +31,8 @@ export default function WorkbenchPreview({
           <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-5 p-8 text-center">
             <BoltLogo className="h-16" wordmark />
             {hasChatStarted ? (
-              <p className="text-text-secondary text-lg">
-                Generating your preview soon...
+              <p className="loading-text-gradient animate-loading-text text-lg">
+                Generating your preview&hellip;
               </p>
             ) : (
               <p className="text-text-secondary flex flex-wrap items-center justify-center gap-x-1.5 gap-y-2 text-lg">
