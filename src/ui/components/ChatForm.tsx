@@ -414,7 +414,7 @@ export default function ChatForm({
                 size="md"
                 radius="pill"
                 aria-label="Drafts"
-                className="group/button flex shrink-0 items-center gap-0.25 leading-loose hover:gap-1 focus-visible:gap-1"
+                className="group/button flex shrink-0 items-center gap-0.5 leading-loose hover:gap-1 focus-visible:gap-1"
                 dropdown={
                   <ChatDraftsDropdown
                     drafts={drafts}
@@ -437,8 +437,11 @@ export default function ChatForm({
                   Drafts
                 </span>
 
-                <span className="text-text-muted group-hover/button:text-text-primary font-mono text-[10px] -tracking-[0.125em] tabular-nums">
-                  ({drafts.length})
+                <span
+                  className="bg-surfaceTwo group-hover/button:bg-hover-strong group-hover/button:text-text-primary flex h-3 w-3 items-center justify-center rounded-full p-2 text-[10px] font-medium -tracking-[0.125em] tabular-nums"
+                  style={{ letterSpacing: '0' }}
+                >
+                  {drafts.length}
                 </span>
               </DropdownTrigger>
 
