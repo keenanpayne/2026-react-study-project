@@ -59,7 +59,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
 
   return (
     <header className="py-1.5">
-      <div className="flex flex-wrap items-center gap-1.5">
+      <div className="flex flex-wrap items-center gap-1">
         <nav
           aria-label="Workbench panes"
           className="border-border-default hidden h-8 w-auto shrink-0 items-center gap-1 rounded-xl border px-0.5 py-1.5 md:flex"
