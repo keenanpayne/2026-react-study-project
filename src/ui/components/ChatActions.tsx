@@ -29,7 +29,10 @@ export default function ChatActions({
   actionOnClick,
 }: ChatActionsProps) {
   return (
-    <details className="group/details py-3" open={actionsExpanded}>
+    <details
+      className="group/details border-border-default rounded-md border px-3 py-1.5"
+      open={actionsExpanded}
+    >
       <summary className="mb-0 flex cursor-pointer items-center gap-2">
         <span className="flex flex-1 items-center gap-2">
           <CircleEllipsis size={16} strokeWidth={1.5} aria-hidden="true" />{' '}
@@ -44,7 +47,7 @@ export default function ChatActions({
         />
       </summary>
 
-      <ul className="space-y-3 pt-5">
+      <ul className="space-y-2 pt-3">
         {actions.map((action) => {
           const Icon = action.isLoading
             ? LoaderCircle
