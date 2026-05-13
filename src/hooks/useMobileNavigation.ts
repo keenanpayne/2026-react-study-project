@@ -95,6 +95,8 @@ export function useMobileNavigation(initialPane: WorkbenchPane = 'preview') {
       if (view !== 'chat') {
         setActivePane(view)
         writePaneHashToUrl(view)
+      } else {
+        writePaneHashToUrl('preview')
       }
       requestAnimationFrame(() => focusViewHeading(view))
     },
