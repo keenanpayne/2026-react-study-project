@@ -576,6 +576,7 @@ export default function App() {
             onPaneChange={setActivePane}
             activeDatabaseSection={activeDatabaseSection}
             onDatabaseSectionChange={setActiveDatabaseSection}
+            chatInitiated={chatMessage !== null}
           />
 
           <WorkbenchPreview

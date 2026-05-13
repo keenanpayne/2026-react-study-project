@@ -1,6 +1,7 @@
 import {
   Eye,
   Database,
+  DatabaseZap,
   Settings,
   RotateCw,
   ExternalLink,
@@ -32,6 +33,7 @@ type WorkbenchHeaderProps = {
   activeDatabaseSection: WorkbenchDatabaseSection
   onDatabaseSectionChange: (section: WorkbenchDatabaseSection) => void
   teams: UserTeam[]
+  chatInitiated: boolean
 }
 
 export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
@@ -41,6 +43,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
     teams,
     activeDatabaseSection,
     onDatabaseSectionChange,
+    chatInitiated,
   } = props
   const activeTeam = teams.find((team) => team.active)
 
@@ -112,16 +115,21 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
               aria-label="Database"
               aria-pressed={activePane === 'database'}
             >
-              <Database
-                size={15}
-                strokeWidth={1.5}
-                aria-hidden="true"
-                className={
-                  activePane === 'database'
-                    ? activeIconClass
-                    : inactiveIconClass
-                }
-              />
+              {chatInitiated ? (
+                <DatabaseZap
+                  size={15}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                  className={activeIconClass}
+                />
+              ) : (
+                <Database
+                  size={15}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                  className={inactiveIconClass}
+                />
+              )}
             </Button>
           </Tooltip>
         </nav>
