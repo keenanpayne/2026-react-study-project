@@ -83,7 +83,6 @@
   --color-text-muted: var(--color-textTertiary);
   --color-text-subtle: var(--color-iconSecondary);
   --color-text-heading: var(--color-textPrimary);
-  --color-text-selected: var(--color-onBrandContainer);
   --color-text-success: var(--color-success);
   --color-text-warning: var(--color-warning);
   --color-text-danger: var(--color-danger);

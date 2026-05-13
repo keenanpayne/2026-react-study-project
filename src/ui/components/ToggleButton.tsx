@@ -46,7 +46,7 @@ export default function ToggleButton({
         aria-hidden={displayLabelOnHover ? true : undefined}
         className={cx(
           'text-xs',
-          active ? 'text-text-selected' : 'text-text-secondary',
+          active ? 'text-onBrandContainer' : 'text-text-secondary',
           displayLabelOnHover &&
             'max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-[max-width,opacity] duration-200 group-hover/button:max-w-52 group-hover/button:opacity-100 group-focus-visible/button:max-w-52 group-focus-visible/button:opacity-100',
         )}
