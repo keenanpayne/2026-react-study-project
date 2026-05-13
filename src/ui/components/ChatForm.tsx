@@ -7,6 +7,7 @@ import {
   ArrowUp,
   FileText,
   Save,
+  Trash2,
 } from 'lucide-react'
 import Button from './Button'
 import ToggleButton from './ToggleButton'
@@ -143,6 +144,7 @@ type ChatDraftsDropdownProps = {
   canSaveDraft: boolean
   onSaveDraft: () => void
   onApplyDraft: (draft: MessageDraft) => void
+  onDeleteDraft: (draftId: string) => void
 }
 
 function ChatDraftsDropdown({
@@ -150,6 +152,7 @@ function ChatDraftsDropdown({
   canSaveDraft,
   onSaveDraft,
   onApplyDraft,
+  onDeleteDraft,
 }: ChatDraftsDropdownProps) {
   const closeCtx = useDropdownTriggerClose()
 
@@ -204,6 +207,31 @@ function ChatDraftsDropdown({
               }
               append={formatDraftCreatedAt(draft.createdAt)}
               onSelect={() => handleApplyDraft(draft)}
+              trailing={
+                <Button
+                  size="sm"
+                  radius="pill"
+                  variant="ghost"
+                  iconOnly
+                  aria-label={`Delete draft "${getDraftPreview(draft.text)}"`}
+                  tabIndex={-1}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    onDeleteDraft(draft.id)
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.stopPropagation()
+                    }
+                  }}
+                >
+                  <Trash2
+                    size={DROPDOWN_ICON_SIZE}
+                    strokeWidth={DROPDOWN_ICON_STROKE_WIDTH}
+                    aria-hidden
+                  />
+                </Button>
+              }
             />
           ))
         )}
@@ -286,6 +314,15 @@ export default function ChatForm({
       textareaRef.current.style.height = 'auto'
     }
   }, [message, updateDrafts])
+
+  const handleDeleteDraft = useCallback(
+    (draftId: string) => {
+      updateDrafts((currentDrafts) =>
+        currentDrafts.filter((draft) => draft.id !== draftId),
+      )
+    },
+    [updateDrafts],
+  )
 
   const handleApplyDraft = useCallback(
     (draft: MessageDraft) => {
@@ -445,6 +482,7 @@ export default function ChatForm({
                     canSaveDraft={canSaveDraft}
                     onSaveDraft={handleSaveCurrentDraft}
                     onApplyDraft={handleApplyDraft}
+                    onDeleteDraft={handleDeleteDraft}
                   />
                 }
               >
