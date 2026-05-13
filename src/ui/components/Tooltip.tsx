@@ -36,7 +36,7 @@ export default function Tooltip({
   sideOffset = 8,
   alignOffset,
   collisionPadding,
-  delay,
+  delay = 50,
   closeDelay,
   closeOnClick,
   ...rootProps

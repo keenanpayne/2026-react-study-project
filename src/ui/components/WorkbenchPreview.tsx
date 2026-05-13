@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import WorkbenchContainer from './WorkbenchContainer'
 import EmptyPane from './EmptyPane'
-import { Heart } from 'lucide-react'
 import BoltLogo from './BoltLogo'
 import Button from './Button'
 
@@ -51,19 +50,6 @@ export default function WorkbenchPreview({
           />
         ))
       )}
-
-      <a
-        href="https://keenanpayne.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-surface-raised hover:bg-hover-item absolute right-4 bottom-4 z-10 flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 text-sm tracking-tight antialiased shadow-lg transition-all"
-      >
-        <Heart
-          size={14}
-          className="fill-fill-destructive stroke-fill-destructive"
-        />
-        <span className="font-semibold">Made by Keenan</span>
-      </a>
     </WorkbenchContainer>
   )
 }
