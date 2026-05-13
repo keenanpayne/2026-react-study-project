@@ -124,7 +124,7 @@
   --color-fill-subtle-hover: var(--color-surfaceThree);
   --color-fill-destructive: var(--color-danger);
 
-  --animate-loading-text: loading-text-gradient 3s linear infinite;
+  --animate-loading-text: loading-text-gradient 2s linear infinite;
 }
 
 @keyframes loading-text-gradient {
