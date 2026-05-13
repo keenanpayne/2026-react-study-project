@@ -102,9 +102,7 @@ export default function ChatResponse({
         </ol>
       )}
 
-      {showPlanDivider && (
-        <hr className="border-border-default my-3 border-2" />
-      )}
+      {showPlanDivider && <hr className="border-borderDivider my-3 border-2" />}
 
       {response.planTitle && (
         <h2 className="text-lg font-semibold">{response.planTitle}</h2>
