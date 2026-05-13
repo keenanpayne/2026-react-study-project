@@ -96,6 +96,7 @@ export function useMobileNavigation(initialPane: WorkbenchPane = 'preview') {
         setActivePane(view)
         writePaneHashToUrl(view)
       } else {
+        setActivePane('preview')
         writePaneHashToUrl('preview')
       }
       requestAnimationFrame(() => focusViewHeading(view))
