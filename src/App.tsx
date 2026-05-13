@@ -140,7 +140,7 @@ export default function App() {
   const lastChatScrollTopRef = useRef(0)
   const {
     activePane,
-    setActivePane,
+    handlePaneChange,
     activeMobileView,
     handleMobileViewChange,
     chatRef,
@@ -575,7 +575,7 @@ export default function App() {
           <WorkbenchHeader
             teams={MockUserTeams}
             activePane={activePane}
-            onPaneChange={setActivePane}
+            onPaneChange={handlePaneChange}
             activeDatabaseSection={activeDatabaseSection}
             onDatabaseSectionChange={setActiveDatabaseSection}
             chatInitiated={hasChatStarted}
