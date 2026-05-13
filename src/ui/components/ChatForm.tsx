@@ -125,7 +125,7 @@ export default function ChatForm({
         </Button>
       </div>
 
-      <div className="relative w-full rounded-xl border border-transparent bg-[linear-gradient(var(--color-surface-raised),var(--color-surface-raised)),linear-gradient(to_bottom_right,var(--color-blue-400),var(--color-blue-100))] [background-clip:padding-box,border-box] bg-origin-border p-3 shadow-md transition-shadow focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)] md:pb-0 md:shadow-sm md:group-data-expanded/form:pb-0 md:focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)]">
+      <div className="relative w-full rounded-xl border border-transparent bg-[linear-gradient(var(--color-surface-raised),var(--color-surface-raised)),linear-gradient(to_bottom_right,var(--color-brandHighlight),var(--color-brandContainer))] [background-clip:padding-box,border-box] bg-origin-border p-3 shadow-md transition-shadow focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)] md:pb-0 md:shadow-sm md:group-data-expanded/form:pb-0 md:focus-within:shadow-[0_0_0_1px_var(--color-focus-ring)]">
         <label htmlFor="command" className="sr-only">
           Command
         </label>
@@ -214,8 +214,9 @@ export default function ChatForm({
               <span className="sr-only">Send Message</span>
               <ArrowUp
                 size={28}
+                strokeWidth={1.5}
                 aria-hidden="true"
-                className="icon-circle bg-accent-bg group-hover/button:bg-accent-bg-hover stroke-white p-1.25"
+                className="icon-circle bg-brand group-hover/button:bg-brand stroke-brandContainer group-hover/button:stroke-onBrand p-1.25"
               />
             </Button>
           </div>

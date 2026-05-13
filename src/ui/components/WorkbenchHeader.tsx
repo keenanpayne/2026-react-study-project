@@ -1,12 +1,12 @@
 import {
   Eye,
-  Code,
   Database,
   Settings,
   RotateCw,
   ExternalLink,
   MonitorSmartphone,
   Scan,
+  Code2,
 } from 'lucide-react'
 import Button from './Button'
 import DropdownSettings from './DropdownSettings'
@@ -90,7 +90,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
               aria-label="Code"
               aria-pressed={activePane === 'codebase'}
             >
-              <Code
+              <Code2
                 size={15}
                 strokeWidth={1.5}
                 aria-hidden="true"

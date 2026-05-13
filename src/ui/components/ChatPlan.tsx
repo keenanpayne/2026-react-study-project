@@ -35,7 +35,7 @@ export default function ChatPlan({ title, version, createdAt }: ChatPlanProps) {
           <Bookmark
             size={20}
             strokeWidth={1.5}
-            className="fill-blue-400 stroke-blue-400"
+            className="fill-brandHighlight stroke-brandHighlight"
           />
         </Button>
 
