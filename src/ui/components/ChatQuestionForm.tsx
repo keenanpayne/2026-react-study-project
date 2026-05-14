@@ -76,7 +76,7 @@ function OptionCard({
   onChange: () => void
 }) {
   return (
-    <label className="border-border-default hover:bg-hover-item has-checked:border-accent-bg has-checked:bg-selected flex cursor-pointer gap-3 rounded-lg border px-3 py-2 transition-colors">
+    <label className="border-border-default hover:bg-hover-item has-checked:border-brandOutline has-checked:bg-selected flex cursor-pointer gap-3 rounded-lg border px-3 py-2 transition-colors">
       <input
         type={type}
         name={name}

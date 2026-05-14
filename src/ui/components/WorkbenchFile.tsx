@@ -77,7 +77,7 @@ export default function WorkbenchFile({
     <li>
       <button
         type="button"
-        className={`flex w-full cursor-pointer items-center gap-1.5 py-1 pr-1.5 text-left text-sm transition-colors ${selected ? 'bg-selected' : 'text-text-muted hover:bg-hover-item hover:text-text-heading'}`}
+        className={`flex w-full cursor-pointer items-center gap-1.5 py-1 pr-1.5 text-left text-sm transition-colors ${selected ? 'bg-selected hover:bg-selected-hover' : 'text-text-muted hover:bg-hover-item hover:text-text-heading'}`}
         style={{ paddingLeft: `${0.375 + depth * 0.625}rem` }}
         aria-expanded={hasChildren ? open : undefined}
         onClick={() => {

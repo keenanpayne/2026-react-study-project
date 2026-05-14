@@ -9,13 +9,13 @@ type ChatPlanProps = {
 
 export default function ChatPlan({ title, version, createdAt }: ChatPlanProps) {
   return (
-    <aside className="border-border-strong my-3 flex justify-between rounded-lg border px-3 py-2.5 md:max-w-[80%]">
+    <aside className="bg-brandContainer border-brandOutline my-3 flex justify-between rounded-lg border px-3 py-2.5 md:max-w-[80%]">
       <header className="flex flex-col">
-        <p className="text-text-muted text-xs">{version}</p>
+        <p className="text-onBrandContainer mb-0.75 text-xs">{version}</p>
 
         <h3 className="font-semibold">{title}</h3>
 
-        <p className="text-text-muted mt-0.5 text-xs">
+        <p className="text-textTertiary text-xs">
           <time dateTime={createdAt.toISOString()}>
             {createdAt.toLocaleString('en-US', {
               month: 'short',
@@ -35,20 +35,28 @@ export default function ChatPlan({ title, version, createdAt }: ChatPlanProps) {
           <Bookmark
             size={20}
             strokeWidth={1.5}
-            className="fill-blue-400 stroke-blue-400"
+            className="fill-brandHighlight stroke-brandHighlight"
           />
         </Button>
 
         <Button size="sm" radius="sm" iconOnly>
           <span className="sr-only">Preview this version</span>
 
-          <Eye size={20} strokeWidth={1.5} />
+          <Eye
+            size={20}
+            strokeWidth={1.5}
+            className="stroke-onBrandContainer"
+          />
         </Button>
 
         <Button size="sm" radius="sm" iconOnly>
           <span className="sr-only">Restore this version</span>
 
-          <Undo2 size={20} strokeWidth={1.5} />
+          <Undo2
+            size={20}
+            strokeWidth={1.5}
+            className="stroke-onBrandContainer"
+          />
         </Button>
       </nav>
     </aside>

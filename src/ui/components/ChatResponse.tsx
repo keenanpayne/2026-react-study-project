@@ -102,9 +102,7 @@ export default function ChatResponse({
         </ol>
       )}
 
-      {showPlanDivider && (
-        <hr className="border-border-default my-3 border-2" />
-      )}
+      {showPlanDivider && <hr className="border-borderDivider my-3 border-2" />}
 
       {response.planTitle && (
         <h2 className="text-lg font-semibold">{response.planTitle}</h2>
@@ -152,12 +150,17 @@ export default function ChatResponse({
           aria-live="polite"
           className="text-text-secondary flex items-center gap-2 text-sm"
         >
-          <span className="flex gap-1" aria-hidden="true">
-            <span className="bg-icon-muted h-1.5 w-1.5 animate-pulse rounded-full" />
-            <span className="bg-icon-muted h-1.5 w-1.5 animate-pulse rounded-full [animation-delay:150ms]" />
-            <span className="bg-icon-muted h-1.5 w-1.5 animate-pulse rounded-full [animation-delay:300ms]" />
-          </span>
-          {isLoading ? 'Thinking...' : 'Streaming response...'}
+          {isLoading && (
+            <>
+              <span className="flex gap-1" aria-hidden="true">
+                <span className="bg-icon-muted h-1.5 w-1.5 animate-pulse rounded-full" />
+                <span className="bg-icon-muted h-1.5 w-1.5 animate-pulse rounded-full [animation-delay:150ms]" />
+                <span className="bg-icon-muted h-1.5 w-1.5 animate-pulse rounded-full [animation-delay:300ms]" />
+              </span>
+
+              <span>Thinking&hellip;</span>
+            </>
+          )}
         </div>
       )}
     </>

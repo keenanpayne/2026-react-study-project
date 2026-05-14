@@ -54,7 +54,7 @@ export default function DatabaseTable({
                 }}
                 className={cx(
                   'divider-bottom cursor-pointer last:border-b-0',
-                  isSelected ? 'bg-selected' : 'hover:bg-surface-raised',
+                  isSelected ? 'bg-selected' : 'hover:bg-hover-item',
                 )}
               >
                 {row.children?.map((col) => (

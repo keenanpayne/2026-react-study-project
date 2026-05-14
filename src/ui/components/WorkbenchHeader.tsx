@@ -1,17 +1,19 @@
 import {
   Eye,
-  Code,
   Database,
+  DatabaseZap,
   Settings,
   RotateCw,
   ExternalLink,
   MonitorSmartphone,
   Scan,
+  Code2,
 } from 'lucide-react'
 import Button from './Button'
 import DropdownSettings from './DropdownSettings'
 import DropdownUser from './DropdownUser'
 import DropdownTrigger from './DropdownTrigger'
+import Tooltip from './Tooltip'
 import type {
   WorkbenchDatabaseSection,
   WorkbenchPane,
@@ -31,6 +33,7 @@ type WorkbenchHeaderProps = {
   activeDatabaseSection: WorkbenchDatabaseSection
   onDatabaseSectionChange: (section: WorkbenchDatabaseSection) => void
   teams: UserTeam[]
+  chatInitiated: boolean
 }
 
 export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
@@ -40,6 +43,7 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
     teams,
     activeDatabaseSection,
     onDatabaseSectionChange,
+    chatInitiated,
   } = props
   const activeTeam = teams.find((team) => team.active)
 
@@ -55,82 +59,99 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
 
   return (
     <header className="py-1.5">
-      <div className="flex flex-wrap items-center gap-1.5">
+      <div className="flex flex-wrap items-center gap-1">
         <nav
           aria-label="Workbench panes"
           className="border-border-default hidden h-8 w-auto shrink-0 items-center gap-1 rounded-xl border px-0.5 py-1.5 md:flex"
         >
-          <Button
-            size="sm"
-            variant={activePane === 'preview' ? 'selected' : 'ghost'}
-            className={toggleButtonClass}
-            onClick={() => onPaneChange('preview')}
-            aria-label="Preview"
-            aria-pressed={activePane === 'preview'}
-          >
-            <Eye
-              size={15}
-              strokeWidth={1.5}
-              aria-hidden="true"
-              className={
-                activePane === 'preview' ? activeIconClass : inactiveIconClass
-              }
-            />
-          </Button>
+          <Tooltip content="Preview" side="bottom" align="start">
+            <Button
+              size="sm"
+              variant={activePane === 'preview' ? 'selected' : 'ghost'}
+              className={toggleButtonClass}
+              onClick={() => onPaneChange('preview')}
+              aria-label="Preview"
+              aria-pressed={activePane === 'preview'}
+            >
+              <Eye
+                size={15}
+                strokeWidth={1.5}
+                aria-hidden="true"
+                className={
+                  activePane === 'preview' ? activeIconClass : inactiveIconClass
+                }
+              />
+            </Button>
+          </Tooltip>
 
-          <Button
-            size="sm"
-            variant={activePane === 'codebase' ? 'selected' : 'ghost'}
-            className={toggleButtonClass}
-            onClick={() => onPaneChange('codebase')}
-            aria-label="Code"
-            aria-pressed={activePane === 'codebase'}
-          >
-            <Code
-              size={15}
-              strokeWidth={1.5}
-              aria-hidden="true"
-              className={
-                activePane === 'codebase' ? activeIconClass : inactiveIconClass
-              }
-            />
-          </Button>
+          <Tooltip content="Code" side="bottom">
+            <Button
+              size="sm"
+              variant={activePane === 'codebase' ? 'selected' : 'ghost'}
+              className={toggleButtonClass}
+              onClick={() => onPaneChange('codebase')}
+              aria-label="Code"
+              aria-pressed={activePane === 'codebase'}
+            >
+              <Code2
+                size={15}
+                strokeWidth={1.5}
+                aria-hidden="true"
+                className={
+                  activePane === 'codebase'
+                    ? activeIconClass
+                    : inactiveIconClass
+                }
+              />
+            </Button>
+          </Tooltip>
 
-          <Button
-            size="sm"
-            variant={activePane === 'database' ? 'selected' : 'ghost'}
-            className={toggleButtonClass}
-            onClick={() => onPaneChange('database')}
-            aria-label="Database"
-            aria-pressed={activePane === 'database'}
-          >
-            <Database
-              size={15}
-              strokeWidth={1.5}
-              aria-hidden="true"
-              className={
-                activePane === 'database' ? activeIconClass : inactiveIconClass
-              }
-            />
-          </Button>
+          <Tooltip content="Database" side="bottom">
+            <Button
+              size="sm"
+              variant={activePane === 'database' ? 'selected' : 'ghost'}
+              className={toggleButtonClass}
+              onClick={() => onPaneChange('database')}
+              aria-label="Database"
+              aria-pressed={activePane === 'database'}
+            >
+              {chatInitiated ? (
+                <DatabaseZap
+                  size={15}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                  className={activeIconClass}
+                />
+              ) : (
+                <Database
+                  size={15}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                  className={inactiveIconClass}
+                />
+              )}
+            </Button>
+          </Tooltip>
         </nav>
 
         <div className="hidden shrink-0 md:block">
-          <DropdownTrigger
-            size="md"
-            radius="xl"
-            className="group/button"
-            dropdown={<DropdownSettings />}
-          >
-            <span className="sr-only">Open settings</span>
+          <Tooltip content="Settings" side="bottom">
+            <DropdownTrigger
+              size="md"
+              radius="xl"
+              className="group/button"
+              dropdown={<DropdownSettings />}
+            >
+              <span className="sr-only">Open settings</span>
 
-            <Settings
-              size={16}
-              strokeWidth={1.5}
-              aria-hidden="true"
-              className="fill-fill-subtle stroke-icon-muted group-hover/button:fill-fill-subtle-hover group-hover/button:stroke-text-heading transition-colors"
-            />
-          </DropdownTrigger>
+              <Settings
+                size={16}
+                strokeWidth={1.5}
+                aria-hidden="true"
+                className="fill-fill-subtle stroke-icon-muted group-hover/button:fill-fill-subtle-hover group-hover/button:stroke-text-heading transition-colors"
+              />
+            </DropdownTrigger>
+          </Tooltip>
         </div>
 
         {activePane === 'preview' && (
@@ -152,48 +173,56 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
               aria-label="Preview actions"
               className="flex items-center justify-end"
             >
-              <Button size="sm" radius="sm" className="group/button p-1.5">
-                <span className="sr-only">Reload preview</span>
+              <Tooltip content="Reload preview" side="bottom">
+                <Button size="sm" radius="sm" className="group/button p-1.5">
+                  <span className="sr-only">Reload preview</span>
 
-                <RotateCw
-                  size={14}
-                  strokeWidth={1.5}
-                  aria-hidden="true"
-                  className="icon-interactive group-hover/button:stroke-icon-hover"
-                />
-              </Button>
+                  <RotateCw
+                    size={14}
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                    className="icon-interactive group-hover/button:stroke-icon-hover"
+                  />
+                </Button>
+              </Tooltip>
 
-              <Button size="sm" radius="sm" className="group/button p-1.5">
-                <span className="sr-only">Open preview in separate tab</span>
+              <Tooltip content="Open preview in new tab" side="bottom">
+                <Button size="sm" radius="sm" className="group/button p-1.5">
+                  <span className="sr-only">Open preview in separate tab</span>
 
-                <ExternalLink
-                  size={14}
-                  strokeWidth={1.5}
-                  aria-hidden="true"
-                  className="icon-interactive group-hover/button:stroke-icon-hover"
-                />
-              </Button>
+                  <ExternalLink
+                    size={14}
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                    className="icon-interactive group-hover/button:stroke-icon-hover"
+                  />
+                </Button>
+              </Tooltip>
 
-              <Button size="sm" radius="sm" className="group/button p-1.5">
-                <span className="sr-only">Responsive mode</span>
+              <Tooltip content="Responsive mode" side="bottom">
+                <Button size="sm" radius="sm" className="group/button p-1.5">
+                  <span className="sr-only">Responsive mode</span>
 
-                <MonitorSmartphone
-                  size={14}
-                  strokeWidth={1.5}
-                  aria-hidden="true"
-                  className="icon-interactive group-hover/button:stroke-icon-hover"
-                />
-              </Button>
+                  <MonitorSmartphone
+                    size={14}
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                    className="icon-interactive group-hover/button:stroke-icon-hover"
+                  />
+                </Button>
+              </Tooltip>
 
-              <Button size="sm" radius="sm" className="group/button p-1.5">
-                <span className="sr-only">Full screen</span>
-                <Scan
-                  size={14}
-                  strokeWidth={1.5}
-                  aria-hidden="true"
-                  className="icon-interactive group-hover/button:stroke-icon-hover"
-                />
-              </Button>
+              <Tooltip content="Full screen" side="bottom">
+                <Button size="sm" radius="sm" className="group/button p-1.5">
+                  <span className="sr-only">Full screen</span>
+                  <Scan
+                    size={14}
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                    className="icon-interactive group-hover/button:stroke-icon-hover"
+                  />
+                </Button>
+              </Tooltip>
             </nav>
           </div>
         )}
@@ -220,14 +249,22 @@ export default function WorkbenchHeader(props: WorkbenchHeaderProps) {
         )}
 
         <div className="order-1 mr-auto ml-auto flex shrink-0 items-center gap-3 sm:order-2 sm:mr-0">
-          <Button size="md" radius="md" className="shrink-0" iconOnly>
-            <img
-              src="/github.svg"
-              alt="GitHub"
-              className="invert-dark h-5 w-5"
-              loading="lazy"
-            />
-          </Button>
+          <Tooltip content="Connect project to GitHub" side="bottom">
+            <Button
+              size="md"
+              radius="md"
+              className="h-9 shrink-0"
+              aria-label="GitHub"
+              iconOnly
+            >
+              <img
+                src="/github.svg"
+                alt="GitHub"
+                className="invert-dark h-5 w-5"
+                loading="lazy"
+              />
+            </Button>
+          </Tooltip>
 
           <Button size="lg" radius="md" variant="subtle" className="shrink-0">
             Share

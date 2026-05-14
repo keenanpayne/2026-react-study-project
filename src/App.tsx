@@ -55,13 +55,13 @@ type ChatResponseTextKey =
   | 'summaryText'
   | 'closingText'
 
-const STREAM_INITIAL_DELAY = 1500
-const STREAM_WORD_DELAY = 95
-const STREAM_CLAUSE_DELAY = 180
-const STREAM_SENTENCE_DELAY = 320
-const STREAM_SECTION_PAUSE = 375
-const STREAM_ACTION_STEP_DELAY = 750
-const STREAM_FINAL_PAUSE = 700
+const STREAM_INITIAL_DELAY = 1000
+const STREAM_WORD_DELAY = 50
+const STREAM_CLAUSE_DELAY = 100
+const STREAM_SENTENCE_DELAY = 200
+const STREAM_SECTION_PAUSE = 200
+const STREAM_ACTION_STEP_DELAY = 400
+const STREAM_FINAL_PAUSE = 400
 const MANUAL_SCROLL_DELTA = 1
 const SCROLL_BOTTOM_THRESHOLD = 8
 
@@ -140,7 +140,7 @@ export default function App() {
   const lastChatScrollTopRef = useRef(0)
   const {
     activePane,
-    setActivePane,
+    handlePaneChange,
     activeMobileView,
     handleMobileViewChange,
     chatRef,
@@ -151,6 +151,8 @@ export default function App() {
   const isLoading = chatStatus === 'loading'
   const isStreaming = chatStatus === 'streaming'
   const isAnsweringQuestions = chatStatus === 'awaitingQuestions'
+  const hasChatStarted = chatMessage !== null
+  const isMockConversationComplete = chatStatus === 'complete'
   const activeQuestion = MockChatResponse.questions[activeQuestionIndex]
   const activeQuestionAnswer = questionAnswers.find(
     (answer) => answer.questionId === activeQuestion?.id,
@@ -573,14 +575,20 @@ export default function App() {
           <WorkbenchHeader
             teams={MockUserTeams}
             activePane={activePane}
-            onPaneChange={setActivePane}
+            onPaneChange={handlePaneChange}
             activeDatabaseSection={activeDatabaseSection}
             onDatabaseSectionChange={setActiveDatabaseSection}
+            chatInitiated={hasChatStarted}
           />
 
           <WorkbenchPreview
             isVisible={activePane === 'preview'}
-            children={<MockWorkbenchPreview />}
+            showStartPlaceholder={!isMockConversationComplete}
+            hasChatStarted={hasChatStarted}
+            onImplementPlan={() => handleChatSubmit('Implement this plan')}
+            children={
+              isMockConversationComplete ? <MockWorkbenchPreview /> : null
+            }
           />
 
           <WorkbenchCodebase

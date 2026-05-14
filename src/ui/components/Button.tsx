@@ -4,9 +4,10 @@ import type {
   ReactNode,
 } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { cx } from '~/utils/cx'
 
 const buttonStyles = cva(
-  'inline-flex cursor-pointer items-center text-left transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
+  'inline-flex cursor-pointer items-center text-left transition-colors duration-150 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
   {
     variants: {
       size: {
@@ -28,9 +29,9 @@ const buttonStyles = cva(
         selected: 'bg-selected hover:bg-selected-hover',
         subtle: 'bg-surface-emphasis hover:bg-hover-strong',
         primary: 'bg-inverse text-text-inverse hover:bg-inverse-hover',
-        danger: 'bg-danger text-white hover:bg-danger-hover',
-        success: 'bg-success text-white hover:bg-success-hover',
-        blue: 'bg-blue-500 text-white hover:bg-blue-600',
+        danger: 'bg-danger text-onDanger hover:bg-danger-hover',
+        success: 'bg-success text-onSuccess hover:bg-success-hover',
+        blue: 'bg-brand text-onBrand hover:bg-brandHighlight',
       },
       iconOnly: {
         false: null,
@@ -98,13 +99,15 @@ export default function Button({
   iconOnly,
   ...rest
 }: ButtonProps) {
-  const buttonClassName = buttonStyles({
-    size,
-    radius,
-    variant: variant ?? 'ghost',
-    iconOnly,
-    className,
-  })
+  const buttonClassName = cx(
+    buttonStyles({
+      size,
+      radius,
+      variant: variant ?? 'ghost',
+      iconOnly,
+      className,
+    }),
+  )
 
   if (as === 'a') {
     const anchorProps = rest as Omit<

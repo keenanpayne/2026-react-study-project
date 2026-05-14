@@ -7,6 +7,7 @@ type ToggleButtonProps = {
   label: string
   active: boolean
   onToggle: () => void
+  displayLabelOnHover?: boolean
 }
 
 export default function ToggleButton({
@@ -14,13 +15,17 @@ export default function ToggleButton({
   label,
   active,
   onToggle,
+  displayLabelOnHover = false,
 }: ToggleButtonProps) {
   return (
     <Button
       size="md"
       radius="pill"
       variant={active ? 'selected' : 'ghost'}
-      className="group/button shrink-0"
+      className={cx(
+        'group/button flex shrink-0 items-center',
+        displayLabelOnHover && 'gap-0 hover:gap-1 focus-visible:gap-1',
+      )}
       type="button"
       aria-label={label}
       aria-pressed={active}
@@ -38,9 +43,12 @@ export default function ToggleButton({
         )}
       />
       <span
+        aria-hidden={displayLabelOnHover ? true : undefined}
         className={cx(
-          'text-xs',
-          active ? 'text-text-selected' : 'text-text-secondary',
+          'text-xs leading-normal',
+          active ? 'text-onBrandContainer' : 'text-text-secondary',
+          displayLabelOnHover &&
+            'max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-[max-width,opacity] duration-200 group-hover/button:max-w-52 group-hover/button:opacity-100 group-focus-visible/button:max-w-52 group-focus-visible/button:opacity-100',
         )}
       >
         {label}
